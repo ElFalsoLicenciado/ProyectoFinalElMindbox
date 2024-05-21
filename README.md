@@ -1,0 +1,5 @@
+# ProyectoFinalElMindbox
+El Instituto Tecnológico de Morelia se encuentra en búsqueda de un nuevo sistema el cual pueda llevar toda la gestión de la escuela, lo cual incluye gestionar alumnos, maestros, administrativos, grupos, etc.
+Debido a esto, el Instituto ha tomado la decisión de realizar una licitación. Una licitación un proceso formal donde una organización (el comprador) emite una solicitud para que varios proveedores (los competidores) presenten propuestas para desarrollar un software o realizar un proyecto específico.
+Por esto, tu y tu equipo de desarrolladores han tomado la decisión de participar en este proceso de desarrollo para el nuevo sistema “Mindbox” que usará el Instituto Tecnológico de Morelia.
+Los requerimientos que se ocupan para desarrollar este nuevo proyecto se describen a continuación, por lo que tu y tu equipo tendrán que analizar, comprender, realizar el diagrama UML correspondiente y desarrollar este nuevo producto. El fecha límite para la entrega de este producto es el día 2 de junio del 2024, por lo que deberá estar listo para esa fecha sin errores o fallas.
