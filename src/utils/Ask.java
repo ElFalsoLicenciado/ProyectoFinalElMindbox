@@ -6,94 +6,89 @@ public class Ask {
 
     static Scanner sc = new Scanner(System.in);
 
-    public static String forString(String cadena) {
+    public static String forString(String prompt) {
         String answer = "";
-        boolean datoCorrecto = false;
-        while (!datoCorrecto) {
+        boolean correctData = false;
+        while (!correctData) {
             try {
-                print(cadena);
+                print(prompt);
                 answer = sc.next();
-
-                datoCorrecto = true;
+                correctData = true;
             } catch (Exception error) {
-                System.out.println("Ocurrio un error, intentelo de nuevo.");
+                System.out.println("An error occurred, please try again.");
                 sc.nextLine();
             }
         }
         return answer;
     }
 
-    public static double forDouble(String cadena) {
+    public static double forDouble(String prompt) {
         double answer = 0;
-        boolean datoCorrecto = false;
-        while (!datoCorrecto) {
+        boolean correctData = false;
+        while (!correctData) {
             try {
-                print(cadena);
+                print(prompt);
                 answer = sc.nextDouble();
-                datoCorrecto = true;
+                correctData = true;
             } catch (Exception error) {
-                System.out.println("Ocurrio un error, intentelo de nuevo.");
+                System.out.println("An error occurred, please try again.");
                 sc.nextLine();
             }
         }
         return answer;
     }
 
-    public static int forInt(String cadena) {
+    public static int forInt(String prompt) {
         int answer = 0;
-        boolean datoCorrecto = false;
-        while (!datoCorrecto) {
+        boolean correctData = false;
+        while (!correctData) {
             try {
-                print(cadena);
+                print(prompt);
                 answer = sc.nextInt();
-                datoCorrecto = true;
+                correctData = true;
             } catch (Exception error) {
-                System.out.println("Ocurrio un error, intentelo de nuevo.");
+                System.out.println("An error occurred, please try again.");
                 sc.nextLine();
             }
         }
         return answer;
     }
 
-    public static long forLong(String cadena) {
+    public static long forLong(String prompt) {
         long answer = 0;
-        boolean datoCorrecto = false;
-        while (!datoCorrecto) {
+        boolean correctData = false;
+        while (!correctData) {
             try {
-                print(cadena);
+                print(prompt);
                 answer = sc.nextLong();
-                datoCorrecto = true;
+                correctData = true;
             } catch (Exception error) {
-                System.out.println("Ocurrio un error, intentelo de nuevo.");
+                System.out.println("An error occurred, please try again.");
                 sc.nextLine();
             }
         }
         return answer;
     }
 
-    public static boolean forBoolean(String cadena) {
+    public static boolean forBoolean(String prompt) {
         int answer = 0;
-        boolean datoCorrecto = false;
-        while (!datoCorrecto) {
+        boolean correctData = false;
+        while (!correctData) {
             try {
-                System.out.printf("ES %s?", cadena);
+                System.out.printf("IS %s?%n", prompt);
                 System.out.println("1. Yes");
                 System.out.println("2. No");
                 answer = sc.nextInt();
-                datoCorrecto = true;
+                correctData = true;
             } catch (Exception error) {
-                System.out.println("Ocurrio un error, intentelo de nuevo.");
+                System.out.println("An error occurred, please try again.");
                 sc.nextLine();
             }
         }
-        if (answer == 1) {
-            return true;
-        } else {
-            return false;
-        }
+        return answer == 1;
     }
 
-    private static void print(String cad) {
-        System.out.printf("\nIngrese %s: ", cad);
+    private static void print(String prompt) {
+        System.out.printf("%nEnter %s: ", prompt);
     }
 }
