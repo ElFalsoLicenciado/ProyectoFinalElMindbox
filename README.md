@@ -1,5 +1,22 @@
-# ProyectoFinalElMindbox
-El Instituto Tecnológico de Morelia se encuentra en búsqueda de un nuevo sistema el cual pueda llevar toda la gestión de la escuela, lo cual incluye gestionar alumnos, maestros, administrativos, grupos, etc.
-Debido a esto, el Instituto ha tomado la decisión de realizar una licitación. Una licitación un proceso formal donde una organización (el comprador) emite una solicitud para que varios proveedores (los competidores) presenten propuestas para desarrollar un software o realizar un proyecto específico.
-Por esto, tu y tu equipo de desarrolladores han tomado la decisión de participar en este proceso de desarrollo para el nuevo sistema “Mindbox” que usará el Instituto Tecnológico de Morelia.
-Los requerimientos que se ocupan para desarrollar este nuevo proyecto se describen a continuación, por lo que tu y tu equipo tendrán que analizar, comprender, realizar el diagrama UML correspondiente y desarrollar este nuevo producto. El fecha límite para la entrega de este producto es el día 2 de junio del 2024, por lo que deberá estar listo para esa fecha sin errores o fallas.
+# MINDBOX UNIVERSITY MANAGEMENT SYSTEM
+## Project members
+1. Luis Arturo Román Sánchez
+2. Alberto Montoya Arriaga
+3. Jorge Vizaith Puebla Medrano
+4. René Antonio Olvera Estrada
+
+For the realization of this :project we used knowledge learned in the fourth unit of the Object Oriented Programming course. Covering the following:
+- Abstraction 
+- Encapsulation
+- Polymorphism
+- Inheritance
+- Method overwriting
+- Exception handling
+- Use of the Singleton pattern
+- Use of ENUMS
+- Structures such as arraylist and HashMaps
+- Exception handling with try catch
+
+The instructions to carry out this project are contained in the following link: [Instructions](https://itmorelia-ejercicios-eder.notion.site/POO-Examen-Final-0a7a92ddc8b24876aa683a34b0f86ad3)
+
+## Code structure
