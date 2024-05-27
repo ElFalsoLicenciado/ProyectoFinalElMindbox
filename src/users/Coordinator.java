@@ -8,6 +8,7 @@ import mindbox.utils.CommonData;
 import users.utils.Country;
 import users.utils.Gender;
 import users.utils.Role;
+import utils.Ask;
 import utils.CurrentCareer;
 
 import java.time.LocalDate;
@@ -16,8 +17,8 @@ import java.util.List;
 
 public class Coordinator extends Teacher {
 
-    public Coordinator(String firstName, String paternalLastName, String maternalLastName, LocalDate birthDate, Gender gender, String city, Country country, String curp, String rfc, String address, LocalDate registrationDate, String username, String password, double salary, int controlNumber, List<Subject> subjects, List<Student> managedStudents, List<Group> groups) {
-        super(firstName, paternalLastName, maternalLastName, birthDate, gender, city, country, curp, rfc, address, registrationDate, username, password, Role.COORDINATOR, salary, controlNumber, subjects, managedStudents, groups);
+    public Coordinator(String firstName, String paternalLastName, String maternalLastName, LocalDate birthDate, Gender gender, String city, Country country, String curp, String rfc, String address, LocalDate registrationDate, String username, String password, String controlNumber, double salary, List<Subject> subjects, List<Student> managedStudents, List<Group> groups) {
+        super(firstName, paternalLastName, maternalLastName, birthDate, gender, city, country, curp, rfc, address, registrationDate, username, password, controlNumber, Role.COORDINATOR, salary, subjects, managedStudents, groups);
     }
 
     public static void register() {
@@ -33,8 +34,8 @@ public class Coordinator extends Teacher {
         String password = data.get(8);
         Gender gender = CommonData.validGender(data.get(9));
 
-        String curp = CommonData.generateCurp(firstName, paternalLastName, maternalLastName, birthDate, gender, country);
-        String rfc = CommonData.generateRfc(firstName, paternalLastName, maternalLastName, birthDate);
+        String curp = CommonData.generateCURP(firstName, paternalLastName, maternalLastName, birthDate, gender, country);
+        String rfc = CommonData.generateRFC(firstName, paternalLastName, maternalLastName, birthDate);
 
         LocalDate registrationDate = LocalDate.now();
         double salary = Ask.forDouble("the salary");

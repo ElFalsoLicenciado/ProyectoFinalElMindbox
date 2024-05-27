@@ -1,5 +1,5 @@
 package mindbox.utils;
 
-public enum Career {
+public enum CareerType {
     ISC, IMAT, ELC
 }

@@ -2,6 +2,8 @@ package users;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import academicinfo.Career;
 import academicinfo.Subject;
 import academicinfo.Group;
 import mindbox.Sys;
@@ -9,20 +11,22 @@ import mindbox.utils.CommonData;
 import users.utils.Country;
 import users.utils.Gender;
 import users.utils.Role;
+import utils.Ask;
 import utils.CurrentCareer;
+import utils.UserInSession;
+
 import java.time.LocalDate;
 
 public class Teacher extends User {
     private double salary;
-    private int controlNumber;
+    private String controlNumber;
     private List<Subject> subjects;
     private List<Student> managedStudents;
     private List<Group> groups;
 
-    public Teacher(String firstName, String paternalLastName, String maternalLastName, LocalDate birthDate, Gender gender, String city, Country country, String curp, String rfc, String address, LocalDate registrationDate, String username, String password, Role role, double salary, int controlNumber, List<Subject> subjects, List<Student> managedStudents, List<Group> groups) {
-        super(firstName, paternalLastName, maternalLastName, birthDate, gender, city, country, curp, rfc, address, registrationDate, username, password, Role.TEACHER);
+    public Teacher(String firstName, String paternalLastName, String maternalLastName, LocalDate birthDate, Gender gender, String city, Country country, String curp, String rfc, String address, LocalDate registrationDate, String username, String password, String controlNumber, Role role, double salary, List<Subject> subjects, List<Student> managedStudents, List<Group> groups) {
+        super(firstName, paternalLastName, maternalLastName, birthDate, gender, city, country, curp, rfc, address, registrationDate, username, password, controlNumber, Role.TEACHER);
         this.salary = salary;
-        this.controlNumber = controlNumber;
         this.subjects = subjects;
         this.managedStudents = managedStudents;
         this.groups = groups;
@@ -35,14 +39,6 @@ public class Teacher extends User {
 
     public void setSalary(double salary) {
         this.salary = salary;
-    }
-
-    public int getControlNumber() {
-        return controlNumber;
-    }
-
-    public void setControlNumber(int controlNumber) {
-        this.controlNumber = controlNumber;
     }
 
     public List<Subject> getSubjects() {

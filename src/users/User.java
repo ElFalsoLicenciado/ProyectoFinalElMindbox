@@ -10,19 +10,21 @@ public class User {
     protected String firstName;
     protected String paternalLastName;
     protected String maternalLastName;
-    protected LocalDate birthDate;
+    protected String birthDate;
     protected Gender gender;
     protected String city;
     protected Country country;
     protected String curp;
     protected String rfc;
     protected String address;
-    protected LocalDate registrationDate;
+    protected String registrationDate;
     protected String username;
     protected String password;
+
+    protected String controlNumber;
     protected Role role;
 
-    public User(String firstName, String paternalLastName, String maternalLastName, LocalDate birthDate, Gender gender, String city, Country country, String curp, String rfc, String address, LocalDate registrationDate, String username, String password, Role role) {
+    public User(String firstName, String paternalLastName, String maternalLastName, LocalDate birthDate, Gender gender, String city, Country country, String curp, String rfc, String address, LocalDate registrationDate, String username, String password, String controlNumber, Role role) {
         this.firstName = firstName.toUpperCase();
         this.paternalLastName = paternalLastName.toUpperCase();
         this.maternalLastName = maternalLastName.toUpperCase();
@@ -36,6 +38,7 @@ public class User {
         this.registrationDate = registrationDate;
         this.username = username;
         this.password = password;
+        this.controlNumber = controlNumber;
         this.role = role;
     }
 
@@ -154,5 +157,13 @@ public class User {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public String getControlNumber() {
+        return controlNumber;
+    }
+
+    public void setControlNumber(String controlNumber) {
+        this.controlNumber = controlNumber;
     }
 }

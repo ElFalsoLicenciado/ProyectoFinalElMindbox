@@ -54,6 +54,22 @@ public class Ask {
         return answer;
     }
 
+    public static String forDate(String prompt) {
+        String answer = "";
+        boolean correctData = false;
+        while (!correctData) {
+            try {
+                print(prompt);
+                answer = sc.next();
+                correctData = true;
+            } catch (Exception error) {
+                System.out.println("An error occurred, please try again.");
+                sc.nextLine();
+            }
+        }
+        return answer;
+    }
+
     public static long forLong(String prompt) {
         long answer = 0;
         boolean correctData = false;

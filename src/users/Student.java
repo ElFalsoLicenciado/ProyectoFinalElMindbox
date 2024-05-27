@@ -11,6 +11,7 @@ import academicinfo.Subject;
 import mindbox.Sys;
 import mindbox.utils.CommonData;
 import utils.CurrentCareer;
+import utils.UserInSession;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -22,16 +23,14 @@ public class Student extends User {
     private Semester semester;
     private Group group;
     private double gradeAverage;
-    private int controlNumber;
     private List<Grade> grades;
 
-    public Student(String firstName, String paternalLastName, String maternalLastName, LocalDate birthDate, Gender gender, String city, Country country, String curp, String rfc, String address, LocalDate registrationDate, String username, String password, Role role, Career career, Semester semester, Group group, double gradeAverage, int controlNumber, List<Grade> grades) {
-        super(firstName, paternalLastName, maternalLastName, birthDate, gender, city, country, curp, rfc, address, registrationDate, username, password, Role.STUDENT);
+    public Student(String firstName, String paternalLastName, String maternalLastName, LocalDate birthDate, Gender gender, String city, Country country, String curp, String rfc, String address, LocalDate registrationDate, String username, String password, String controlNumber, Role role, Career career, Semester semester, Group group, double gradeAverage, List<Grade> grades) {
+        super(firstName, paternalLastName, maternalLastName, birthDate, gender, city, country, curp, rfc, address, registrationDate, username, password, controlNumber, Role.STUDENT);
         this.career = career;
         this.semester = semester;
         this.group = group;
         this.gradeAverage = gradeAverage;
-        this.controlNumber = controlNumber;
         this.grades = grades;
     }
 
@@ -66,14 +65,6 @@ public class Student extends User {
 
     public void setGradeAverage(double gradeAverage) {
         this.gradeAverage = gradeAverage;
-    }
-
-    public int getControlNumber() {
-        return controlNumber;
-    }
-
-    public void setControlNumber(int controlNumber) {
-        this.controlNumber = controlNumber;
     }
 
     public List<Grade> getGrades() {
@@ -190,7 +181,7 @@ public class Student extends User {
 
         String curp = CommonData.generateCURP(firstName, paternalLastName, maternalLastName, birthDate, gender1, country1);
         String rfc = CommonData.generateRFC(paternalLastName, maternalLastName, firstName, birthDate);
-        int controlNumber = Integer.parseInt(CommonData.generateControlNumber(Role.STUDENT));
+        String controlNumber = Integer.parseInt(CommonData.generateControlNumber(Role.STUDENT));
 
         Career career = CurrentCareer.getInstance().getCurrentCareer();
         Semester semester = new Semester("1", 1, career, new ArrayList<>()); // Dummy semester

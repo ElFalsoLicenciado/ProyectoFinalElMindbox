@@ -1,11 +1,11 @@
 package utils;
 
-import mindbox.utils.Career;
+import mindbox.utils.CareerType;
 
 public class CurrentCareer {
 
     private static CurrentCareer instance;
-    private Career currentCareer;
+    private CareerType currentCareer;
 
     private CurrentCareer(){}
 
@@ -16,11 +16,11 @@ public class CurrentCareer {
         return instance;
     }
 
-    public Career getCurrentCareer() {
+    public CareerType getCurrentCareer() {
         return currentCareer;
     }
 
-    public void setCareer(Career career) {
+    public void setCareer(CareerType career) {
         this.currentCareer = career;
     }
 

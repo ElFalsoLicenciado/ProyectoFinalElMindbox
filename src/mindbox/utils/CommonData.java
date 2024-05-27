@@ -8,16 +8,13 @@ import mindbox.Minbox;
 import mindbox.Sys;
 import academicinfo.Career;
 import users.User;
-import users.utils.Country;
-import users.utils.FederationEntity;
-import users.utils.Gender;
-import users.utils.Role;
+import users.utils.*;
 import utils.Ask;
 import utils.Date;
 
 public class CommonData {
 
-    public static List<String> obtainCommonData(Role role) {
+    public static List<String> getCommonData(Role role) {
         List<String> commonData = new ArrayList<>();
 
         String roleType = switch (role) {
@@ -92,8 +89,8 @@ public class CommonData {
         while (true) {
             boolean validUsername = true;
             username = Ask.forString("username");
-            for (Minbox minbox : Sys.getInstance().getCareers().values()) {
-                for (User user : minbox.getUserList().get(Role.STUDENT)) {
+            for (Career career : Sys.getInstance().getCareers().values()) {
+                for (User user : career.getUserList().get(Role.STUDENT)) {
                     if (username.equals(user.getUsername())) {
                         validUsername = false;
                         break;
@@ -101,7 +98,7 @@ public class CommonData {
                 }
                 if (!validUsername) break;
 
-                for (User user : minbox.getUserList().get(Role.TEACHER)) {
+                for (User user : career.getUserList().get(Role.TEACHER)) {
                     if (username.equals(user.getUsername())) {
                         validUsername = false;
                         break;
@@ -109,7 +106,7 @@ public class CommonData {
                 }
                 if (!validUsername) break;
 
-                for (User user : minbox.getUserList().get(Role.COORDINATOR)) {
+                for (User user : career.getUserList().get(Role.COORDINATOR)) {
                     if (username.equals(user.getUsername())) {
                         validUsername = false;
                         break;
@@ -202,8 +199,8 @@ public class CommonData {
     }
 
     public static String generateCURP(String firstName, String paternalLastName, String maternalLastName, String birthDate, Gender gender, Country country) {
-        // CURP generation logic here
-        return "CURP123";
+        Curp.generate(firstName, paternalLastName,  maternalLastName, birthDate, gender, Country.Michoacan);
+        return Curp.generate();
     }
 
     public static String generateRFC(String paternalLastName, String maternalLastName, String firstName, String birthDate) {

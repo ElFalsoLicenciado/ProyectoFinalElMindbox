@@ -5,8 +5,11 @@ import academicinfo.Group;
 import users.Coordinator;
 import users.Student;
 import users.Teacher;
+import users.utils.Country;
+import users.utils.Gender;
 import users.utils.Role;
 import utils.Ask;
+import utils.DialogHelper;
 import utils.UserInSession;
 
 import com.google.gson.Gson;
@@ -23,20 +26,18 @@ public class Menu {
 
     public static void initializeCareers() {
         // Dummy data for the initial setup
-        Coordinator dummyCoordinator = new Coordinator("John", "Doe", "Smith", LocalDate.now(), null, "City", null, "CURP123", "RFC123", "Address", LocalDate.now(), "username", "password", Role.COORDINATOR);
+        Coordinator coordinator = new Coordinator("John", "Doe", "Smith", LocalDate.now(), Gender.MALE, "City", Country.Aguascalientes, "CURP123", "RFC123", "Address", LocalDate.now(), "username", "password",  );
         List<Group> dummyGroups = new ArrayList<>();
 
-        careers.put("ISC", new Career("ISC", "Engineering in Computer Systems", 2, 50, 6, LocalDate.now().toString(), dummyCoordinator, dummyGroups));
-        careers.put("IMAT", new Career("IMAT", "Engineering in Materials", 2, 30, 6, LocalDate.now().toString(), dummyCoordinator, dummyGroups));
-        careers.put("ELC", new Career("ELC", "Engineering in Electronics", 2, 40, 6, LocalDate.now().toString(), dummyCoordinator, dummyGroups));
+        careers.put("ISC", new Career("ISC", "Engineering in Computer Systems", 2, 50, 6, LocalDate.now().toString(), coordinator, dummyGroups));
+        careers.put("IMAT", new Career("IMAT", "Engineering in Materials", 2, 30, 6, LocalDate.now().toString(), coordinator, dummyGroups));
+        careers.put("ELC", new Career("ELC", "Engineering in Electronics", 2, 40, 6, LocalDate.now().toString(), coordinator, dummyGroups));
         // Load from JSON if exists
     }
 
     public static Career askCareer() {
         while (true) {
-            System.out.println("***************WELCOME TO THE PROGRAM***************");
-            System.out.println("\n1. ISC \n2. IMAT \n3. ELC\n4. EXIT");
-            int option = Ask.forInt("the option number");
+            int option = DialogHelper.intIn("***************WELCOME TO THE PROGRAM***************\n1. ISC \n2. IMAT \n3. ELC\n4. EXIT",0);
             if (option == 1)
                 return careers.get("ISC");
             else if (option == 2)

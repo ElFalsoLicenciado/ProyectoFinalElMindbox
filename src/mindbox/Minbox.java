@@ -1,6 +1,6 @@
 package mindbox;
 
-import mindbox.utils.*;
+import academicinfo.Career;
 import users.Coordinator;
 import users.User;
 import users.utils.Country;
@@ -12,6 +12,8 @@ import utils.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import static mindbox.utils.CareerType.*;
 
 public class Minbox {
 
@@ -29,7 +31,7 @@ public class Minbox {
 
             case ISC -> this.coordinator = new Coordinator("CISC", "C", "C", Date.askForDate(2000, 10, 10),
                     Gender.MALE, "Morelia", Country.Michoacan, "CURPISC", "RFCISC", "Address", LocalDate.now(), "ISC_C",
-                    "123456", Role.COORDINATOR, 25000, "123456", "");
+                    "123456", 20000,  );
             case IMAT ->
 
             case ELC ->
