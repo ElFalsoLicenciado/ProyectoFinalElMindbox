@@ -3,19 +3,19 @@ package users;
 import users.utils.Country;
 import users.utils.Gender;
 import users.utils.Role;
-
-import java.util.ArrayList;
-import java.util.List;
 import academicinfo.Career;
 import academicinfo.Grade;
 import academicinfo.Group;
 import academicinfo.Semester;
+import academicinfo.Subject;
 import mindbox.Sys;
 import mindbox.utils.CommonData;
-import utils.Ask;
 import utils.CurrentCareer;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 public class Student extends User {
     private Career career;
@@ -35,6 +35,7 @@ public class Student extends User {
         this.grades = grades;
     }
 
+    // Getters and Setters
     public Career getCareer() {
         return career;
     }
@@ -83,87 +84,180 @@ public class Student extends User {
         this.grades = grades;
     }
 
-    public static void register() {
-        ArrayList<String> data = CommonData.obtainCommonData(Role.STUDENT);
-        String firstName = data.get(0);
-        String paternalLastName = data.get(1);
-        String maternalLastName = data.get(2);
-        LocalDate birthDate = LocalDate.parse(data.get(3));
-        String address = data.get(4);
-        Country country = CommonData.validCountry(data.get(5));
-        String city = data.get(6);
-        String username = data.get(7);
-        String password = data.get(8);
-        Gender gender = CommonData.validGender(data.get(9));
-        LocalDate registrationDate = LocalDate.now();
-        String curp = CommonData.generateCURP(firstName, paternalLastName, maternalLastName, birthDate.toString(), gender, country);
-        String rfc = CommonData.generateRFC(paternalLastName, maternalLastName, firstName, birthDate.toString());
-
-        Career career = CurrentCareer.getInstance().getCurrentCareer();
-        Semester semester = new Semester(1, career);
-        Group group = new Group(career, "A", semester);
-        double gradeAverage = 0.0;
-        int controlNumber = Integer.parseInt(CommonData.generateControlNumber(Role.STUDENT));
-        List<Grade> grades = new ArrayList<>();
-
-        Student student = new Student(firstName, paternalLastName, maternalLastName, birthDate, gender, city, country, curp, rfc, address, registrationDate, username, password, Role.STUDENT, career, semester, group, gradeAverage, controlNumber, grades);
-
-        Sys.getInstance().getCareers().get(career.getId()).addUser(student);
-        System.out.println("\n----------------STUDENT REGISTERED----------------\n");
-    }
-
+    // Methods
     public static void showNotification() {
-        System.out.println("Showing notifications for Student...");
-        // Implementation of showing notifications
+        System.out.println("You have new notifications.");
     }
 
     public static void modifyPersonalInfo() {
-        System.out.println("Modifying personal information...");
-        // Implementation of modifying personal information
+        User currentUser = UserInSession.getInstance().getCurrentUser();
+        if (currentUser instanceof Student) {
+            Student student = (Student) currentUser;
+            List<String> data = CommonData.getCommonData(Role.STUDENT);
+            student.setFirstName(data.get(0));
+            student.setPaternalLastName(data.get(1));
+            student.setMaternalLastName(data.get(2));
+            student.setBirthDate(LocalDate.parse(data.get(3)));
+            student.setAddress(data.get(4));
+            student.setCountry(CommonData.validCountry(data.get(5)));
+            student.setCity(data.get(6));
+            student.setUsername(data.get(7));
+            student.setPassword(data.get(8));
+            student.setGender(CommonData.validGender(data.get(9)));
+
+            System.out.println("Personal information updated successfully.");
+        }
     }
 
     public static void consultSubjects() {
-        System.out.println("Consulting subjects...");
-        // Implementation of consulting subjects
+        User currentUser = UserInSession.getInstance().getCurrentUser();
+        if (currentUser instanceof Student) {
+            Student student = (Student) currentUser;
+            System.out.println("Ongoing subjects for " + student.getFirstName() + " " + student.getPaternalLastName() + ":");
+            student.getGroup().getSubjects().forEach(subject -> System.out.println(subject.getName()));
+        }
     }
 
     public static void consultGrades() {
-        System.out.println("Consulting grades...");
-        // Implementation of consulting grades
+        User currentUser = UserInSession.getInstance().getCurrentUser();
+        if (currentUser instanceof Student) {
+            Student student = (Student) currentUser;
+            System.out.println("Current grades for " + student.getFirstName() + " " + student.getPaternalLastName() + ":");
+            student.getGrades().forEach(grade -> System.out.println(grade.getSubject().getName() + ": " + grade.getValue()));
+        }
     }
 
     public static void consultTeachers() {
-        System.out.println("Consulting teachers...");
-        // Implementation of consulting teachers
+        User currentUser = UserInSession.getInstance().getCurrentUser();
+        if (currentUser instanceof Student) {
+            Student student = (Student) currentUser;
+            System.out.println("Current teachers for " + student.getFirstName() + " " + student.getPaternalLastName() + ":");
+            student.getGroup().getSubjects().forEach(subject -> System.out.println(subject.getTeacher().getFullName()));
+        }
     }
 
     public static void consultGradeAverage() {
-        System.out.println("Consulting grade average...");
-        // Implementation of consulting grade average
+        User currentUser = UserInSession.getInstance().getCurrentUser();
+        if (currentUser instanceof Student) {
+            Student student = (Student) currentUser;
+            System.out.println("Current grade average for " + student.getFirstName() + " " + student.getPaternalLastName() + ": " + student.getGradeAverage());
+        }
     }
 
     public static void consultHistory() {
-        System.out.println("Consulting history...");
-        // Implementation of consulting history
+        User currentUser = UserInSession.getInstance().getCurrentUser();
+        if (currentUser instanceof Student) {
+            Student student = (Student) currentUser;
+            System.out.println("History for " + student.getFirstName() + " " + student.getPaternalLastName() + ":");
+
+            Sys.getInstance().getCareers().values().forEach(career -> {
+                career.getGroups().forEach(group -> {
+                    group.getStudents().forEach(s -> {
+                        if (s.getControlNumber() == student.getControlNumber()) {
+                            System.out.println("Semester: " + group.getSemester().getNumber());
+                            group.getSubjects().forEach(subject -> {
+                                Optional<Grade> grade = s.getGrades().stream().filter(g -> g.getSubject().getId().equals(subject.getId())).findFirst();
+                                if (grade.isPresent()) {
+                                    System.out.println("Subject: " + subject.getName());
+                                    System.out.println("Grade: " + grade.get().getValue());
+                                    System.out.println("Teacher: " + subject.getTeacher().getFullName());
+                                }
+                            });
+                            System.out.println("Average grade: " + s.getGradeAverage());
+                            System.out.println("------------");
+                        }
+                    });
+                });
+            });
+        }
+    }
+
+    public static void register() {
+        List<String> data = CommonData.getCommonData(Role.STUDENT);
+        String firstName = data.get(0);
+        String paternalLastName = data.get(1);
+        String maternalLastName = data.get(2);
+        String birthDate = data.get(3);
+        String address = data.get(4);
+        String country = data.get(5);
+        String city = data.get(6);
+        String username = data.get(7);
+        String password = data.get(8);
+        String gender = data.get(9);
+
+        Gender gender1 = CommonData.validGender(gender);
+        Country country1 = CommonData.validCountry(country);
+
+        String curp = CommonData.generateCURP(firstName, paternalLastName, maternalLastName, birthDate, gender1, country1);
+        String rfc = CommonData.generateRFC(paternalLastName, maternalLastName, firstName, birthDate);
+        int controlNumber = Integer.parseInt(CommonData.generateControlNumber(Role.STUDENT));
+
+        Career career = CurrentCareer.getInstance().getCurrentCareer();
+        Semester semester = new Semester("1", 1, career, new ArrayList<>()); // Dummy semester
+        Group group = new Group("A", career, new ArrayList<>(), semester); // Dummy group
+        double gradeAverage = 0.0;
+        List<Grade> grades = new ArrayList<>();
+
+        Student student = new Student(firstName, paternalLastName, maternalLastName, LocalDate.parse(birthDate), gender1, city, country1, curp, rfc, address, LocalDate.now(), username, password, Role.STUDENT, career, semester, group, gradeAverage, controlNumber, grades);
+
+        career.getGroups().get(0).getStudents().add(student); // Add student to the first group for simplicity
+        Sys.getInstance().saveData(); // Save data to JSON
+        System.out.println("\n----------------STUDENT REGISTERED----------------\n");
     }
 
     public static void remove() {
-        System.out.println("Removing student...");
-        // Implementation of removing a student
+        User currentUser = UserInSession.getInstance().getCurrentUser();
+        if (currentUser instanceof Student) {
+            Student student = (Student) currentUser;
+            Career career = student.getCareer();
+            Optional<Group> groupOptional = career.getGroups().stream().filter(g -> g.getStudents().contains(student)).findFirst();
+            groupOptional.ifPresent(group -> group.getStudents().remove(student));
+            Sys.getInstance().saveData(); // Save data to JSON
+            System.out.println("Student removed successfully.");
+        }
     }
 
     public static void modify() {
-        System.out.println("Modifying student...");
-        // Implementation of modifying a student
+        User currentUser = UserInSession.getInstance().getCurrentUser();
+        if (currentUser instanceof Student) {
+            Student student = (Student) currentUser;
+            List<String> data = CommonData.getCommonData(Role.STUDENT);
+            student.setFirstName(data.get(0));
+            student.setPaternalLastName(data.get(1));
+            student.setMaternalLastName(data.get(2));
+            student.setBirthDate(LocalDate.parse(data.get(3)));
+            student.setAddress(data.get(4));
+            student.setCountry(CommonData.validCountry(data.get(5)));
+            student.setCity(data.get(6));
+            student.setUsername(data.get(7));
+            student.setPassword(data.get(8));
+            student.setGender(CommonData.validGender(data.get(9)));
+
+            Sys.getInstance().saveData(); // Save data to JSON
+            System.out.println("Student modified successfully.");
+        }
     }
 
     public static void viewInfo() {
-        System.out.println("Viewing student information...");
-        // Implementation of viewing a student's information
+        User currentUser = UserInSession.getInstance().getCurrentUser();
+        if (currentUser instanceof Student) {
+            Student student = (Student) currentUser;
+            System.out.println("Student Information:");
+            System.out.println("Name: " + student.getFullName());
+            System.out.println("Birth Date: " + student.getBirthDate());
+            System.out.println("Address: " + student.getAddress());
+            System.out.println("City: " + student.getCity());
+            System.out.println("Country: " + student.getCountry());
+            System.out.println("Career: " + student.getCareer().getName());
+            System.out.println("Semester: " + student.getSemester().getNumber());
+            System.out.println("Group: " + student.getGroup().getId());
+            System.out.println("Grade Average: " + student.getGradeAverage());
+        }
     }
 
     public static void viewAll() {
-        System.out.println("Viewing all students...");
-        // Implementation of viewing all students
+        Career career = CurrentCareer.getInstance().getCurrentCareer();
+        System.out.println("All students in " + career.getName() + ":");
+        career.getGroups().forEach(group -> group.getStudents().forEach(student -> System.out.println(student.getFullName())));
     }
 }

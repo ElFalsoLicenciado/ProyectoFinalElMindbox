@@ -6,29 +6,27 @@ import java.time.format.DateTimeFormatter;
 
 public class Date {
 
-    public static String askForDate(String cad) {
-        System.out.printf("\nIngrese la fecha de %s", cad);
+    public static String askForDate(String desc) {
+        System.out.printf("\nEnter the date for %s", desc);
         int year = getYear();
         int month = getMonth();
         int dayOfMonth = getDay(month);
         LocalDate date = LocalDate.of(year, month, dayOfMonth);
-        DateTimeFormatter pattern = DateTimeFormatter.ofPattern("dd/MM/YYYY");
-        String fecha = date.format(pattern);
-        return fecha;
+        DateTimeFormatter pattern = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        return date.format(pattern);
     }
 
     public static String askForDate(int year, int month, int dayOfMonth) {
         LocalDate date = LocalDate.of(year, month, dayOfMonth);
-        DateTimeFormatter pattern = DateTimeFormatter.ofPattern("dd/MM/YYYY");
-        String fecha = date.format(pattern);
-        return fecha;
+        DateTimeFormatter pattern = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        return date.format(pattern);
     }
 
     private static int getYear() {
-        int year = Ask.forInt("el año");
+        int year = Ask.forInt("the year");
         while (!validYear(year)) {
-            System.out.println("Se ingresó un año inválido, inténtelo nuevamente");
-            year = Ask.forInt("el año");
+            System.out.println("Invalid year entered, please try again.");
+            year = Ask.forInt("the year");
         }
         return year;
     }
@@ -38,10 +36,10 @@ public class Date {
     }
 
     private static int getMonth() {
-        int month = Ask.forInt("el mes");
+        int month = Ask.forInt("the month");
         while (!validMonth(month)) {
-            System.out.println("Se ingresó un mes inválido, inténtelo nuevamente");
-            month = Ask.forInt("el mes");
+            System.out.println("Invalid month entered, please try again.");
+            month = Ask.forInt("the month");
         }
         return month;
     }
@@ -51,13 +49,13 @@ public class Date {
     }
 
     public static int getDay(int month) {
-        int day = 0;
+        int day;
         while (true) {
-            day = Ask.forInt("el día");
+            day = Ask.forInt("the day");
             if (validDay(month, day))
                 return day;
             else
-                System.out.println("Inténtelo nuevamente");
+                System.out.println("Invalid day entered, please try again.");
         }
     }
 
@@ -66,12 +64,11 @@ public class Date {
             if (day <= Month.of(month).maxLength())
                 return true;
             else {
-                System.out.println("El día ingresado es válido, sin embargo, no se encuentra dentro del rango del mes");
-                System.out.printf("\nEl día máximo para el mes %s es: %d", Month.of(month).toString(),
-                        Month.of(month).maxLength());
+                System.out.println("The entered day is valid, but not within the month's range.");
+                System.out.printf("\nThe maximum day for the month %s is: %d", Month.of(month), Month.of(month).maxLength());
             }
         } else
-            System.out.println("Se ingresó un número de día inválido");
+            System.out.println("Invalid day number entered.");
         return false;
     }
 }
