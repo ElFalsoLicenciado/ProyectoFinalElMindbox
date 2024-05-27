@@ -64,6 +64,10 @@ public class User {
         this.maternalLastName = maternalLastName;
     }
 
+    public String getFullName() {
+        return String.format("%s %s", firstName, paternalLastName);
+    }
+
     public LocalDate getBirthDate() {
         return birthDate;
     }

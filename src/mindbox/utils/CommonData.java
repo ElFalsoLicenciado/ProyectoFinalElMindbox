@@ -1,14 +1,23 @@
-package users.utils;
+package mindbox.utils;
 
 import java.util.*;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
-import users.*;
+
+import mindbox.Minbox;
+import mindbox.Sys;
+import academicinfo.Career;
+import users.User;
+import users.utils.Country;
+import users.utils.FederationEntity;
+import users.utils.Gender;
+import users.utils.Role;
 import utils.Ask;
+import utils.Date;
 
 public class CommonData {
 
-    public static List<String> collectCommonData(Role role) {
+    public static List<String> obtainCommonData(Role role) {
         List<String> commonData = new ArrayList<>();
 
         String roleType = switch (role) {
@@ -17,31 +26,30 @@ public class CommonData {
             case COORDINATOR -> "C O O R D I N A T O R";
         };
 
-        System.out.println(String.format("\n ADDING %s ", roleType));
+        System.out.println(String.format("\n ADD %s ", roleType));
 
         String firstName = Ask.forString("the first name");
-        String lastName = Ask.forString("the last name");
-        String birthYear = Ask.forString("the birth year");
+        String paternalLastName = Ask.forString("the paternal last name");
+        String maternalLastName = Ask.forString("the maternal last name");
         String address = Ask.forString("the address");
 
-        Country state = chooseState();
-        String stateString = FederationEntity.getStringCountry(state);
+        Country country = CommonData.chooseCountry();
+        String countryString = FederationEntity.getStringCountry(country);
 
         String city = Ask.forString("the city");
-        String username = generateUsername();
+        String username = CommonData.getUsername();
         String password = Ask.forString("the password");
 
         String gender = String.valueOf(chooseGender());
 
-        String birthDate = askForDate("birth date");
-        String phoneNumber = generatePhoneNumber();
+        String birthDate = Date.askForDate("birth date");
 
-        commonData.addAll(Arrays.asList(firstName, lastName, birthDate, address, stateString, city, username, password, gender, phoneNumber));
+        commonData.addAll(Arrays.asList(firstName, paternalLastName, maternalLastName, birthDate, address, countryString, city, username, password, gender));
 
         return commonData;
     }
 
-    public static Country validState(String input) {
+    public static Country validCountry(String input) {
         return switch (input.toUpperCase()) {
             case "AGUASCALIENTES" -> Country.Aguascalientes;
             case "BAJA CALIFORNIA" -> Country.Baja_California;
@@ -79,17 +87,39 @@ public class CommonData {
         };
     }
 
-    public static String generateUsername() {
+    public static String getUsername() {
         String username = "";
         while (true) {
-            boolean isValid = true;
+            boolean validUsername = true;
             username = Ask.forString("username");
-            // Check if the username already exists in the system
-            if (!isValid) {
-                System.out.println("This username is already taken");
-            } else {
-                return username;
+            for (Minbox minbox : Sys.getInstance().getCareers().values()) {
+                for (User user : minbox.getUserList().get(Role.STUDENT)) {
+                    if (username.equals(user.getUsername())) {
+                        validUsername = false;
+                        break;
+                    }
+                }
+                if (!validUsername) break;
+
+                for (User user : minbox.getUserList().get(Role.TEACHER)) {
+                    if (username.equals(user.getUsername())) {
+                        validUsername = false;
+                        break;
+                    }
+                }
+                if (!validUsername) break;
+
+                for (User user : minbox.getUserList().get(Role.COORDINATOR)) {
+                    if (username.equals(user.getUsername())) {
+                        validUsername = false;
+                        break;
+                    }
+                }
             }
+            if (!validUsername)
+                System.out.println("This username is already taken, please try another.");
+            else
+                return username;
         }
     }
 
@@ -105,7 +135,7 @@ public class CommonData {
         return newDateTime;
     }
 
-    public static Country chooseState() {
+    public static Country chooseCountry() {
         Country state = null;
         while (state == null) {
             System.out.println(
@@ -169,5 +199,20 @@ public class CommonData {
 
     public static Gender validGender(String input) {
         return input.equalsIgnoreCase("FEMALE") ? Gender.FEMALE : Gender.MALE;
+    }
+
+    public static String generateCURP(String firstName, String paternalLastName, String maternalLastName, String birthDate, Gender gender, Country country) {
+        // CURP generation logic here
+        return "CURP123";
+    }
+
+    public static String generateRFC(String paternalLastName, String maternalLastName, String firstName, String birthDate) {
+        // RFC generation logic here
+        return "RFC123";
+    }
+
+    public static String generateControlNumber(Role role) {
+        // Control number generation logic here
+        return "12345";
     }
 }

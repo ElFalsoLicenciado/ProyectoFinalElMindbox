@@ -1,7 +1,13 @@
 package academicinfo;
 
-import java.util.List;
 import users.Coordinator;
+import users.User;
+import users.utils.Role;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class Career {
     private String id;
@@ -12,6 +18,7 @@ public class Career {
     private String creationDate;
     private Coordinator coordinator;
     private List<Group> groups;
+    private Map<Role, List<User>> userList;
 
     public Career(String id, String name, int numberOfGroups, int numberOfStudents, int numberOfSubjects, String creationDate, Coordinator coordinator, List<Group> groups) {
         this.id = id;
@@ -22,8 +29,11 @@ public class Career {
         this.creationDate = creationDate;
         this.coordinator = coordinator;
         this.groups = groups;
+        this.userList = new HashMap<>();
+        this.userList.put(Role.STUDENT, new ArrayList<>());
+        this.userList.put(Role.TEACHER, new ArrayList<>());
+        this.userList.put(Role.COORDINATOR, new ArrayList<>());
     }
-
 
     public String getId() {
         return id;
@@ -87,5 +97,21 @@ public class Career {
 
     public void setGroups(List<Group> groups) {
         this.groups = groups;
+    }
+
+    public Map<Role, List<User>> getUserList() {
+        return userList;
+    }
+
+    public void addUser(User user) {
+        this.userList.get(user.getRole()).add(user);
+    }
+
+    public void removeUser(User user) {
+        this.userList.get(user.getRole()).remove(user);
+    }
+
+    public List<User> getUsersByRole(Role role) {
+        return this.userList.get(role);
     }
 }

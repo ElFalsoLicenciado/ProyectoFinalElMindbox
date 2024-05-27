@@ -22,4 +22,13 @@ public class UserInSession {
     public void setCurrentUser(User user) {
         this.currentUser = user;
     }
+
+    public boolean thereIsCurrentUser() {
+        return currentUser != null;
+    }
+
+    public void closeSession() {
+        instance = null;
+        currentUser = null;
+    }
 }
