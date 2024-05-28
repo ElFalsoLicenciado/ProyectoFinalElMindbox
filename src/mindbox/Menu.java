@@ -1,53 +1,44 @@
 package mindbox;
 
-import academicinfo.Career;
-import academicinfo.Group;
-import users.Coordinator;
+import mindbox.utils.CareerType;
 import users.Student;
 import users.Teacher;
-import users.utils.Country;
-import users.utils.Gender;
 import users.utils.Role;
 import utils.Ask;
-import utils.DialogHelper;
 import utils.UserInSession;
-
 import com.google.gson.Gson;
-import java.time.LocalDate;
-import java.util.ArrayList;
+import com.google.gson.reflect.TypeToken;
+import java.lang.reflect.Type;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class Menu {
 
     private static final Gson gson = new Gson();
-    private static final Map<String, Career> careers = new HashMap<>();
+    private static final Map<CareerType, Minbox> careers = new HashMap<>();
 
     public static void initializeCareers() {
-        // Dummy data for the initial setup
-        Coordinator coordinator = new Coordinator("John", "Doe", "Smith", LocalDate.now(), Gender.MALE, "City", Country.Aguascalientes, "CURP123", "RFC123", "Address", LocalDate.now(), "username", "password",  );
-        List<Group> dummyGroups = new ArrayList<>();
-
-        careers.put("ISC", new Career("ISC", "Engineering in Computer Systems", 2, 50, 6, LocalDate.now().toString(), coordinator, dummyGroups));
-        careers.put("IMAT", new Career("IMAT", "Engineering in Materials", 2, 30, 6, LocalDate.now().toString(), coordinator, dummyGroups));
-        careers.put("ELC", new Career("ELC", "Engineering in Electronics", 2, 40, 6, LocalDate.now().toString(), coordinator, dummyGroups));
+        careers.put(CareerType.ISC, new Minbox(CareerType.ISC));
+        careers.put(CareerType.IMAT, new Minbox(CareerType.IMAT));
+        careers.put(CareerType.ELC, new Minbox(CareerType.ELC));
         // Load from JSON if exists
     }
 
-    public static Career askCareer() {
+    public static CareerType askCareer() {
         while (true) {
-            int option = DialogHelper.intIn("***************WELCOME TO THE PROGRAM***************\n1. ISC \n2. IMAT \n3. ELC\n4. EXIT",0);
+            System.out.println("***************WELCOME TO THE PROGRAM***************");
+            System.out.println("\n1. ISC \n2. IMAT \n3. ELC\n4. EXIT");
+            int option = Ask.forInt("the option number");
             if (option == 1)
-                return careers.get("ISC");
+                return CareerType.ISC;
             else if (option == 2)
-                return careers.get("IMAT");
+                return CareerType.IMAT;
             else if (option == 3)
-                return careers.get("ELC");
+                return CareerType.ELC;
             else if (option == 4)
                 return null;
             else
-                System.out.println("Invalid option, please try again");
+                System.out.println("Invalid option, please try again.");
         }
     }
 
@@ -67,7 +58,7 @@ public class Menu {
     private static Role requestUserType() {
         Role role = null;
         while (role == null) {
-            System.out.println("Enter the user type");
+            System.out.println("Enter the user type:");
             System.out.println("1. Student");
             System.out.println("2. Teacher");
             System.out.println("3. Coordinator");
@@ -77,7 +68,7 @@ public class Menu {
                 case 1 -> role = Role.STUDENT;
                 case 2 -> role = Role.TEACHER;
                 case 3 -> role = Role.COORDINATOR;
-                default -> System.out.println("Invalid option, please try again");
+                default -> System.out.println("Invalid option, please try again.");
             }
         }
         return role;
@@ -89,7 +80,7 @@ public class Menu {
         greetingUser();
         while (flag) {
             if (counter == 0) Student.showNotification();
-            System.out.println("\n What do you want to do?");
+            System.out.println("\nWhat do you want to do?");
             System.out.println("1. Consult personal information");
             System.out.println("2. Modify personal information");
             System.out.println("3. Consult ongoing subjects");
@@ -97,7 +88,7 @@ public class Menu {
             System.out.println("5. Consult current teachers");
             System.out.println("6. Consult current grade average");
             System.out.println("7. Consult history");
-            System.out.println("8. LogOut");
+            System.out.println("8. Log Out");
             counter++;
             int option = Ask.forInt("the option number");
 
@@ -116,7 +107,7 @@ public class Menu {
                     UserInSession.getInstance().closeSession();
                     flag = false;
                 }
-                default -> System.out.println("Invalid option, please try again");
+                default -> System.out.println("Invalid option, please try again.");
             }
         }
     }
@@ -125,14 +116,14 @@ public class Menu {
         boolean flag = true;
         greetingUser();
         while (flag) {
-            System.out.println("\n What do you want to do?");
+            System.out.println("\nWhat do you want to do?");
             System.out.println("1. Consult personal information");
             System.out.println("2. Modify personal information");
             System.out.println("3. Consult groups");
             System.out.println("4. Assign grades");
             System.out.println("5. Modify grades");
             System.out.println("6. Consult current students");
-            System.out.println("7. LogOut");
+            System.out.println("7. Log Out");
             int option = Ask.forInt("the option number");
 
             switch (option) {
@@ -149,7 +140,7 @@ public class Menu {
                     UserInSession.getInstance().closeSession();
                     flag = false;
                 }
-                default -> System.out.println("Invalid option, please try again");
+                default -> System.out.println("Invalid option, please try again.");
             }
         }
     }
@@ -170,7 +161,7 @@ public class Menu {
             System.out.println("9. View a teacher's information");
             System.out.println("10. View all teachers");
             System.out.println("11. Promote a group");
-            System.out.println("12. Logout");
+            System.out.println("12. Log Out");
             int option = Ask.forInt("the option number");
 
             switch (option) {
@@ -189,7 +180,7 @@ public class Menu {
                     UserInSession.getInstance().closeSession();
                     flag = false;
                 }
-                default -> System.out.println("Invalid option, please try again");
+                default -> System.out.println("Invalid option, please try again.");
             }
         }
     }

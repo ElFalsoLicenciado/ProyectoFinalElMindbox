@@ -1,7 +1,11 @@
 package mindbox;
 
-import academicinfo.Career;
+import academicinfo.Group;
+import academicinfo.Subject;
+import mindbox.utils.CareerType;
 import users.Coordinator;
+import users.Student;
+import users.Teacher;
 import users.User;
 import users.utils.Country;
 import users.utils.Gender;
@@ -12,30 +16,29 @@ import utils.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import static mindbox.utils.CareerType.*;
+import java.util.List;
 
 public class Minbox {
 
-    Coordinator coordinator;
-
+    private Coordinator coordinator;
     private HashMap<Role, ArrayList<User>> userList = new HashMap<>();
+    private List<Group> groups = new ArrayList<>();
 
+    public Minbox(CareerType careerType) {
+        userList.put(Role.STUDENT, new ArrayList<>());
+        userList.put(Role.TEACHER, new ArrayList<>());
+        userList.put(Role.COORDINATOR, new ArrayList<>());
 
-    public Minbox(Career career) {
-        userList.put(Role.STUDENT, new ArrayList<User>());
-        userList.put(Role.TEACHER, new ArrayList<User>());
-        userList.put(Role.COORDINATOR, new ArrayList<User>());
-
-        switch (career) {
-
-            case ISC -> this.coordinator = new Coordinator("CISC", "C", "C", Date.askForDate(2000, 10, 10),
-                    Gender.MALE, "Morelia", Country.Michoacan, "CURPISC", "RFCISC", "Address", LocalDate.now(), "ISC_C",
-                    "123456", 20000,  );
-            case IMAT ->
-
-            case ELC ->
-
+        switch (careerType) {
+            case ISC -> this.coordinator = new Coordinator("CISC", "C", "C", Date.askForDate("2000-10-10"),
+                    Gender.MALE, "Morelia", Country.Michoacan, "CURPISC", "RFCISC", "Address", LocalDate.now().toString(), "ISC_C",
+                    "123456", "CC24ISC0", 20000, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+            case IMAT -> this.coordinator = new Coordinator("CIMAT", "C", "C", Date.askForDate("2000-10-10"),
+                    Gender.MALE, "Morelia", Country.Michoacan, "CURPIMAT", "RFCIMAT", "Address", LocalDate.now().toString(), "IMAT_C",
+                    "123456", "CC24IMAT0", 20000, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+            case ELC -> this.coordinator = new Coordinator("CELC", "C", "C", Date.askForDate("2000-10-10"),
+                    Gender.MALE, "Morelia", Country.Michoacan, "CURPELC", "RFCELC", "Address", LocalDate.now().toString(), "ELC_C",
+                    "123456", "CC24ELC0", 20000, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         }
     }
 
@@ -45,37 +48,32 @@ public class Minbox {
         }
         for (ArrayList<User> list : userList.values()) {
             for (User user : list) {
-                if (username.equals(user.getUsername())) {
-                    if (password.equals(user.getPassword())) {
-                        return user;
-                    }
+                if (username.equals(user.getUsername()) && password.equals(user.getPassword())) {
+                    return user;
                 }
             }
         }
         return null;
     }
 
-    public static void showMindboxInfo(){
-        System.out.printf("\n------------------------INFORMACIÓN DE LA SUCURSAL %s------------------------------", SucursalActual.getInstancia().getSucursalActual().toString());
-        ArrayList<Integer> datos = calcularNumeroUsuarios();
-        System.out.printf("\n | SALDO ACTUAL DEL BANCO: $%.2f | ", Sys.getInstance().getSucursales().get(SucursalActual.getInstancia().getSucursalActual()).getSaldoBanco());
-        System.out.printf("\n | NÚMERO TOTAL DE MOVIMIENTOS BANCARIOS: %d | NÚMERO TOTAL DE SOLICITUDES: %d | ", Sys.getInstance().getSucursales().get(SucursalActual.getInstancia().getSucursalActual()).getListaMovimientoBancarios().size(), Sys.getInstance().getSucursales().get(SucursalActual.getInstancia().getSucursalActual()).getListaSolicitudes().size());
-        System.out.println("\n--------------NÚMERO TOTAL DE USUARIOS EN EL SISTEMA------------------");
-        System.out.printf("\n | CLIENTES: %d | \n |  EJECUTIVOS DE CUENTA : %d | | \n CAPTURISTAS: %d | \n | INVERSIONISTAS: %d |   ", datos.get(0), datos.get(1), datos.get(2), datos.get(3));
-        System.out.printf("\n | NÚMERO TOTAL DE USUARIOS: %d |", datos.get(4));
-
-        System.out.println("\n------------------INFORMACIÓN DEL GERENTE A CARGO DEL BANCO------------------");
-        System.out.println(Sys.getInstance().getSucursales().get(SucursalActual.getInstancia().getSucursalActual()).getGerente());
-
+    public static void showMindboxInfo() {
+        System.out.printf("\n------------------------CAREER INFORMATION------------------------------");
+        ArrayList<Integer> data = calculateNumberOfUsers();
+        System.out.printf("\n | TOTAL STUDENTS: %d | \n | TOTAL TEACHERS: %d | \n | TOTAL COORDINATORS: %d | \n | TOTAL USERS: %d |",
+                data.get(0), data.get(1), data.get(2), data.get(3));
+        System.out.println("\n------------------COORDINATOR INFORMATION------------------");
+        CareerType careerType = CurrentCareer.getInstance().getCurrentCareer();
+        System.out.println(Sys.getInstance().getCareers().get(careerType).getCoordinator());
     }
 
-
-    private static ArrayList<Integer> calculateNumberOfUsers(){
+    private static ArrayList<Integer> calculateNumberOfUsers() {
         ArrayList<Integer> data = new ArrayList<>();
-        HashMap<Role, ArrayList<User>> map = Sys.getInstance().getCareers().get(CurrentCareer.getInstance().getCurrentCareer()).getUserList();
+        CareerType currentCareer = CurrentCareer.getInstance().getCurrentCareer();
+        HashMap<Role, ArrayList<User>> map = Sys.getInstance().getCareers().get(currentCareer).getUserList();
         data.add(map.get(Role.STUDENT).size());
         data.add(map.get(Role.TEACHER).size());
-        data.add(data.get(0) + data.get(1) + data.get(2) + data.get(3));
+        data.add(map.get(Role.COORDINATOR).size());
+        data.add(map.get(Role.STUDENT).size() + map.get(Role.TEACHER).size() + map.get(Role.COORDINATOR).size());
         return data;
     }
 
@@ -87,5 +85,15 @@ public class Minbox {
         return this.coordinator;
     }
 
+    public void setCoordinator(Coordinator coordinator) {
+        this.coordinator = coordinator;
+    }
 
+    public List<Group> getGroups() {
+        return groups;
+    }
+
+    public void setGroups(List<Group> groups) {
+        this.groups = groups;
+    }
 }

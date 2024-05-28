@@ -6,9 +6,12 @@ import java.time.format.DateTimeFormatter;
 
 import mindbox.Minbox;
 import mindbox.Sys;
-import academicinfo.Career;
+import mindbox.utils.CareerType;
 import users.User;
-import users.utils.*;
+import users.utils.Country;
+import users.utils.FederationEntity;
+import users.utils.Gender;
+import users.utils.Role;
 import utils.Ask;
 import utils.Date;
 
@@ -89,8 +92,8 @@ public class CommonData {
         while (true) {
             boolean validUsername = true;
             username = Ask.forString("username");
-            for (Career career : Sys.getInstance().getCareers().values()) {
-                for (User user : career.getUserList().get(Role.STUDENT)) {
+            for (Minbox minbox : Sys.getInstance().getCareers().values()) {
+                for (User user : minbox.getUserList().get(Role.STUDENT)) {
                     if (username.equals(user.getUsername())) {
                         validUsername = false;
                         break;
@@ -98,7 +101,7 @@ public class CommonData {
                 }
                 if (!validUsername) break;
 
-                for (User user : career.getUserList().get(Role.TEACHER)) {
+                for (User user : minbox.getUserList().get(Role.TEACHER)) {
                     if (username.equals(user.getUsername())) {
                         validUsername = false;
                         break;
@@ -106,7 +109,7 @@ public class CommonData {
                 }
                 if (!validUsername) break;
 
-                for (User user : career.getUserList().get(Role.COORDINATOR)) {
+                for (User user : minbox.getUserList().get(Role.COORDINATOR)) {
                     if (username.equals(user.getUsername())) {
                         validUsername = false;
                         break;
@@ -122,14 +125,12 @@ public class CommonData {
 
     public static String formatDate(LocalDate date) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        String newDate = date.format(formatter);
-        return newDate;
+        return date.format(formatter);
     }
 
     public static String formatDateTime(LocalDateTime dateTime) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
-        String newDateTime = dateTime.format(formatter);
-        return newDateTime;
+        return dateTime.format(formatter);
     }
 
     public static Country chooseCountry() {
@@ -196,20 +197,5 @@ public class CommonData {
 
     public static Gender validGender(String input) {
         return input.equalsIgnoreCase("FEMALE") ? Gender.FEMALE : Gender.MALE;
-    }
-
-    public static String generateCURP(String firstName, String paternalLastName, String maternalLastName, String birthDate, Gender gender, Country country) {
-        Curp.generate(firstName, paternalLastName,  maternalLastName, birthDate, gender, Country.Michoacan);
-        return Curp.generate();
-    }
-
-    public static String generateRFC(String paternalLastName, String maternalLastName, String firstName, String birthDate) {
-        // RFC generation logic here
-        return "RFC123";
-    }
-
-    public static String generateControlNumber(Role role) {
-        // Control number generation logic here
-        return "12345";
     }
 }

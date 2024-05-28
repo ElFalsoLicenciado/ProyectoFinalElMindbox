@@ -1,6 +1,8 @@
 package utils;
 
 import java.util.Scanner;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class Ask {
 
@@ -45,22 +47,6 @@ public class Ask {
             try {
                 print(prompt);
                 answer = sc.nextInt();
-                correctData = true;
-            } catch (Exception error) {
-                System.out.println("An error occurred, please try again.");
-                sc.nextLine();
-            }
-        }
-        return answer;
-    }
-
-    public static String forDate(String prompt) {
-        String answer = "";
-        boolean correctData = false;
-        while (!correctData) {
-            try {
-                print(prompt);
-                answer = sc.next();
                 correctData = true;
             } catch (Exception error) {
                 System.out.println("An error occurred, please try again.");

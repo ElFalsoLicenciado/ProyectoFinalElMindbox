@@ -5,20 +5,15 @@ import users.Teacher;
 public class Subject {
     private String id;
     private String name;
-    private Career career;
-    private Group group;
     private Teacher teacher;
 
-
-    public Subject(String id, String name, Career career, Group group, Teacher teacher) {
+    public Subject(String id, String name, Teacher teacher) {
         this.id = id;
         this.name = name;
-        this.career = career;
-        this.group = group;
         this.teacher = teacher;
     }
 
-
+    // Getters and Setters
     public String getId() {
         return id;
     }
@@ -33,22 +28,6 @@ public class Subject {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Career getCareer() {
-        return career;
-    }
-
-    public void setCareer(Career career) {
-        this.career = career;
-    }
-
-    public Group getGroup() {
-        return group;
-    }
-
-    public void setGroup(Group group) {
-        this.group = group;
     }
 
     public Teacher getTeacher() {

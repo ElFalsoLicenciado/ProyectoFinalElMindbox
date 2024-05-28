@@ -4,8 +4,6 @@ import users.utils.Country;
 import users.utils.Gender;
 import users.utils.Role;
 
-import java.time.LocalDate;
-
 public class User {
     protected String firstName;
     protected String paternalLastName;
@@ -20,11 +18,10 @@ public class User {
     protected String registrationDate;
     protected String username;
     protected String password;
-
     protected String controlNumber;
     protected Role role;
 
-    public User(String firstName, String paternalLastName, String maternalLastName, LocalDate birthDate, Gender gender, String city, Country country, String curp, String rfc, String address, LocalDate registrationDate, String username, String password, String controlNumber, Role role) {
+    public User(String firstName, String paternalLastName, String maternalLastName, String birthDate, Gender gender, String city, Country country, String curp, String rfc, String address, String registrationDate, String username, String password, String controlNumber, Role role) {
         this.firstName = firstName.toUpperCase();
         this.paternalLastName = paternalLastName.toUpperCase();
         this.maternalLastName = maternalLastName.toUpperCase();
@@ -41,7 +38,6 @@ public class User {
         this.controlNumber = controlNumber;
         this.role = role;
     }
-
 
     public String getFirstName() {
         return firstName;
@@ -71,11 +67,11 @@ public class User {
         return String.format("%s %s", firstName, paternalLastName);
     }
 
-    public LocalDate getBirthDate() {
+    public String getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(LocalDate birthDate) {
+    public void setBirthDate(String birthDate) {
         this.birthDate = birthDate;
     }
 
@@ -127,11 +123,11 @@ public class User {
         this.address = address;
     }
 
-    public LocalDate getRegistrationDate() {
+    public String getRegistrationDate() {
         return registrationDate;
     }
 
-    public void setRegistrationDate(LocalDate registrationDate) {
+    public void setRegistrationDate(String registrationDate) {
         this.registrationDate = registrationDate;
     }
 

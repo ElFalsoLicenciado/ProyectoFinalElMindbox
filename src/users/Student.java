@@ -1,9 +1,7 @@
 package users;
 
-import users.utils.Country;
-import users.utils.Gender;
-import users.utils.Role;
-import academicinfo.Career;
+import mindbox.utils.CareerType;
+import users.utils.*;
 import academicinfo.Grade;
 import academicinfo.Group;
 import academicinfo.Semester;
@@ -12,6 +10,7 @@ import mindbox.Sys;
 import mindbox.utils.CommonData;
 import utils.CurrentCareer;
 import utils.UserInSession;
+import utils.Id;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -19,13 +18,13 @@ import java.util.List;
 import java.util.Optional;
 
 public class Student extends User {
-    private Career career;
+    private CareerType career;
     private Semester semester;
     private Group group;
     private double gradeAverage;
     private List<Grade> grades;
 
-    public Student(String firstName, String paternalLastName, String maternalLastName, LocalDate birthDate, Gender gender, String city, Country country, String curp, String rfc, String address, LocalDate registrationDate, String username, String password, String controlNumber, Role role, Career career, Semester semester, Group group, double gradeAverage, List<Grade> grades) {
+    public Student(String firstName, String paternalLastName, String maternalLastName, String birthDate, Gender gender, String city, Country country, String curp, String rfc, String address, String registrationDate, String username, String password, String controlNumber, CareerType career, Semester semester, Group group, double gradeAverage, List<Grade> grades) {
         super(firstName, paternalLastName, maternalLastName, birthDate, gender, city, country, curp, rfc, address, registrationDate, username, password, controlNumber, Role.STUDENT);
         this.career = career;
         this.semester = semester;
@@ -35,11 +34,11 @@ public class Student extends User {
     }
 
     // Getters and Setters
-    public Career getCareer() {
+    public CareerType getCareer() {
         return career;
     }
 
-    public void setCareer(Career career) {
+    public void setCareer(CareerType career) {
         this.career = career;
     }
 
@@ -88,7 +87,7 @@ public class Student extends User {
             student.setFirstName(data.get(0));
             student.setPaternalLastName(data.get(1));
             student.setMaternalLastName(data.get(2));
-            student.setBirthDate(LocalDate.parse(data.get(3)));
+            student.setBirthDate(data.get(3));
             student.setAddress(data.get(4));
             student.setCountry(CommonData.validCountry(data.get(5)));
             student.setCity(data.get(6));
@@ -96,6 +95,7 @@ public class Student extends User {
             student.setPassword(data.get(8));
             student.setGender(CommonData.validGender(data.get(9)));
 
+            Sys.saveData(); // Save data to JSON
             System.out.println("Personal information updated successfully.");
         }
     }
@@ -144,7 +144,7 @@ public class Student extends User {
             Sys.getInstance().getCareers().values().forEach(career -> {
                 career.getGroups().forEach(group -> {
                     group.getStudents().forEach(s -> {
-                        if (s.getControlNumber() == student.getControlNumber()) {
+                        if (s.getControlNumber().equals(student.getControlNumber())) {
                             System.out.println("Semester: " + group.getSemester().getNumber());
                             group.getSubjects().forEach(subject -> {
                                 Optional<Grade> grade = s.getGrades().stream().filter(g -> g.getSubject().getId().equals(subject.getId())).findFirst();
@@ -179,20 +179,20 @@ public class Student extends User {
         Gender gender1 = CommonData.validGender(gender);
         Country country1 = CommonData.validCountry(country);
 
-        String curp = CommonData.generateCURP(firstName, paternalLastName, maternalLastName, birthDate, gender1, country1);
-        String rfc = CommonData.generateRFC(paternalLastName, maternalLastName, firstName, birthDate);
-        String controlNumber = Integer.parseInt(CommonData.generateControlNumber(Role.STUDENT));
+        String curp = Curp.generate(paternalLastName, maternalLastName, firstName, birthDate, gender1, country1);
+        String rfc = Rfc.generate(paternalLastName, maternalLastName, firstName, birthDate);
+        CareerType career = CurrentCareer.getInstance().getCurrentCareer();
+        String controlNumber = Id.generateControlNumber(firstName, birthDate, career, Role.STUDENT);
 
-        Career career = CurrentCareer.getInstance().getCurrentCareer();
-        Semester semester = new Semester("1", 1, career, new ArrayList<>()); // Dummy semester
-        Group group = new Group("A", career, new ArrayList<>(), semester); // Dummy group
+        Semester semester = new Semester("1", 1, career, new ArrayList<>());
+        Group group = new Group("A", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), career, semester);
         double gradeAverage = 0.0;
         List<Grade> grades = new ArrayList<>();
 
-        Student student = new Student(firstName, paternalLastName, maternalLastName, LocalDate.parse(birthDate), gender1, city, country1, curp, rfc, address, LocalDate.now(), username, password, Role.STUDENT, career, semester, group, gradeAverage, controlNumber, grades);
+        Student student = new Student(firstName, paternalLastName, maternalLastName, birthDate, gender1, city, country1, curp, rfc, address, LocalDate.now().toString(), username, password, controlNumber, career, semester, group, gradeAverage, grades);
 
-        career.getGroups().get(0).getStudents().add(student); // Add student to the first group for simplicity
-        Sys.getInstance().saveData(); // Save data to JSON
+        Sys.getInstance().getCareers().get(career).getGroups().get(0).getStudents().add(student); // Add student to the first group for simplicity
+        Sys.saveData(); // Save data to JSON
         System.out.println("\n----------------STUDENT REGISTERED----------------\n");
     }
 
@@ -200,10 +200,10 @@ public class Student extends User {
         User currentUser = UserInSession.getInstance().getCurrentUser();
         if (currentUser instanceof Student) {
             Student student = (Student) currentUser;
-            Career career = student.getCareer();
-            Optional<Group> groupOptional = career.getGroups().stream().filter(g -> g.getStudents().contains(student)).findFirst();
+            CareerType career = student.getCareer();
+            Optional<Group> groupOptional = Sys.getInstance().getCareers().get(career).getGroups().stream().filter(g -> g.getStudents().contains(student)).findFirst();
             groupOptional.ifPresent(group -> group.getStudents().remove(student));
-            Sys.getInstance().saveData(); // Save data to JSON
+            Sys.saveData(); // Save data to JSON
             System.out.println("Student removed successfully.");
         }
     }
@@ -216,7 +216,7 @@ public class Student extends User {
             student.setFirstName(data.get(0));
             student.setPaternalLastName(data.get(1));
             student.setMaternalLastName(data.get(2));
-            student.setBirthDate(LocalDate.parse(data.get(3)));
+            student.setBirthDate(data.get(3));
             student.setAddress(data.get(4));
             student.setCountry(CommonData.validCountry(data.get(5)));
             student.setCity(data.get(6));
@@ -224,7 +224,7 @@ public class Student extends User {
             student.setPassword(data.get(8));
             student.setGender(CommonData.validGender(data.get(9)));
 
-            Sys.getInstance().saveData(); // Save data to JSON
+            Sys.saveData(); // Save data to JSON
             System.out.println("Student modified successfully.");
         }
     }
@@ -239,7 +239,7 @@ public class Student extends User {
             System.out.println("Address: " + student.getAddress());
             System.out.println("City: " + student.getCity());
             System.out.println("Country: " + student.getCountry());
-            System.out.println("Career: " + student.getCareer().getName());
+            System.out.println("Career: " + student.getCareer().name());
             System.out.println("Semester: " + student.getSemester().getNumber());
             System.out.println("Group: " + student.getGroup().getId());
             System.out.println("Grade Average: " + student.getGradeAverage());
@@ -247,8 +247,8 @@ public class Student extends User {
     }
 
     public static void viewAll() {
-        Career career = CurrentCareer.getInstance().getCurrentCareer();
-        System.out.println("All students in " + career.getName() + ":");
-        career.getGroups().forEach(group -> group.getStudents().forEach(student -> System.out.println(student.getFullName())));
+        CareerType career = CurrentCareer.getInstance().getCurrentCareer();
+        System.out.println("All students in " + career.name() + ":");
+        Sys.getInstance().getCareers().get(career).getGroups().forEach(group -> group.getStudents().forEach(student -> System.out.println(student.getFullName())));
     }
 }

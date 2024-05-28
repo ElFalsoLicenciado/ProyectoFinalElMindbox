@@ -1,27 +1,29 @@
 package academicinfo;
 
+import mindbox.utils.CareerType;
+import users.*;
+
 import java.util.List;
-import users.Student;
 
 public class Group {
+
     private String id;
-    private Career career;
-    private String groupType; // A or B
+    private List<Teacher> teachers;
     private List<Student> students;
     private List<Subject> subjects;
+    private CareerType career;
     private Semester semester;
 
-
-    public Group(String id, Career career, String groupType, List<Student> students, List<Subject> subjects, Semester semester) {
+    public Group(String id, List<Teacher> teachers, List<Student> students, List<Subject> subjects, CareerType career, Semester semester) {
         this.id = id;
-        this.career = career;
-        this.groupType = groupType;
+        this.teachers = teachers;
         this.students = students;
         this.subjects = subjects;
+        this.career = career;
         this.semester = semester;
     }
 
-
+    // Getters and Setters
     public String getId() {
         return id;
     }
@@ -30,20 +32,12 @@ public class Group {
         this.id = id;
     }
 
-    public Career getCareer() {
+    public CareerType getCareer() {
         return career;
     }
 
-    public void setCareer(Career career) {
+    public void setCareer(CareerType career) {
         this.career = career;
-    }
-
-    public String getGroupType() {
-        return groupType;
-    }
-
-    public void setGroupType(String groupType) {
-        this.groupType = groupType;
     }
 
     public List<Student> getStudents() {
@@ -54,14 +48,6 @@ public class Group {
         this.students = students;
     }
 
-    public List<Subject> getSubjects() {
-        return subjects;
-    }
-
-    public void setSubjects(List<Subject> subjects) {
-        this.subjects = subjects;
-    }
-
     public Semester getSemester() {
         return semester;
     }
@@ -70,4 +56,19 @@ public class Group {
         this.semester = semester;
     }
 
+    public List<Subject> getSubjects() {
+        return subjects;
+    }
+
+    public void setSubjects(List<Subject> subjects) {
+        this.subjects = subjects;
+    }
+
+    public List<Teacher> getTeachers() {
+        return teachers;
+    }
+
+    public void setTeachers(List<Teacher> teachers) {
+        this.teachers = teachers;
+    }
 }
