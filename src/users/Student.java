@@ -1,16 +1,16 @@
 package users;
 
-import mindbox.utils.CareerType;
-import users.utils.*;
+import academicinfo.CareerType;
 import academicinfo.Grade;
 import academicinfo.Group;
 import academicinfo.Semester;
-import academicinfo.Subject;
 import mindbox.Sys;
 import mindbox.utils.CommonData;
+import users.utils.*;
 import utils.CurrentCareer;
-import utils.UserInSession;
+import utils.DialogHelper;
 import utils.Id;
+import utils.UserInSession;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -20,15 +20,19 @@ import java.util.Optional;
 public class Student extends User {
     private CareerType career;
     private Semester semester;
-    private Group group;
+    private Group.GroupId groupId;
     private double gradeAverage;
     private List<Grade> grades;
 
-    public Student(String firstName, String paternalLastName, String maternalLastName, String birthDate, Gender gender, String city, Country country, String curp, String rfc, String address, String registrationDate, String username, String password, String controlNumber, CareerType career, Semester semester, Group group, double gradeAverage, List<Grade> grades) {
-        super(firstName, paternalLastName, maternalLastName, birthDate, gender, city, country, curp, rfc, address, registrationDate, username, password, controlNumber, Role.STUDENT);
+    public Student(String firstName, String paternalLastName, String maternalLastName, String birthDate, Gender gender,
+                   String city, Country country, String curp, String rfc, String address, String registrationDate,
+                   String username, String password, String controlNumber, CareerType career, Semester semester,
+                   Group.GroupId groupId, double gradeAverage, List<Grade> grades) {
+        super(firstName, paternalLastName, maternalLastName, birthDate, gender, city, country, curp, rfc, address,
+                registrationDate, username, password, controlNumber, Role.STUDENT);
         this.career = career;
         this.semester = semester;
-        this.group = group;
+        this.groupId = groupId;
         this.gradeAverage = gradeAverage;
         this.grades = grades;
     }
@@ -50,12 +54,12 @@ public class Student extends User {
         this.semester = semester;
     }
 
-    public Group getGroup() {
-        return group;
+    public Group.GroupId getGroupId() {
+        return groupId;
     }
 
-    public void setGroup(Group group) {
-        this.group = group;
+    public void setGroupId(Group.GroupId groupId) {
+        this.groupId = groupId;
     }
 
     public double getGradeAverage() {
@@ -76,7 +80,33 @@ public class Student extends User {
 
     // Methods
     public static void showNotification() {
-        System.out.println("You have new notifications.");
+        System.out.println("You have a new notification");
+    }
+
+    public static void consultPersonalInfo() {
+        User currentUser = UserInSession.getInstance().getCurrentUser();
+        if (currentUser instanceof Student student) {
+            System.out.println("Personal Information: ");
+            System.out.println("Name: " + student.getFirstName());
+            System.out.println("Last Name: " + student.paternalLastName + " " + student.maternalLastName);
+            System.out.println("Birth Date: " + student.getBirthDate());
+            System.out.println("Gender: " + student.getGender());
+            System.out.println("City: " + student.getCity());
+            System.out.println("Country: " + student.getCountry());
+            System.out.println("CURP: " + student.getCurp());
+            System.out.println("RFC: " + student.getRfc());
+            System.out.println("Address: " + student.getAddress());
+            System.out.println("Registration Date: " + student.getRegistrationDate());
+            System.out.println("Username: " + student.getUsername());
+            System.out.println("Password: " + student.getPassword());
+            System.out.println("Control Number: " + student.getControlNumber());
+            System.out.println("Career: " + student.getCareer().name());
+            System.out.println("Semester: " + student.getSemester().name());
+            System.out.println("Group: " + student.getGroupId().name());
+            System.out.println("Grade Average: " + student.getGradeAverage());
+        } else {
+            System.out.println("No student information available.");
+        }
     }
 
     public static void modifyPersonalInfo() {
@@ -105,7 +135,10 @@ public class Student extends User {
         if (currentUser instanceof Student) {
             Student student = (Student) currentUser;
             System.out.println("Ongoing subjects for " + student.getFirstName() + " " + student.getPaternalLastName() + ":");
-            student.getGroup().getSubjects().forEach(subject -> System.out.println(subject.getName()));
+            Sys.getInstance().getCareers().get(student.getCareer()).getGroups().stream()
+                    .filter(group -> group.getId() == student.getGroupId())
+                    .findFirst()
+                    .ifPresent(group -> group.getSubjects().forEach(subject -> System.out.println(subject.getSubjectName())));
         }
     }
 
@@ -114,7 +147,7 @@ public class Student extends User {
         if (currentUser instanceof Student) {
             Student student = (Student) currentUser;
             System.out.println("Current grades for " + student.getFirstName() + " " + student.getPaternalLastName() + ":");
-            student.getGrades().forEach(grade -> System.out.println(grade.getSubject().getName() + ": " + grade.getValue()));
+            student.getGrades().forEach(grade -> System.out.println(grade.getSubject().getSubjectName() + ": " + grade.getValue()));
         }
     }
 
@@ -123,7 +156,10 @@ public class Student extends User {
         if (currentUser instanceof Student) {
             Student student = (Student) currentUser;
             System.out.println("Current teachers for " + student.getFirstName() + " " + student.getPaternalLastName() + ":");
-            student.getGroup().getSubjects().forEach(subject -> System.out.println(subject.getTeacher().getFullName()));
+            Sys.getInstance().getCareers().get(student.getCareer()).getGroups().stream()
+                    .filter(group -> group.getId() == student.getGroupId())
+                    .findFirst()
+                    .ifPresent(group -> group.getSubjects().forEach(subject -> System.out.println(subject.getTeacherName())));
         }
     }
 
@@ -145,17 +181,12 @@ public class Student extends User {
                 career.getGroups().forEach(group -> {
                     group.getStudents().forEach(s -> {
                         if (s.getControlNumber().equals(student.getControlNumber())) {
-                            System.out.println("Semester: " + group.getSemester().getNumber());
+                            DialogHelper.info("Semester: " + group.getSemester());
                             group.getSubjects().forEach(subject -> {
                                 Optional<Grade> grade = s.getGrades().stream().filter(g -> g.getSubject().getId().equals(subject.getId())).findFirst();
-                                if (grade.isPresent()) {
-                                    System.out.println("Subject: " + subject.getName());
-                                    System.out.println("Grade: " + grade.get().getValue());
-                                    System.out.println("Teacher: " + subject.getTeacher().getFullName());
-                                }
+                                grade.ifPresent(value -> DialogHelper.info(String.format("Subject: %s Grade: %s Teacher: %s", subject.getSubjectName(), value.getValue(), subject.getTeacherName())));
                             });
-                            System.out.println("Average grade: " + s.getGradeAverage());
-                            System.out.println("------------");
+                            DialogHelper.info("Average grade: " + s.getGradeAverage());
                         }
                     });
                 });
@@ -184,14 +215,17 @@ public class Student extends User {
         CareerType career = CurrentCareer.getInstance().getCurrentCareer();
         String controlNumber = Id.generateControlNumber(firstName, birthDate, career, Role.STUDENT);
 
-        Semester semester = new Semester("1", 1, career, new ArrayList<>());
-        Group group = new Group("A", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), career, semester);
+        Semester semester = Semester.FIRST;
+        Group.GroupId groupId = Group.GroupId.A; // Simplified for example, adjust as needed
         double gradeAverage = 0.0;
         List<Grade> grades = new ArrayList<>();
 
-        Student student = new Student(firstName, paternalLastName, maternalLastName, birthDate, gender1, city, country1, curp, rfc, address, LocalDate.now().toString(), username, password, controlNumber, career, semester, group, gradeAverage, grades);
+        Student student = new Student(firstName, paternalLastName, maternalLastName, birthDate, gender1, city, country1, curp, rfc, address, LocalDate.now().toString(), username, password, controlNumber, career, semester, groupId, gradeAverage, grades);
 
-        Sys.getInstance().getCareers().get(career).getGroups().get(0).getStudents().add(student); // Add student to the first group for simplicity
+        Sys.getInstance().getCareers().get(career).getGroups().stream()
+                .filter(group -> group.getId() == groupId)
+                .findFirst()
+                .ifPresent(group -> group.getStudents().add(student)); // Add student to the specified group
         Sys.saveData(); // Save data to JSON
         System.out.println("\n----------------STUDENT REGISTERED----------------\n");
     }
@@ -201,8 +235,10 @@ public class Student extends User {
         if (currentUser instanceof Student) {
             Student student = (Student) currentUser;
             CareerType career = student.getCareer();
-            Optional<Group> groupOptional = Sys.getInstance().getCareers().get(career).getGroups().stream().filter(g -> g.getStudents().contains(student)).findFirst();
-            groupOptional.ifPresent(group -> group.getStudents().remove(student));
+            Sys.getInstance().getCareers().get(career).getGroups().stream()
+                    .filter(group -> group.getStudents().contains(student))
+                    .findFirst()
+                    .ifPresent(group -> group.getStudents().remove(student));
             Sys.saveData(); // Save data to JSON
             System.out.println("Student removed successfully.");
         }
@@ -240,8 +276,8 @@ public class Student extends User {
             System.out.println("City: " + student.getCity());
             System.out.println("Country: " + student.getCountry());
             System.out.println("Career: " + student.getCareer().name());
-            System.out.println("Semester: " + student.getSemester().getNumber());
-            System.out.println("Group: " + student.getGroup().getId());
+            System.out.println("Semester: " + student.getSemester().name());
+            System.out.println("Group: " + student.getGroupId().name());
             System.out.println("Grade Average: " + student.getGradeAverage());
         }
     }

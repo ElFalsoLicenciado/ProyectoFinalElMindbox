@@ -1,17 +1,13 @@
 package mindbox;
 
 import academicinfo.Group;
-import academicinfo.Subject;
-import mindbox.utils.CareerType;
+import academicinfo.CareerType;
 import users.Coordinator;
-import users.Student;
-import users.Teacher;
 import users.User;
 import users.utils.Country;
 import users.utils.Gender;
 import users.utils.Role;
 import utils.CurrentCareer;
-import utils.Date;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -30,13 +26,13 @@ public class Minbox {
         userList.put(Role.COORDINATOR, new ArrayList<>());
 
         switch (careerType) {
-            case ISC -> this.coordinator = new Coordinator("CISC", "C", "C", Date.askForDate("2000-10-10"),
+            case ISC -> this.coordinator = new Coordinator("CISC", "C", "C", LocalDate.of(2000, 10, 10).toString(),
                     Gender.MALE, "Morelia", Country.Michoacan, "CURPISC", "RFCISC", "Address", LocalDate.now().toString(), "ISC_C",
                     "123456", "CC24ISC0", 20000, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
-            case IMAT -> this.coordinator = new Coordinator("CIMAT", "C", "C", Date.askForDate("2000-10-10"),
+            case IMAT -> this.coordinator = new Coordinator("CIMAT", "C", "C", LocalDate.of(2000, 10, 10).toString(),
                     Gender.MALE, "Morelia", Country.Michoacan, "CURPIMAT", "RFCIMAT", "Address", LocalDate.now().toString(), "IMAT_C",
                     "123456", "CC24IMAT0", 20000, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
-            case ELC -> this.coordinator = new Coordinator("CELC", "C", "C", Date.askForDate("2000-10-10"),
+            case ELC -> this.coordinator = new Coordinator("CELC", "C", "C", LocalDate.of(2000, 10, 10).toString(),
                     Gender.MALE, "Morelia", Country.Michoacan, "CURPELC", "RFCELC", "Address", LocalDate.now().toString(), "ELC_C",
                     "123456", "CC24ELC0", 20000, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         }

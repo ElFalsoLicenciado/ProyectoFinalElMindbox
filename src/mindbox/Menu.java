@@ -1,14 +1,13 @@
 package mindbox;
 
-import mindbox.utils.CareerType;
+import academicinfo.CareerType;
 import users.Student;
 import users.Teacher;
 import users.utils.Role;
 import utils.Ask;
 import utils.UserInSession;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import java.lang.reflect.Type;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,22 +26,24 @@ public class Menu {
     public static CareerType askCareer() {
         while (true) {
             System.out.println("***************WELCOME TO THE PROGRAM***************");
-            System.out.println("\n1. ISC \n2. IMAT \n3. ELC\n4. EXIT");
+            System.out.println("1. ISC \n2. IMAT \n3. ELC\n4. EXIT");
             int option = Ask.forInt("the option number");
-            if (option == 1)
-                return CareerType.ISC;
-            else if (option == 2)
-                return CareerType.IMAT;
-            else if (option == 3)
-                return CareerType.ELC;
-            else if (option == 4)
-                return null;
-            else
-                System.out.println("Invalid option, please try again.");
+            switch (option) {
+                case 1: return CareerType.ISC;
+                case 2: return CareerType.IMAT;
+                case 3: return CareerType.ELC;
+                case 4: return null;
+                default: System.out.println("Invalid option, please try again.");
+            }
         }
     }
 
     public static void selectMenu() {
+        if (UserInSession.getInstance().getCurrentUser() == null) {
+            System.out.println("No user is currently logged in.");
+            return;
+        }
+
         switch (UserInSession.getInstance().getCurrentUser().getRole()) {
             case STUDENT -> executeStudentMenu();
             case TEACHER -> executeTeacherMenu();
@@ -55,7 +56,7 @@ public class Menu {
                 UserInSession.getInstance().getCurrentUser().getFullName());
     }
 
-    private static Role requestUserType() {
+    public static Role requestUserType() {
         Role role = null;
         while (role == null) {
             System.out.println("Enter the user type:");
@@ -93,10 +94,7 @@ public class Menu {
             int option = Ask.forInt("the option number");
 
             switch (option) {
-                case 1 -> {
-                    System.out.println("----------------MY PERSONAL INFORMATION-----------------------");
-                    System.out.println(UserInSession.getInstance().getCurrentUser());
-                }
+                case 1 -> Student.consultPersonalInfo();
                 case 2 -> Student.modifyPersonalInfo();
                 case 3 -> Student.consultSubjects();
                 case 4 -> Student.consultGrades();
@@ -127,10 +125,7 @@ public class Menu {
             int option = Ask.forInt("the option number");
 
             switch (option) {
-                case 1 -> {
-                    System.out.println("----------------MY PERSONAL INFORMATION-----------------------");
-                    System.out.println(UserInSession.getInstance().getCurrentUser());
-                }
+                case 1 -> Teacher.viewInfo();
                 case 2 -> Teacher.modifyPersonalInfo();
                 case 3 -> Teacher.consultGroups();
                 case 4 -> Teacher.assignGrades();

@@ -1,9 +1,8 @@
 package utils;
 
-import mindbox.utils.CareerType;
+import academicinfo.CareerType;
 import users.utils.Role;
 
-import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 

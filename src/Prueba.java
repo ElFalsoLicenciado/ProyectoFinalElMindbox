@@ -1,4 +1,4 @@
-import mindbox.utils.CareerType;
+import academicinfo.CareerType;
 import utils.DialogHelper;
 import users.utils.Role;
 

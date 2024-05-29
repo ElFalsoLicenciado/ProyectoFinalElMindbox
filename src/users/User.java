@@ -64,7 +64,7 @@ public class User {
     }
 
     public String getFullName() {
-        return String.format("%s %s", firstName, paternalLastName);
+        return String.format("%s %s %s", firstName, paternalLastName, maternalLastName);
     }
 
     public String getBirthDate() {

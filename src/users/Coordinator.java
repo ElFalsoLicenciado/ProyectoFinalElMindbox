@@ -1,15 +1,10 @@
 package users;
 
-import academicinfo.Group;
-import academicinfo.Subject;
+import academicinfo.*;
 import mindbox.Sys;
 import mindbox.utils.CommonData;
-import mindbox.utils.CareerType;
-import users.utils.Country;
-import users.utils.Curp;
-import users.utils.Gender;
-import users.utils.Rfc;
-import users.utils.Role;
+import academicinfo.CareerType;
+import users.utils.*;
 import utils.Ask;
 import utils.CurrentCareer;
 import utils.Id;
@@ -109,22 +104,49 @@ public class Coordinator extends Teacher {
 
     public static void promoteGroup() {
         CareerType currentCareer = CurrentCareer.getInstance().getCurrentCareer();
-        Sys.getInstance().getCareers().get(currentCareer).getGroups().forEach(group -> {
+        List<Group> groups = Sys.getInstance().getCareers().get(currentCareer).getGroups();
+
+        for (Group group : groups) {
             boolean canPromote = true;
+
             for (Student student : group.getStudents()) {
                 if (student.getGrades().stream().anyMatch(grade -> grade.getValue() < 70)) {
                     canPromote = false;
                     break;
                 }
             }
+
             if (canPromote) {
-                group.setSemester(group.getSemester().next());
-                group.getStudents().forEach(student -> student.setSemester(group.getSemester()));
-                Sys.saveData();
-                System.out.println("Group " + group.getId() + " promoted to semester " + group.getSemester().getNumber());
+                // Promote the group to the next semester
+                Semester currentSemester = group.getSemester();
+                Semester nextSemester = getNextSemester(currentSemester);
+                if (nextSemester != null) {
+                    group.setSemester(nextSemester);
+                    group.getStudents().forEach(student -> student.setSemester(nextSemester));
+                    Sys.saveData();
+                    System.out.println("Group " + group.getId() + " promoted to semester " + nextSemester);
+                } else {
+                    System.out.println("Group " + group.getId() + " is already in the highest semester.");
+                }
             } else {
                 System.out.println("Group " + group.getId() + " cannot be promoted due to failing grades.");
             }
-        });
+        }
     }
+
+    private static Semester getNextSemester(Semester currentSemester) {
+        switch (currentSemester) {
+            case FIRST:
+                return Semester.SECOND;
+            case SECOND:
+                return Semester.THIRD;
+            case THIRD:
+                return Semester.GRADUATE;
+            case GRADUATE:
+                return null; // Already in the highest semester
+            default:
+                throw new IllegalArgumentException("Unknown semester: " + currentSemester);
+        }
+    }
+
 }

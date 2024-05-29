@@ -5,17 +5,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import academicinfo.Grade;
-import academicinfo.Group;
-import academicinfo.Subject;
+import academicinfo.*;
 import mindbox.Sys;
 import mindbox.utils.CommonData;
-import mindbox.utils.CareerType;
 import users.utils.*;
 import utils.Ask;
 import utils.CurrentCareer;
-import utils.UserInSession;
 import utils.Id;
+import utils.UserInSession;
 
 public class Teacher extends User {
     private double salary;
@@ -23,8 +20,12 @@ public class Teacher extends User {
     private List<Student> managedStudents;
     private List<Group> groups;
 
-    public Teacher(String firstName, String paternalLastName, String maternalLastName, String birthDate, Gender gender, String city, Country country, String curp, String rfc, String address, String registrationDate, String username, String password, String controlNumber, double salary, List<Subject> subjects, List<Student> managedStudents, List<Group> groups) {
-        super(firstName, paternalLastName, maternalLastName, birthDate, gender, city, country, curp, rfc, address, registrationDate, username, password, controlNumber, Role.TEACHER);
+    public Teacher(String firstName, String paternalLastName, String maternalLastName, String birthDate, Gender gender,
+                   String city, Country country, String curp, String rfc, String address, String registrationDate,
+                   String username, String password, String controlNumber, double salary, List<Subject> subjects,
+                   List<Student> managedStudents, List<Group> groups) {
+        super(firstName, paternalLastName, maternalLastName, birthDate, gender, city, country, curp, rfc, address,
+                registrationDate, username, password, controlNumber, Role.TEACHER);
         this.salary = salary;
         this.subjects = subjects;
         this.managedStudents = managedStudents;
@@ -93,22 +94,20 @@ public class Teacher extends User {
 
         Teacher teacher = new Teacher(firstName, paternalLastName, maternalLastName, birthDate, gender1, city, country1, curp, rfc, address, LocalDate.now().toString(), username, password, controlNumber, salary, subjects, managedStudents, groups);
 
-        Sys.getInstance().getCareers().get(careerType).getGroups().forEach(group -> group.getStudents().forEach(student -> student.getGrades().forEach(grade -> {
-            if (grade.getSubject().getTeacher().equals(teacher)) {
-                managedStudents.add(student);
-            }
-        })));
-
         Sys.getInstance().getCareers().get(careerType).getGroups().forEach(group -> {
+            group.getStudents().forEach(student -> student.getGrades().forEach(grade -> {
+                if (grade.getSubject().getTeacherName().equals(teacher.getFullName())) {
+                    managedStudents.add(student);
+                }
+            }));
+
             group.getSubjects().forEach(subject -> {
-                if (subject.getTeacher().equals(teacher)) {
+                if (subject.getTeacherName().equals(teacher.getFullName())) {
                     subjects.add(subject);
                 }
             });
-        });
 
-        Sys.getInstance().getCareers().get(careerType).getGroups().forEach(group -> {
-            if (group.getSubjects().stream().anyMatch(subject -> subject.getTeacher().equals(teacher))) {
+            if (group.getSubjects().stream().anyMatch(subject -> subject.getTeacherName().equals(teacher.getFullName()))) {
                 groups.add(group);
             }
         });
@@ -123,8 +122,11 @@ public class Teacher extends User {
         if (currentUser instanceof Teacher) {
             Teacher teacher = (Teacher) currentUser;
             CareerType careerType = CurrentCareer.getInstance().getCurrentCareer();
-            Optional<Group> groupOptional = Sys.getInstance().getCareers().get(careerType).getGroups().stream().filter(g -> g.getTeachers().contains(teacher)).findFirst();
-            groupOptional.ifPresent(group -> group.getTeachers().remove(teacher));
+            Sys.getInstance().getCareers().get(careerType).getGroups().forEach(group -> {
+                group.getSubjects().removeIf(subject -> subject.getTeacherName().equals(teacher.getFullName()));
+                group.getStudents().forEach(student -> student.getGrades().removeIf(grade -> grade.getSubject().getTeacherName().equals(teacher.getFullName())));
+            });
+            Sys.getInstance().getCareers().get(careerType).getUserList().get(Role.TEACHER).remove(teacher);
             Sys.saveData(); // Save data to JSON
             System.out.println("Teacher removed successfully.");
         }
@@ -164,14 +166,18 @@ public class Teacher extends User {
             System.out.println("Salary: " + teacher.getSalary());
             System.out.println("Control Number: " + teacher.getControlNumber());
             System.out.println("Subjects: ");
-            teacher.getSubjects().forEach(subject -> System.out.println(subject.getName()));
+            teacher.getSubjects().forEach(subject -> System.out.println(subject.getSubjectName()));
         }
     }
 
     public static void viewAll() {
         CareerType careerType = CurrentCareer.getInstance().getCurrentCareer();
         System.out.println("All teachers in " + careerType + ":");
-        Sys.getInstance().getCareers().get(careerType).getGroups().forEach(group -> group.getTeachers().forEach(teacher -> System.out.println(teacher.getFullName())));
+        Sys.getInstance().getCareers().get(careerType).getGroups().forEach(group -> group.getSubjects().forEach(subject -> {
+            if (subject.getTeacherName().equals(UserInSession.getInstance().getCurrentUser().getFullName())) {
+                System.out.println(subject.getTeacherName());
+            }
+        }));
     }
 
     public static void modifyPersonalInfo() {
@@ -200,7 +206,7 @@ public class Teacher extends User {
         if (currentUser instanceof Teacher) {
             Teacher teacher = (Teacher) currentUser;
             System.out.println("Groups managed by " + teacher.getFirstName() + " " + teacher.getPaternalLastName() + ":");
-            teacher.getGroups().forEach(group -> System.out.println(group.getId()));
+            teacher.getGroups().forEach(group -> System.out.println(group.getId().name()));
         }
     }
 
@@ -210,8 +216,8 @@ public class Teacher extends User {
             Teacher teacher = (Teacher) currentUser;
             teacher.getGroups().forEach(group -> group.getStudents().forEach(student -> {
                 group.getSubjects().forEach(subject -> {
-                    if (subject.getTeacher().equals(teacher)) {
-                        double grade = Ask.forDouble("the grade for " + student.getFullName() + " in " + subject.getName());
+                    if (subject.getTeacherName().equals(teacher.getFullName())) {
+                        double grade = Ask.forDouble("the grade for " + student.getFullName() + " in " + subject.getSubjectName());
                         Grade studentGrade = new Grade(subject, grade);
                         student.getGrades().add(studentGrade);
                         Sys.saveData(); // Save data to JSON
@@ -228,10 +234,10 @@ public class Teacher extends User {
             Teacher teacher = (Teacher) currentUser;
             teacher.getGroups().forEach(group -> group.getStudents().forEach(student -> {
                 group.getSubjects().forEach(subject -> {
-                    if (subject.getTeacher().equals(teacher)) {
+                    if (subject.getTeacherName().equals(teacher.getFullName())) {
                         Optional<Grade> gradeOptional = student.getGrades().stream().filter(g -> g.getSubject().equals(subject)).findFirst();
                         gradeOptional.ifPresent(grade -> {
-                            double newGrade = Ask.forDouble("the new grade for " + student.getFullName() + " in " + subject.getName());
+                            double newGrade = Ask.forDouble("the new grade for " + student.getFullName() + " in " + subject.getSubjectName());
                             grade.setValue(newGrade);
                             Sys.saveData(); // Save data to JSON
                             System.out.println("Grade modified successfully.");

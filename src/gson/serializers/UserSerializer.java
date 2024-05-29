@@ -3,8 +3,6 @@ package gson.serializers;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import mindbox.Sys;
-import users.User;
-import mindbox.utils.CareerType;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;

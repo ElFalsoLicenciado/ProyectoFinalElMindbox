@@ -1,6 +1,6 @@
 package utils;
 
-import mindbox.utils.CareerType;
+import academicinfo.CareerType;
 
 public class CurrentCareer {
 

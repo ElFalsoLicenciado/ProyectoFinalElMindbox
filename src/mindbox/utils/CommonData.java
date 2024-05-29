@@ -6,7 +6,6 @@ import java.time.format.DateTimeFormatter;
 
 import mindbox.Minbox;
 import mindbox.Sys;
-import mindbox.utils.CareerType;
 import users.User;
 import users.utils.Country;
 import users.utils.FederationEntity;

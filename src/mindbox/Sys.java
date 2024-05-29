@@ -2,15 +2,13 @@ package mindbox;
 
 import gson.deserializers.*;
 import gson.serializers.*;
-import mindbox.utils.CareerType;
+import academicinfo.CareerType;
 import users.User;
 import utils.Ask;
 import utils.CurrentCareer;
 import utils.UserInSession;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class Sys {
