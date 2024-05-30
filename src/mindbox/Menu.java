@@ -77,10 +77,8 @@ public class Menu {
 
     private static void executeStudentMenu() {
         boolean flag = true;
-        int counter = 0;
         greetingUser();
         while (flag) {
-            if (counter == 0) Student.showNotification();
             System.out.println("\nWhat do you want to do?");
             System.out.println("1. Consult personal information");
             System.out.println("2. Modify personal information");
@@ -90,11 +88,10 @@ public class Menu {
             System.out.println("6. Consult current grade average");
             System.out.println("7. Consult history");
             System.out.println("8. Log Out");
-            counter++;
             int option = Ask.forInt("the option number");
 
             switch (option) {
-                case 1 -> Student.consultPersonalInfo();
+                case 1 -> Student.viewInfo();
                 case 2 -> Student.modifyPersonalInfo();
                 case 3 -> Student.consultSubjects();
                 case 4 -> Student.consultGrades();

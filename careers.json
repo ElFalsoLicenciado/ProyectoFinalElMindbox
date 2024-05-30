@@ -1,0 +1,105 @@
+{
+  "ISC": {
+    "coordinator": {
+      "salary": 20000.0,
+      "subjects": [],
+      "managedStudents": [],
+      "groups": [],
+      "firstName": "CISC",
+      "paternalLastName": "C",
+      "maternalLastName": "C",
+      "birthDate": "2000-10-10",
+      "gender": "MALE",
+      "city": "Morelia",
+      "country": "Michoacan",
+      "curp": "CURPISC",
+      "rfc": "RFCISC",
+      "address": "Address",
+      "registrationDate": "2024-05-29",
+      "username": "ISC_C",
+      "password": "123456",
+      "controlNumber": "CC24ISC0",
+      "role": "TEACHER"
+    },
+    "userList": {
+      "STUDENT": [
+        {
+          "career": "ISC",
+          "semester": "FIRST",
+          "group": {
+            "id": "A",
+            "teachers": [],
+            "students": [],
+            "subjects": [],
+            "career": "ISC",
+            "semester": "FIRST"
+          },
+          "gradeAverage": 0.0,
+          "grades": [],
+          "firstName": "LUIS",
+          "paternalLastName": "ROMAN",
+          "maternalLastName": "SANCHEZ",
+          "birthDate": "2000-04-01",
+          "gender": "MALE",
+          "city": "Morelia",
+          "country": "Michoacan",
+          "curp": "CURP_LUIS",
+          "rfc": "RFC_LUIS",
+          "address": "Address",
+          "registrationDate": "2024-05-29",
+          "username": "Lars",
+          "password": "Pass",
+          "controlNumber": "ILISC0",
+          "role": "STUDENT"
+        }
+      ],
+      "TEACHER": [
+        {
+          "salary": 40000.0,
+          "subjects": [],
+          "managedStudents": [],
+          "groups": [],
+          "firstName": "ALICE",
+          "paternalLastName": "BROWN",
+          "maternalLastName": "JOHNSON",
+          "birthDate": "1985-05-15",
+          "gender": "FEMALE",
+          "city": "Morelia",
+          "country": "Michoacan",
+          "curp": "CURP_ALICE",
+          "rfc": "RFC_ALICE",
+          "address": "Address",
+          "registrationDate": "2024-05-29",
+          "username": "Alice",
+          "password": "password",
+          "controlNumber": "TAISC0",
+          "role": "TEACHER"
+        }
+      ],
+      "COORDINATOR": [
+        {
+          "salary": 50000.0,
+          "subjects": [],
+          "managedStudents": [],
+          "groups": [],
+          "firstName": "JOHN",
+          "paternalLastName": "DOE",
+          "maternalLastName": "SMITH",
+          "birthDate": "1980-01-01",
+          "gender": "MALE",
+          "city": "City",
+          "country": "Michoacan",
+          "curp": "CURP_ISC",
+          "rfc": "RFC_ISC",
+          "address": "Address",
+          "registrationDate": "2024-05-29",
+          "username": "ISC_C",
+          "password": "password",
+          "controlNumber": "CISC0",
+          "role": "TEACHER"
+        }
+      ]
+    },
+    "groups": []
+  }
+}

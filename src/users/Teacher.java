@@ -206,7 +206,7 @@ public class Teacher extends User {
         if (currentUser instanceof Teacher) {
             Teacher teacher = (Teacher) currentUser;
             System.out.println("Groups managed by " + teacher.getFirstName() + " " + teacher.getPaternalLastName() + ":");
-            teacher.getGroups().forEach(group -> System.out.println(group.getId().name()));
+            teacher.getGroups().forEach(group -> System.out.println(group.getId()));
         }
     }
 

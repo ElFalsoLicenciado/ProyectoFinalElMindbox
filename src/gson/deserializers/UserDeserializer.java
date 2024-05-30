@@ -1,37 +1,29 @@
 package gson.deserializers;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonParseException;
-import com.google.gson.reflect.TypeToken;
-import mindbox.Sys;
-import mindbox.Minbox;
-import academicinfo.CareerType;
+import com.google.gson.*;
+import users.Coordinator;
+import users.Student;
+import users.Teacher;
 import users.User;
 import users.utils.Role;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
-public class UserDeserializer {
+public class UserDeserializer implements JsonDeserializer<User> {
+    @Override
+    public User deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+        JsonObject jsonObject = json.getAsJsonObject();
+        Role role = Role.valueOf(jsonObject.get("role").getAsString());
 
-    public static void deserialize() {
-        Gson gson = new Gson();
-        try (BufferedReader reader = new BufferedReader(new FileReader("users.json"))) {
-            Type userTypeMap = new TypeToken<HashMap<CareerType, Map<Role, ArrayList<User>>>>() {}.getType();
-            Map<CareerType, Map<Role, ArrayList<User>>> data = gson.fromJson(reader, userTypeMap);
-
-            Sys.getInstance().getCareers().clear();
-            data.forEach((careerType, usersMap) -> {
-                Sys.getInstance().getCareers().put(careerType, new Minbox(careerType));
-            });
-
-        } catch (IOException | JsonParseException e) {
-            System.out.println("Error while loading users: " + e.getMessage());
+        switch (role) {
+            case STUDENT:
+                return context.deserialize(jsonObject, Student.class);
+            case TEACHER:
+                return context.deserialize(jsonObject, Teacher.class);
+            case COORDINATOR:
+                return context.deserialize(jsonObject, Coordinator.class);
+            default:
+                throw new IllegalArgumentException("Unknown role: " + role);
         }
     }
 }

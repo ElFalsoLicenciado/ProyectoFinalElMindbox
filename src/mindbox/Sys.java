@@ -1,12 +1,12 @@
 package mindbox;
 
-import gson.deserializers.*;
-import gson.serializers.*;
+import services.CareerService;
 import academicinfo.CareerType;
 import users.User;
 import utils.Ask;
 import utils.CurrentCareer;
 import utils.UserInSession;
+import utils.DataLoader;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,14 +15,10 @@ public class Sys {
     private static Sys instance;
     private Map<CareerType, Minbox> careers;
 
-    public Sys() {
+    private Sys() {
         careers = new HashMap<>();
-        loadData(); // Load data on startup
-        if (careers.isEmpty()) {
-            careers.put(CareerType.ISC, new Minbox(CareerType.ISC));
-            careers.put(CareerType.IMAT, new Minbox(CareerType.IMAT));
-            careers.put(CareerType.ELC, new Minbox(CareerType.ELC));
-        }
+        DataLoader.initializeData(); // Load or initialize data on startup
+        careers = CareerService.getInstance().getAllCareers();
     }
 
     public void executeSystem() {
@@ -57,7 +53,7 @@ public class Sys {
     private static void logIn() {
         int counter = 0;
         boolean correctData = false;
-        System.out.print("\n----------------LogIn to continue----------------");
+        System.out.print("\n----------------LogIn to continue----------------\n");
         do {
             String username = Ask.forString("username");
             String password = Ask.forString("password");
@@ -90,10 +86,10 @@ public class Sys {
     }
 
     public static void saveData() {
-        UserSerializer.serialize();
+        DataLoader.saveData();
     }
 
     public static void loadData() {
-        UserDeserializer.deserialize();
+        DataLoader.loadData();
     }
 }
