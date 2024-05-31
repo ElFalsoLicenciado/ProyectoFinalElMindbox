@@ -2,12 +2,9 @@ package users;
 
 import academicinfo.*;
 import mindbox.Sys;
-import mindbox.utils.CommonData;
+import users.utils.CommonData;
 import academicinfo.CareerType;
 import users.utils.*;
-import utils.Ask;
-import utils.CurrentCareer;
-import utils.Id;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -15,8 +12,8 @@ import java.util.List;
 
 public class Coordinator extends Teacher {
 
-    public Coordinator(String firstName, String paternalLastName, String maternalLastName, String birthDate, Gender gender, String city, Country country, String curp, String rfc, String address, String registrationDate, String username, String password, String controlNumber, double salary, List<Subject> subjects, List<Student> managedStudents, List<Group> groups) {
-        super(firstName, paternalLastName, maternalLastName, birthDate, gender, city, country, curp, rfc, address, registrationDate, username, password, controlNumber, salary, subjects, managedStudents, groups);
+    public Coordinator(String firstName, String paternalLastName, String maternalLastName, String birthDate, Gender gender, String city, State state, String curp, String rfc, String address, String registrationDate, String username, String password, String controlNumber, double salary, List<Subject> subjects, List<Student> managedStudents, List<Group> groups) {
+        super(firstName, paternalLastName, maternalLastName, birthDate, gender, city, state, curp, rfc, address, registrationDate, username, password, controlNumber, salary, subjects, managedStudents, groups);
     }
 
     public static void register() {
@@ -26,13 +23,13 @@ public class Coordinator extends Teacher {
         String maternalLastName = data.get(2);
         String birthDate = data.get(3);
         String address = data.get(4);
-        Country country = CommonData.validCountry(data.get(5));
+        State state = CommonData.validCountry(data.get(5));
         String city = data.get(6);
         String username = data.get(7);
         String password = data.get(8);
         Gender gender = CommonData.validGender(data.get(9));
 
-        String curp = Curp.generate(paternalLastName, maternalLastName, firstName, birthDate, gender, country);
+        String curp = Curp.generate(paternalLastName, maternalLastName, firstName, birthDate, gender, state);
         String rfc = Rfc.generate(paternalLastName, maternalLastName, firstName, birthDate);
 
         String registrationDate = LocalDate.now().toString();
@@ -40,7 +37,7 @@ public class Coordinator extends Teacher {
         CareerType currentCareer = CurrentCareer.getInstance().getCurrentCareer();
         String controlNumber = Id.generateControlNumber(firstName, registrationDate, currentCareer, Role.COORDINATOR);
 
-        Coordinator coordinator = new Coordinator(firstName, paternalLastName, maternalLastName, birthDate, gender, city, country, curp, rfc, address, registrationDate, username, password, controlNumber, salary, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        Coordinator coordinator = new Coordinator(firstName, paternalLastName, maternalLastName, birthDate, gender, city, state, curp, rfc, address, registrationDate, username, password, controlNumber, salary, new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
 
         Sys.getInstance().getCareers().get(currentCareer).setCoordinator(coordinator);
 

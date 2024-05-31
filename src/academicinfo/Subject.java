@@ -1,88 +1,187 @@
 package academicinfo;
 
-import java.util.EnumSet;
+import java.time.LocalDate;
+import java.util.*;
 
-public enum Subject {
-    PROGRAMMING_1_ISC("Programming 1", CareerType.ISC, Semester.FIRST, "Teacher A"),
-    PROBABILITY_1_ISC("Probability 1", CareerType.ISC, Semester.FIRST, "Teacher B"),
-    CALCULUS_1_ISC("Calculus 1", CareerType.ISC, Semester.FIRST, "Teacher C"),
-    PROGRAMMING_2_ISC("Programming 2", CareerType.ISC, Semester.SECOND, "Teacher A"),
-    PROBABILITY_2_ISC("Probability 2", CareerType.ISC, Semester.SECOND, "Teacher B"),
-    CALCULUS_2_ISC("Calculus 2", CareerType.ISC, Semester.SECOND, "Teacher C"),
-    PROGRAMMING_3_ISC("Programming 3", CareerType.ISC, Semester.THIRD, "Teacher A"),
-    PROBABILITY_3_ISC("Probability 3", CareerType.ISC, Semester.THIRD, "Teacher B"),
-    CALCULUS_3_ISC("Calculus 3", CareerType.ISC, Semester.THIRD, "Teacher C"),
+import academicinfo.*;
+import mindbox.*;
+import users.*;
+import users.utils.*;
+import utils.*;
 
-    STATISTICS_1_IMAT("Statistics 1", CareerType.IMAT, Semester.FIRST, "Teacher D"),
-    ACCOUNTING_1_IMAT("Accounting 1", CareerType.IMAT, Semester.FIRST, "Teacher E"),
-    CALCULUS_1_IMAT("Calculus 1", CareerType.IMAT, Semester.FIRST, "Teacher F"),
-    STATISTICS_2_IMAT("Statistics 2", CareerType.IMAT, Semester.SECOND, "Teacher D"),
-    ACCOUNTING_2_IMAT("Accounting 2", CareerType.IMAT, Semester.SECOND, "Teacher E"),
-    CALCULUS_2_IMAT("Calculus 2", CareerType.IMAT, Semester.SECOND, "Teacher F"),
-    STATISTICS_3_IMAT("Statistics 3", CareerType.IMAT, Semester.THIRD, "Teacher D"),
-    ACCOUNTING_3_IMAT("Accounting 3", CareerType.IMAT, Semester.THIRD, "Teacher E"),
-    CALCULUS_3_IMAT("Calculus 3", CareerType.IMAT, Semester.THIRD, "Teacher F"),
+public class Subject {
 
-    NETWORKS_1_ELC("Networks 1", CareerType.ELC, Semester.FIRST, "Teacher G"),
-    CIRCUITS_1_ELC("Circuits 1", CareerType.ELC, Semester.FIRST, "Teacher H"),
-    CALCULUS_1_ELC("Calculus 1", CareerType.ELC, Semester.FIRST, "Teacher I"),
-    NETWORKS_2_ELC("Networks 2", CareerType.ELC, Semester.SECOND, "Teacher G"),
-    CIRCUITS_2_ELC("Circuits 2", CareerType.ELC, Semester.SECOND, "Teacher H"),
-    CALCULUS_2_ELC("Calculus 2", CareerType.ELC, Semester.SECOND, "Teacher I"),
-    NETWORKS_3_ELC("Networks 3", CareerType.ELC, Semester.THIRD, "Teacher G"),
-    CIRCUITS_3_ELC("Circuits 3", CareerType.ELC, Semester.THIRD, "Teacher H"),
-    CALCULUS_3_ELC("Calculus 3", CareerType.ELC, Semester.THIRD, "Teacher I");
+    private String id;
+    private Careers career;
+    private String group;
+    private String teacher;
 
-    private final String subjectName;
-    private final CareerType career;
-    private final Semester semester;
-    private final String teacherName;
-
-    Subject(String subjectName, CareerType career, Semester semester, String teacherName) {
-        this.subjectName = subjectName;
+    public Subject(String id, Careers career, String group) {
+        this.id = id;
         this.career = career;
-        this.semester = semester;
-        this.teacherName = teacherName;
+        this.group = group;
     }
 
-    public String getSubjectName() {
-        return subjectName;
+    public String toString() {
+        if (getTeacher() == null) {
+            return String.format(
+                    "Id: %s, Career: %s, Group: %s, Teacher: Not assigned",
+                    getId(), getCareer(), Mindbox.getGroup(getGroup()).getGroupId()
+            );
+        } else {
+            return String.format(
+                    "Id: %s, Career: %s, Group: %s, Teacher: %s",
+                    getId(), getCareer(), Mindbox.getGroup(getGroup()).getGroupId(), getTeacher()
+            );
+        }
     }
 
-    public CareerType getCareer() {
+    public ArrayList<String> getStudentsInSubject() {
+        Group group1 = Mindbox.getGroup(group);
+        return group1.getStudentList();
+    }
+
+    public ArrayList<String> getApprovedStudents(String semester) {
+        ArrayList<String> students = Mindbox.getGroup(getGroup()).getStudentList();
+        ArrayList<String> approved = new ArrayList<>();
+
+        for (String student : students) {
+            Integer grade = Mindbox.getStudent(student).getGrades()
+                    .get(Mindbox.getSemester(semester).getId())
+                    .get(id);
+            if (grade != null && grade >= 70) {
+                approved.add(student);
+            }
+        }
+        return approved;
+    }
+
+    public ArrayList<String> getFailedStudents(String semester) {
+        ArrayList<String> students = Mindbox.getGroup(getGroup()).getStudentList();
+        ArrayList<String> failed = new ArrayList<>();
+
+        for (String student : students) {
+            Integer grade = Mindbox.getStudent(student).getGrades()
+                    .get(Mindbox.getSemester(semester).getId())
+                    .get(id);
+            if (grade != null && grade < 70) {
+                failed.add(student);
+            }
+        }
+        return failed;
+    }
+
+    public static Subject getSubject(String semester, String group) {
+        Scanner sc = new Scanner(System.in);
+        Subject subject1 = null;
+        String name = "";
+        boolean found = false;
+        Careers career = UserInSession.getCurrentUser().getCareer();
+        Semester semester1 = Mindbox.getSemester(semester);
+        ArrayList<Subject> subjects = Mindbox.getGroup(group).getSubjects();
+        do {
+            System.out.println("All subjects of this group.");
+            Mindbox.getGroup(group).showSubjects();
+            System.out.println("Enter the name of the subject:");
+            name = sc.nextLine();
+            for (Subject subject : subjects) {
+                if (subject.getId().equals(name)) {
+                    found = true;
+                    subject1 = subject;
+                    break;
+                }
+            }
+        } while (!found);
+        return subject1;
+    }
+
+    public static void showAllSubjects(Group group) {
+        Careers career = UserInSession.getCurrentUser().getCareer();
+        ArrayList<Subject> subjects = Mindbox.getGroup(group.getGroupId()).getSubjects();
+        if (subjects.isEmpty()) {
+            System.out.println("You don't have any subjects.");
+            return;
+        }
+        for (Subject subject : subjects) {
+            System.out.println("Name: " + subject.getId());
+            System.out.println("Career: " + subject.getCareer());
+            System.out.println("Group: " + subject.getGroup());
+            System.out.println();
+        }
+    }
+
+    public String getStudent(String subjectId) {
+        Scanner sc = new Scanner(System.in);
+        int option = 0;
+        boolean isValid = true;
+        ArrayList<String> studentList = Mindbox.getGroup(group).getStudentList();
+
+        do {
+            for (String student : studentList) {
+                HashMap<String, Integer> semesterGrades = Mindbox.getStudent(student).getGrades().get(Mindbox.getStudent(student).getSemester());
+                if (semesterGrades != null && semesterGrades.containsKey(subjectId)) {
+                    Integer grade = semesterGrades.get(subjectId);
+                    if (grade == null) {
+                        System.out.println("[ " + studentList.indexOf(student) + " ] Name: " + Mindbox.getStudent(student).getFirstName() + " " + Mindbox.getStudent(student).getLastName() + " - Grade: Not assigned");
+                    } else {
+                        System.out.println("[ " + studentList.indexOf(student) + " ] Name: " + Mindbox.getStudent(student).getFirstName() + " " + Mindbox.getStudent(student).getLastName() + " - Grade: " + grade);
+                    }
+                } else {
+                    System.out.println("Does not have the subject.");
+                }
+            }
+
+            try {
+                option = sc.nextInt();
+                studentList.get(option);
+                isValid = false;
+            } catch (InputMismatchException e) {
+                System.out.println("The value must be an integer.");
+                sc.nextLine();
+            } catch (IndexOutOfBoundsException e) {
+                System.out.println("Enter a valid index.");
+                sc.nextLine();
+            }
+        } while (isValid);
+
+        return studentList.get(option);
+    }
+
+    public void removeTeacher() {
+        this.teacher = null;
+    }
+
+    // Getters
+    public String getId() {
+        return id;
+    }
+
+    public Careers getCareer() {
         return career;
     }
 
-    public Semester getSemester() {
-        return semester;
+    public String getGroup() {
+        return group;
     }
 
-    public String getTeacherName() {
-        return teacherName;
+    public String getTeacher() {
+        return teacher;
     }
 
-    public String getId() {
-        return name();
+    // Setters
+    public void setTeacher(String teacher) {
+        this.teacher = teacher;
     }
 
-    public static EnumSet<Subject> getSubjectsByCareerAndSemester(CareerType career, Semester semester) {
-        EnumSet<Subject> subjects = EnumSet.noneOf(Subject.class);
-        for (Subject subject : Subject.values()) {
-            if (subject.getCareer() == career && subject.getSemester() == semester) {
-                subjects.add(subject);
-            }
-        }
-        return subjects;
+    public void setGroup(String group) {
+        this.group = group;
     }
 
-    public static void main(String[] args) {
-        CareerType career = CareerType.ISC;
-        Semester semester = Semester.FIRST;
-        EnumSet<Subject> subjects = Subject.getSubjectsByCareerAndSemester(career, semester);
+    public void setId(String id) {
+        this.id = id;
+    }
 
-        System.out.println("Subjects for " + career + " in " + semester + ":");
-        for (Subject subject : subjects) {
-            System.out.println(subject.getSubjectName());
-        }
+    public void setCareer(Careers career) {
+        this.career = career;
     }
 }

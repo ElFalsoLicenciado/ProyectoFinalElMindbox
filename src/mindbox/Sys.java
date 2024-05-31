@@ -3,17 +3,14 @@ package mindbox;
 import services.CareerService;
 import academicinfo.CareerType;
 import users.User;
-import utils.Ask;
-import utils.CurrentCareer;
 import utils.UserInSession;
-import utils.DataLoader;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class Sys {
     private static Sys instance;
-    private Map<CareerType, Minbox> careers;
+    private Map<CareerType, Mindbox> careers;
 
     public Sys() {
         careers = new HashMap<>();
@@ -91,7 +88,7 @@ public class Sys {
         } while (!correctData && counter != 4);
     }
 
-    public Map<CareerType, Minbox> getCareers() {
+    public Map<CareerType, Mindbox> getCareers() {
         return careers;
     }
 

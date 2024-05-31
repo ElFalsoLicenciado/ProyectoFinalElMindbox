@@ -1,12 +1,22 @@
 package gson.serializers;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonSerializationContext;
-import com.google.gson.JsonSerializer;
-import users.User;
+import java.time.LocalDate;
+import java.util.*;
 
-import java.lang.reflect.Type;
+import academicinfo.*;
+import mindbox.*;
+import users.*;
+import users.utils.*;
+import utils.*;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class UserSerializer implements JsonSerializer<User> {
     @Override

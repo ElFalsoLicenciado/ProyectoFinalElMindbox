@@ -1,259 +1,113 @@
-package users;
+package Usuarios.Trabajadores;
 
-import java.time.LocalDate;
+import Tec.Tec;
+import Usuarios.Usuario;
+import Usuarios.Utils.Carreras;
+import Usuarios.Utils.Rol;
+import Usuarios.Utils.Utils;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.InputMismatchException;
+import java.util.Scanner;
+import Utils.UsuarioEnSesion;
+import users.Worker;
 
-import academicinfo.*;
-import mindbox.Sys;
-import mindbox.utils.CommonData;
-import users.utils.*;
-import utils.Ask;
-import utils.CurrentCareer;
-import utils.Id;
-import utils.UserInSession;
-
-public class Teacher extends User {
-    private double salary;
-    private List<Subject> subjects;
-    private List<Student> managedStudents;
-    private List<Group> groups;
-
-    public Teacher(String firstName, String paternalLastName, String maternalLastName, String birthDate, Gender gender,
-                   String city, Country country, String curp, String rfc, String address, String registrationDate,
-                   String username, String password, String controlNumber, double salary, List<Subject> subjects,
-                   List<Student> managedStudents, List<Group> groups) {
-        super(firstName, paternalLastName, maternalLastName, birthDate, gender, city, country, curp, rfc, address,
-                registrationDate, username, password, controlNumber, Role.TEACHER);
-        this.salary = salary;
-        this.subjects = subjects;
-        this.managedStudents = managedStudents;
-        this.groups = groups;
+public class Teacher extends Worker {
+    public Profesor(String nombre, String apellido, String fechaNacimiento, String ciudad, String estado, String curp, String direccion, Carreras carrera, String nControl, String contrasena, String RFC, float salario) {
+        super(nombre, apellido, fechaNacimiento, ciudad, estado, curp, direccion, carrera, nControl, contrasena, Rol.Profesor, RFC, salario);
     }
 
-    // Getters and Setters
-    public double getSalary() {
-        return salary;
-    }
+    public static void registrarProfesor(){
+        System.out.println("Has seleccionado la opcion de registrar a un Profesor. ");
+        ArrayList<String> datosComun = Utils.obtenerDatosComun(Rol.Profesor);
+        Scanner sc = new Scanner(System.in);
 
-    public void setSalary(double salary) {
-        this.salary = salary;
-    }
-
-    public List<Subject> getSubjects() {
-        return subjects;
-    }
-
-    public void setSubjects(List<Subject> subjects) {
-        this.subjects = subjects;
-    }
-
-    public List<Student> getManagedStudents() {
-        return managedStudents;
-    }
-
-    public void setManagedStudents(List<Student> managedStudents) {
-        this.managedStudents = managedStudents;
-    }
-
-    public List<Group> getGroups() {
-        return groups;
-    }
-
-    public void setGroups(List<Group> groups) {
-        this.groups = groups;
-    }
-
-    // Methods
-    public static void register() {
-        List<String> data = CommonData.getCommonData(Role.TEACHER);
-        String firstName = data.get(0);
-        String paternalLastName = data.get(1);
-        String maternalLastName = data.get(2);
-        String birthDate = data.get(3);
-        String address = data.get(4);
-        String country = data.get(5);
-        String city = data.get(6);
-        String username = data.get(7);
-        String password = data.get(8);
-        String gender = data.get(9);
-
-        Gender gender1 = CommonData.validGender(gender);
-        Country country1 = CommonData.validCountry(country);
-
-        String curp = Curp.generate(firstName, paternalLastName, maternalLastName, birthDate, gender1, country1);
-        String rfc = Rfc.generate(paternalLastName, maternalLastName, firstName, birthDate);
-        CareerType careerType = CurrentCareer.getInstance().getCurrentCareer();
-        String controlNumber = Id.generateControlNumber(firstName, birthDate, careerType, Role.TEACHER);
-
-        double salary = Ask.forDouble("the salary");
-        List<Subject> subjects = new ArrayList<>();
-        List<Student> managedStudents = new ArrayList<>();
-        List<Group> groups = new ArrayList<>();
-
-        Teacher teacher = new Teacher(firstName, paternalLastName, maternalLastName, birthDate, gender1, city, country1, curp, rfc, address, LocalDate.now().toString(), username, password, controlNumber, salary, subjects, managedStudents, groups);
-
-        Sys.getInstance().getCareers().get(careerType).getGroups().forEach(group -> {
-            group.getStudents().forEach(student -> student.getGrades().forEach(grade -> {
-                if (grade.getSubject().getTeacherName().equals(teacher.getFullName())) {
-                    managedStudents.add(student);
+        String nombre = datosComun.get(0);
+        String apellido = datosComun.get(1);
+        String fechaNacimiento = datosComun.get(2);
+        String ciudad = datosComun.get(3);
+        String estado = datosComun.get(4);
+        String curp = datosComun.get(5);
+        String direccion = datosComun.get(6);
+        String contrasena = datosComun.get(7);
+        String nControl = datosComun.get(8);
+        Carreras carrera = datosComun.get(9) == "Sistemas" ? Carreras.Sistemas: datosComun.get(9) == "Materiales" ? Carreras.Materiales : Carreras.Electronica;
+        String rfc = datosComun.get(10);
+        float sueldo = 0;
+        do {
+            try {
+                System.out.println("Digite el sueldo del Profesor");
+                sueldo = sc.nextFloat();
+                if (sueldo <= 0) {
+                    sueldo = 0;
+                    throw new Exception("");
                 }
-            }));
+            } catch (InputMismatchException e) {
+                System.out.println("Valor debe ser un numero.");
+                sc.nextLine();
+            } catch (Exception e) {
+                System.out.println("Valor debe ser mayor a 0.");
+                sc.nextLine();
+            }
+        } while (sueldo == 0);
 
-            group.getSubjects().forEach(subject -> {
-                if (subject.getTeacherName().equals(teacher.getFullName())) {
-                    subjects.add(subject);
+        Profesor profesor = new Profesor(nombre, apellido, fechaNacimiento, ciudad, estado, curp, direccion, carrera, nControl, contrasena,rfc, sueldo);
+        Tec.usuarios.get(Rol.Profesor).add(profesor);
+        System.out.println("Profesor registrado con exito.");
+    }
+
+    public static void mostrarAllProfesores(){
+        ArrayList<Usuario> usuariosProfesores = Tec.usuarios.get(Rol.Profesor);
+        System.out.println("Profesores del TEC de MORELIA");
+        for (Usuario usuarios : usuariosProfesores) {
+            if (usuarios.getCarrera().equals(UsuarioEnSesion.getUsuarioActual().getCarrera())){
+                Profesor profesores = (Profesor) usuarios;
+                System.out.println(profesores.aString());
+            }
+
+        }
+    }
+
+    public static Profesor obtenerProfesor(){
+        Scanner sc = new Scanner(System.in);
+        ArrayList<Usuario> profes = Tec.usuarios.get(Rol.Profesor);
+        String nControl = "";
+        boolean band = false;
+        Profesor maestro = null;
+        do {
+            mostrarAllProfesores();
+            System.out.println("Ingresa el numero de control del profesor que deseas: ");
+            nControl = sc.nextLine();
+            for (Usuario usuario : profes) {
+                if (usuario.getnControl().equals(nControl)){
+                    band = true;
+                    maestro = (Profesor) usuario;
+                    break;
                 }
-            });
-
-            if (group.getSubjects().stream().anyMatch(subject -> subject.getTeacherName().equals(teacher.getFullName()))) {
-                groups.add(group);
             }
-        });
-
-        Sys.getInstance().getCareers().get(careerType).getUserList().get(Role.TEACHER).add(teacher); // Add teacher to the list of teachers
-        Sys.saveData(); // Save data to JSON
-        System.out.println("\n----------------TEACHER REGISTERED----------------\n");
+        } while (!band);
+        return maestro;
     }
 
-    public static void remove() {
-        User currentUser = UserInSession.getInstance().getCurrentUser();
-        if (currentUser instanceof Teacher) {
-            Teacher teacher = (Teacher) currentUser;
-            CareerType careerType = CurrentCareer.getInstance().getCurrentCareer();
-            Sys.getInstance().getCareers().get(careerType).getGroups().forEach(group -> {
-                group.getSubjects().removeIf(subject -> subject.getTeacherName().equals(teacher.getFullName()));
-                group.getStudents().forEach(student -> student.getGrades().removeIf(grade -> grade.getSubject().getTeacherName().equals(teacher.getFullName())));
-            });
-            Sys.getInstance().getCareers().get(careerType).getUserList().get(Role.TEACHER).remove(teacher);
-            Sys.saveData(); // Save data to JSON
-            System.out.println("Teacher removed successfully.");
+    public static void eliminarProfesor(){
+        if (Tec.usuarios.get(Rol.Profesor).isEmpty()){
+            System.out.println("No hay maestros a eliminar. ");
+            return;
+        }
+        System.out.println("Has seleccionado la opcion eliminar Profesor.");
+        Profesor profesor = obtenerProfesor();
+        if(profesor.getMaterias().isEmpty()){
+            Tec.usuarios.get(Rol.Profesor).remove(profesor);
+            System.out.println("Se ha elimando el profesor "+profesor.getNombre()+", con numero de control "+profesor.getnControl());
+        }
+        else{
+            System.out.println("No se ha eliminado el profesor, ya que cuenta con materias asignadas");
         }
     }
 
-    public static void modify() {
-        User currentUser = UserInSession.getInstance().getCurrentUser();
-        if (currentUser instanceof Teacher) {
-            Teacher teacher = (Teacher) currentUser;
-            List<String> data = CommonData.getCommonData(Role.TEACHER);
-            teacher.setFirstName(data.get(0));
-            teacher.setPaternalLastName(data.get(1));
-            teacher.setMaternalLastName(data.get(2));
-            teacher.setBirthDate(data.get(3));
-            teacher.setAddress(data.get(4));
-            teacher.setCountry(CommonData.validCountry(data.get(5)));
-            teacher.setCity(data.get(6));
-            teacher.setUsername(data.get(7));
-            teacher.setPassword(data.get(8));
-            teacher.setGender(CommonData.validGender(data.get(9)));
-
-            Sys.saveData(); // Save data to JSON
-            System.out.println("Teacher modified successfully.");
-        }
-    }
-
-    public static void viewInfo() {
-        User currentUser = UserInSession.getInstance().getCurrentUser();
-        if (currentUser instanceof Teacher) {
-            Teacher teacher = (Teacher) currentUser;
-            System.out.println("Teacher Information:");
-            System.out.println("Name: " + teacher.getFullName());
-            System.out.println("Birth Date: " + teacher.getBirthDate());
-            System.out.println("Address: " + teacher.getAddress());
-            System.out.println("City: " + teacher.getCity());
-            System.out.println("Country: " + teacher.getCountry());
-            System.out.println("Salary: " + teacher.getSalary());
-            System.out.println("Control Number: " + teacher.getControlNumber());
-            System.out.println("Subjects: ");
-            teacher.getSubjects().forEach(subject -> System.out.println(subject.getSubjectName()));
-        }
-    }
-
-    public static void viewAll() {
-        CareerType careerType = CurrentCareer.getInstance().getCurrentCareer();
-        System.out.println("All teachers in " + careerType + ":");
-        Sys.getInstance().getCareers().get(careerType).getGroups().forEach(group -> group.getSubjects().forEach(subject -> {
-            if (subject.getTeacherName().equals(UserInSession.getInstance().getCurrentUser().getFullName())) {
-                System.out.println(subject.getTeacherName());
-            }
-        }));
-    }
-
-    public static void modifyPersonalInfo() {
-        User currentUser = UserInSession.getInstance().getCurrentUser();
-        if (currentUser instanceof Teacher) {
-            Teacher teacher = (Teacher) currentUser;
-            List<String> data = CommonData.getCommonData(Role.TEACHER);
-            teacher.setFirstName(data.get(0));
-            teacher.setPaternalLastName(data.get(1));
-            teacher.setMaternalLastName(data.get(2));
-            teacher.setBirthDate(data.get(3));
-            teacher.setAddress(data.get(4));
-            teacher.setCountry(CommonData.validCountry(data.get(5)));
-            teacher.setCity(data.get(6));
-            teacher.setUsername(data.get(7));
-            teacher.setPassword(data.get(8));
-            teacher.setGender(CommonData.validGender(data.get(9)));
-
-            Sys.saveData(); // Save data to JSON
-            System.out.println("Personal information updated successfully.");
-        }
-    }
-
-    public static void consultGroups() {
-        User currentUser = UserInSession.getInstance().getCurrentUser();
-        if (currentUser instanceof Teacher) {
-            Teacher teacher = (Teacher) currentUser;
-            System.out.println("Groups managed by " + teacher.getFirstName() + " " + teacher.getPaternalLastName() + ":");
-            teacher.getGroups().forEach(group -> System.out.println(group.getId()));
-        }
-    }
-
-    public static void assignGrades() {
-        User currentUser = UserInSession.getInstance().getCurrentUser();
-        if (currentUser instanceof Teacher) {
-            Teacher teacher = (Teacher) currentUser;
-            teacher.getGroups().forEach(group -> group.getStudents().forEach(student -> {
-                group.getSubjects().forEach(subject -> {
-                    if (subject.getTeacherName().equals(teacher.getFullName())) {
-                        double grade = Ask.forDouble("the grade for " + student.getFullName() + " in " + subject.getSubjectName());
-                        Grade studentGrade = new Grade(subject, grade);
-                        student.getGrades().add(studentGrade);
-                        Sys.saveData(); // Save data to JSON
-                        System.out.println("Grade assigned successfully.");
-                    }
-                });
-            }));
-        }
-    }
-
-    public static void modifyGrades() {
-        User currentUser = UserInSession.getInstance().getCurrentUser();
-        if (currentUser instanceof Teacher) {
-            Teacher teacher = (Teacher) currentUser;
-            teacher.getGroups().forEach(group -> group.getStudents().forEach(student -> {
-                group.getSubjects().forEach(subject -> {
-                    if (subject.getTeacherName().equals(teacher.getFullName())) {
-                        Optional<Grade> gradeOptional = student.getGrades().stream().filter(g -> g.getSubject().equals(subject)).findFirst();
-                        gradeOptional.ifPresent(grade -> {
-                            double newGrade = Ask.forDouble("the new grade for " + student.getFullName() + " in " + subject.getSubjectName());
-                            grade.setValue(newGrade);
-                            Sys.saveData(); // Save data to JSON
-                            System.out.println("Grade modified successfully.");
-                        });
-                    }
-                });
-            }));
-        }
-    }
-
-    public static void consultCurrentStudents() {
-        User currentUser = UserInSession.getInstance().getCurrentUser();
-        if (currentUser instanceof Teacher) {
-            Teacher teacher = (Teacher) currentUser;
-            System.out.println("Current students managed by " + teacher.getFirstName() + " " + teacher.getPaternalLastName() + ":");
-            teacher.getManagedStudents().forEach(student -> System.out.println(student.getFullName()));
-        }
+    public static void actualizarDatosComunes(){
+        System.out.println("Has seleccionado la opcion Actualizar Profesor.");
+        mostrarAllProfesores();
+        Profesor profesor = obtenerProfesor();
+        Utils.actualizarInformacion(profesor);
     }
 }

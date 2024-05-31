@@ -4,7 +4,7 @@ import users.User;
 
 public class UserInSession {
     private static UserInSession instance;
-    private User currentUser;
+    private static User user;
 
     private UserInSession() {}
 
@@ -15,15 +15,20 @@ public class UserInSession {
         return instance;
     }
 
-    public User getCurrentUser() {
-        return currentUser;
+    public static User getCurrentUser() {
+        return user;
     }
 
-    public void setCurrentUser(User currentUser) {
-        this.currentUser = currentUser;
+    public void setUser(User user) {
+        UserInSession.user = user;
     }
 
-    public void closeSession() {
-        currentUser = null;
+    public boolean hasUser() {
+        return user != null;
+    }
+
+    public void logout() {
+        user = null;
+        instance = null;
     }
 }
