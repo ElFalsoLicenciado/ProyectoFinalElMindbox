@@ -32,6 +32,4 @@ public class CurrentCareer {
         instance = null;
         currentCareer = null;
     }
-
-
 }

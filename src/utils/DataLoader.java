@@ -43,8 +43,7 @@ public class DataLoader {
                     "Luis", "Roman", "Sanchez", "2000-04-01", Gender.MALE,
                     "Morelia", Country.Michoacan, "CURP_LUIS", "RFC_LUIS", "Address",
                     LocalDate.now().toString(), "Lars", "Pass", "ILISC0", CareerType.ISC,
-                    Semester.FIRST, new Group("A", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), CareerType.ISC, Semester.FIRST),
-                    0.0, new ArrayList<>());
+                    Semester.FIRST, Group.GroupId.A, 0.0, new ArrayList<>());
 
             Teacher iscTeacher = new Teacher(
                     "Alice", "Brown", "Johnson", "1985-05-15", Gender.FEMALE,
@@ -68,8 +67,7 @@ public class DataLoader {
                     "Ana", "Garcia", "Lopez", "2001-02-01", Gender.FEMALE,
                     "Morelia", Country.Michoacan, "CURP_ANA", "RFC_ANA", "Address",
                     LocalDate.now().toString(), "AnaG", "Pass", "IMAT0", CareerType.IMAT,
-                    Semester.FIRST, new Group("A", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), CareerType.IMAT, Semester.FIRST),
-                    0.0, new ArrayList<>());
+                    Semester.FIRST, Group.GroupId.A, 0.0, new ArrayList<>());
 
             Teacher imatTeacher = new Teacher(
                     "Carlos", "Martinez", "Santos", "1986-07-21", Gender.MALE,
@@ -93,8 +91,7 @@ public class DataLoader {
                     "Mario", "Hernandez", "Ruiz", "1999-03-10", Gender.MALE,
                     "Morelia", Country.Michoacan, "CURP_MARIO", "RFC_MARIO", "Address",
                     LocalDate.now().toString(), "MarioH", "Pass", "IELC0", CareerType.ELC,
-                    Semester.FIRST, new Group("A", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), CareerType.ELC, Semester.FIRST),
-                    0.0, new ArrayList<>());
+                    Semester.FIRST, Group.GroupId.A, 0.0, new ArrayList<>());
 
             Teacher elcTeacher = new Teacher(
                     "Laura", "Gonzalez", "Vega", "1984-08-11", Gender.FEMALE,

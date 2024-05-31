@@ -25,7 +25,7 @@ public class CommonData {
             case COORDINATOR -> "C O O R D I N A T O R";
         };
 
-        System.out.println(String.format("\n ADD %s ", roleType));
+        System.out.println(String.format("\n%s ", roleType));
 
         String firstName = Ask.forString("the first name");
         String paternalLastName = Ask.forString("the paternal last name");

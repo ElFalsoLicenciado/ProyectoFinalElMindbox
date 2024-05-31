@@ -2,6 +2,8 @@ package mindbox;
 
 import academicinfo.Group;
 import academicinfo.CareerType;
+import services.Career;
+import services.CareerService;
 import users.Coordinator;
 import users.User;
 import users.utils.Country;
@@ -39,6 +41,16 @@ public class Minbox {
     }
 
     public User verifyLogIn(String username, String password) {
+
+//        CareerService careerService = CareerService.getInstance();
+//
+//        careerService.loadCareers("careers.json");
+//        careerService.getAllCareers();
+//
+//        System.out.println(careerService.getAllCareers());
+
+
+
         if (username.equals(coordinator.getUsername()) && password.equals(coordinator.getPassword())) {
             return coordinator;
         }

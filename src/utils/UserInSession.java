@@ -19,16 +19,11 @@ public class UserInSession {
         return currentUser;
     }
 
-    public void setCurrentUser(User user) {
-        this.currentUser = user;
-    }
-
-    public boolean thereIsCurrentUser() {
-        return currentUser != null;
+    public void setCurrentUser(User currentUser) {
+        this.currentUser = currentUser;
     }
 
     public void closeSession() {
-        instance = null;
         currentUser = null;
     }
 }

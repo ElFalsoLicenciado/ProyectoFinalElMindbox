@@ -70,17 +70,20 @@ public class CareerService {
         }
     }
 
-    private void loadCareers(String fileName) {
+    public void loadCareers(String fileName) {
         try (FileReader reader = new FileReader(fileName)) {
             Type careerMapType = new TypeToken<Map<CareerType, Minbox>>() {}.getType();
             careers = GsonUtil.getGsonInstance().fromJson(reader, careerMapType);
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
 
     private void initializeDefaultCareers() {
         // Initialize default careers and save them to the file
+
+        // Initialize ISC career
         Coordinator iscCoordinator = new Coordinator(
                 "John", "Doe", "Smith", "1980-01-01", Gender.MALE, "City", Country.Michoacan,
                 "CURP_ISC", "RFC_ISC", "Address", LocalDate.now().toString(), "ISC_C", "password",
@@ -90,8 +93,7 @@ public class CareerService {
                 "Luis", "Roman", "Sanchez", "2000-04-01", Gender.MALE,
                 "Morelia", Country.Michoacan, "CURP_LUIS", "RFC_LUIS", "Address",
                 LocalDate.now().toString(), "Lars", "Pass", "ILISC0", CareerType.ISC,
-                Semester.FIRST, new Group("A", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), CareerType.ISC, Semester.FIRST),
-                0.0, new ArrayList<>());
+                Semester.FIRST, Group.GroupId.A, 0.0, new ArrayList<>());
 
         Teacher iscTeacher = new Teacher(
                 "Alice", "Brown", "Johnson", "1985-05-15", Gender.FEMALE,
@@ -115,8 +117,7 @@ public class CareerService {
                 "Ana", "Garcia", "Lopez", "2001-02-01", Gender.FEMALE,
                 "Morelia", Country.Michoacan, "CURP_ANA", "RFC_ANA", "Address",
                 LocalDate.now().toString(), "AnaG", "Pass", "IMAT0", CareerType.IMAT,
-                Semester.FIRST, new Group("A", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), CareerType.IMAT, Semester.FIRST),
-                0.0, new ArrayList<>());
+                Semester.FIRST, Group.GroupId.A, 0.0, new ArrayList<>());
 
         Teacher imatTeacher = new Teacher(
                 "Carlos", "Martinez", "Santos", "1986-07-21", Gender.MALE,
@@ -140,8 +141,7 @@ public class CareerService {
                 "Mario", "Hernandez", "Ruiz", "1999-03-10", Gender.MALE,
                 "Morelia", Country.Michoacan, "CURP_MARIO", "RFC_MARIO", "Address",
                 LocalDate.now().toString(), "MarioH", "Pass", "IELC0", CareerType.ELC,
-                Semester.FIRST, new Group("A", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), CareerType.ELC, Semester.FIRST),
-                0.0, new ArrayList<>());
+                Semester.FIRST, Group.GroupId.A, 0.0, new ArrayList<>());
 
         Teacher elcTeacher = new Teacher(
                 "Laura", "Gonzalez", "Vega", "1984-08-11", Gender.FEMALE,

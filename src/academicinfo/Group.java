@@ -7,14 +7,14 @@ import java.util.List;
 
 public class Group {
 
-    private String id;
+    private GroupId id;
     private List<Teacher> teachers;
     private List<Student> students;
     private List<Subject> subjects;
     private CareerType career;
     private Semester semester;
 
-    public Group(String id, List<Teacher> teachers, List<Student> students, List<Subject> subjects, CareerType career, Semester semester) {
+    public Group(GroupId id, List<Teacher> teachers, List<Student> students, List<Subject> subjects, CareerType career, Semester semester) {
         this.id = id;
         this.teachers = teachers;
         this.students = students;
@@ -24,12 +24,8 @@ public class Group {
     }
 
     // Getters and Setters
-    public String getId() {
+    public GroupId getId() {
         return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public CareerType getCareer() {

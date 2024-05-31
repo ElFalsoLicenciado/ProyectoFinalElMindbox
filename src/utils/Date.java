@@ -7,7 +7,7 @@ import java.time.format.DateTimeFormatter;
 public class Date {
 
     public static String askForDate(String desc) {
-        System.out.printf("\nEnter the date for %s", desc);
+        System.out.printf("\nEnter the date for %s\n", desc);
         int year = getYear();
         int month = getMonth();
         int dayOfMonth = getDay(month);
