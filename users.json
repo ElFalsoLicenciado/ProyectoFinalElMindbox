@@ -1,0 +1,154 @@
+{
+  "student": [
+    {
+      "semester": "S1ISC",
+      "group": "G1AISC",
+      "average": 0.0,
+      "groupType": "A",
+      "grades": {
+        "S1ISC": {
+          "Programming 1A": null,
+          "Calculus 1A": null,
+          "Probability 1A": null
+        }
+      },
+      "firstName": "Luis",
+      "lastName": "Roman",
+      "birthDate": "04-01-2005",
+      "city": "Morelia",
+      "state": "Michoacan",
+      "curp": "ROSL050104HMNMNSA3",
+      "address": "Address 123",
+      "registrationDate": "2024-05-31",
+      "career": "Systems",
+      "controlNumber": "IL24ISC00",
+      "password": "pass",
+      "role": "STUDENT"
+    },
+    {
+      "semester": "S1ISC",
+      "group": "G1AISC",
+      "average": 0.0,
+      "groupType": "A",
+      "grades": {
+        "S1ISC": {
+          "Programming 1A": null,
+          "Calculus 1A": null,
+          "Probability 1A": null
+        }
+      },
+      "firstName": "Alberto",
+      "lastName": "Montoya",
+      "birthDate": "04-01-2005",
+      "city": "Morelia",
+      "state": "Michoacan",
+      "curp": "MOAA050104HMNMNS09",
+      "address": "Address 123",
+      "registrationDate": "2024-05-31",
+      "career": "Systems",
+      "controlNumber": "IA24ISC00",
+      "password": "123",
+      "role": "STUDENT"
+    },
+    {
+      "semester": "S1ISC",
+      "group": "G1AISC",
+      "average": 0.0,
+      "groupType": "A",
+      "grades": {
+        "S1ISC": {
+          "Programming 1A": null,
+          "Calculus 1A": null,
+          "Probability 1A": null
+        }
+      },
+      "firstName": "Rene",
+      "lastName": "Olvera",
+      "birthDate": "04-01-2005",
+      "city": "Morelia",
+      "state": "Michoacan",
+      "curp": "SONJ850615HJLZNN09",
+      "address": "Address 123",
+      "registrationDate": "2024-05-31",
+      "career": "Systems",
+      "controlNumber": "IR24ISC00",
+      "password": "123",
+      "role": "STUDENT"
+    }
+  ],
+  "coordinator": [
+    {
+      "coord": 0,
+      "subjects": [],
+      "RFC": "RFC567",
+      "salary": 60000.0,
+      "firstName": "Nelly",
+      "lastName": "Alvarado",
+      "birthDate": "10-4-1985",
+      "city": "Morelia",
+      "state": "Michoacan",
+      "curp": "PONJ850615MJLZNN09",
+      "address": "Address 123",
+      "registrationDate": "2024-05-31",
+      "career": "Systems",
+      "controlNumber": "CN24ISC00",
+      "password": "1",
+      "role": "COORDINATOR"
+    },
+    {
+      "coord": 0,
+      "subjects": [],
+      "RFC": "RFC568",
+      "salary": 60000.0,
+      "firstName": "Eduardo",
+      "lastName": "Saenz",
+      "birthDate": "12-3-1985",
+      "city": "Morelia",
+      "state": "Michoacan",
+      "curp": "GONJ850615HJLZNN09",
+      "address": "Address 123",
+      "registrationDate": "2024-05-31",
+      "career": "Electronics",
+      "controlNumber": "CE24ELC00",
+      "password": "2",
+      "role": "COORDINATOR"
+    },
+    {
+      "coord": 0,
+      "subjects": [],
+      "RFC": "RFC569",
+      "salary": 60000.0,
+      "firstName": "Derek",
+      "lastName": "Muller",
+      "birthDate": "7-9-1985",
+      "city": "Morelia",
+      "state": "Michoacan",
+      "curp": "SONJ850615HJLZNN09",
+      "address": "Address 123",
+      "registrationDate": "2024-05-31",
+      "career": "Materials",
+      "controlNumber": "CD24IMAT00",
+      "password": "3",
+      "role": "COORDINATOR"
+    }
+  ],
+  "teacher": [
+    {
+      "subjects": [],
+      "RFC": "RFCGOD",
+      "salary": 70000.0,
+      "firstName": "Murillo",
+      "lastName": "Jimenez",
+      "birthDate": "15-06-1985",
+      "city": "Morelia",
+      "state": "Michoacan",
+      "curp": "PONJ850615HJLZNN09",
+      "address": "Address 123",
+      "registrationDate": "2024-05-31",
+      "career": "Systems",
+      "controlNumber": "MM24ISC00",
+      "password": "123",
+      "role": "TEACHER"
+    }
+  ]
+}

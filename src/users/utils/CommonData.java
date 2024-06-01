@@ -91,7 +91,7 @@ public class CommonData {
         do {
             System.out.println("Enter your first name: ");
             firstName = read.nextLine();
-            if (isEmptyOrNum(firstName)){
+            if (emptyOrNum(firstName)){
                 System.out.println("Name with numbers/empty/characters/spaces is not valid, please enter another. ");
             } else {
                 break;
@@ -105,7 +105,7 @@ public class CommonData {
                 do {
                     System.out.println("Enter your middle name: ");
                     middleName = read.nextLine();
-                    if (isEmptyOrNum(middleName)){
+                    if (emptyOrNum(middleName)){
                         System.out.println("Name with numbers/empty/characters/spaces is not valid, please enter another. ");
                     } else {
                         firstName = firstName + " " + middleName;
@@ -123,7 +123,7 @@ public class CommonData {
         do {
             System.out.println("Enter your last name: ");
             lastName = read.nextLine();
-            if (isEmptyOrNum(lastName)){
+            if (emptyOrNum(lastName)){
                 System.out.println("Last name with numbers/empty/characters/spaces is not valid, please enter another. ");
             } else {
                 break;
@@ -149,7 +149,7 @@ public class CommonData {
         do {
             System.out.println("Enter your city: ");
             city = read.nextLine();
-            if (isEmptyOrNum(city)){
+            if (emptyOrNum(city)){
                 System.out.println("City with numbers/empty/characters/spaces is not valid, please enter another. ");
             } else {
                 System.out.println("City registered successfully.");
@@ -192,7 +192,7 @@ public class CommonData {
         do {
             System.out.println("Enter your address: ");
             address = read.nextLine();
-            if (isEmptyOrNum(address)) {
+            if (emptyOrNum(address)) {
                 System.out.println("Address with numbers/empty/characters/spaces is not valid, please enter another.");
             } else {
                 break;
@@ -385,7 +385,7 @@ public class CommonData {
                 do {
                     System.out.println("Enter the new city of residence:");
                     String city = read.nextLine();
-                    if (isEmptyOrNum(city)){
+                    if (emptyOrNum(city)){
                         System.out.println("City with numbers/empty/characters/spaces is not valid, please enter another.");
                     } else {
                         user.setCity(city);
@@ -408,7 +408,7 @@ public class CommonData {
                     } catch (Exception e) {
                         invalidState = true;
                     }
-                    if (isEmptyOrNum(state) || invalidState){
+                    if (emptyOrNum(state) || invalidState){
                         System.out.println("State with numbers/empty/characters/spaces is not valid or does not exist, please enter another.");
                     } else {
                         user.setState(state);
@@ -420,7 +420,7 @@ public class CommonData {
                 do {
                     System.out.println("Enter the new address:");
                     String address = read.nextLine();
-                    if (isEmptyOrNum(address)){
+                    if (emptyOrNum(address)){
                         System.out.println("Address with numbers/empty/characters/spaces is not valid, please enter another.");
                     } else {
                         user.setAddress(address);

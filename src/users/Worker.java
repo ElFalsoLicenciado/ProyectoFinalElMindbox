@@ -8,6 +8,8 @@ import users.*;
 import users.utils.*;
 import utils.*;
 
+import static users.Coordinator.showAllCoordinators;
+
 public class Worker extends User {
 
     protected ArrayList<String> subjects;
@@ -375,7 +377,7 @@ public class Worker extends User {
         boolean found = false;
         Worker teacher = null;
         do {
-            Teacher.showAllTeacher();
+            Teacher.showAllTeachers();
             showAllCoordinators();
             System.out.println("Enter the control number of the teacher you want:");
             controlNumber = sc.nextLine();

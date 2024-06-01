@@ -77,30 +77,30 @@ public class Mindbox {
         return null;
     }
 
-    public static Teacher getTeacher(String pro) {
+    public static Teacher getTeacher(String tea) {
         for (User user : users.get(Role.TEACHER)) {
             if (user.getRole().equals(Role.TEACHER)) {
                 Teacher teacher = (Teacher) user;
-                if (teacher.getControlNumber().equals(pro)) {
+                if (teacher.getControlNumber().equals(tea)) {
                     return teacher;
                 }
             } else {
-                getCoordinator(pro);
+                getCoordinator(tea);
             }
         }
         return null;
     }
 
-    public static Worker getWorker(String pro) {
+    public static Worker getWorker(String tea) {
         for (User user : users.get(Role.TEACHER)) {
             Worker teacher = (Worker) user;
-            if (teacher.getControlNumber().equals(pro)) {
+            if (teacher.getControlNumber().equals(tea)) {
                 return teacher;
             }
         }
         for (User user : users.get(Role.COORDINATOR)) {
             Worker teacher = (Worker) user;
-            if (teacher.getControlNumber().equals(pro)) {
+            if (teacher.getControlNumber().equals(tea)) {
                 return teacher;
             }
         }
@@ -135,19 +135,19 @@ public class Mindbox {
             }
         }
 
-        Student student1 = new Student("Luis", "Roman", "04-01-2005", "Morelia", "Michoacan", "PONJ850615HJLZNN09", "Address 123", Careers.Systems, "A1", "123");
+        Student student1 = new Student("Luis", "Roman", "04-01-2005", "Morelia", "Michoacan", "ROSL050104HMNMNSA3", "Address 123", Careers.Systems, "IL24ISC00", "pass");
         student1.setSemester(semester.getId());
         student1.setGroup(group.getGroupId());
         student1.setNullGrades(semester, group);
         student1.setGroupType(group.getGroupType());
         group.getStudentList().add(student1.getControlNumber());
-        Student student2 = new Student("Pedro", "Garcia", "15-06-1985", "Guadalajara", "Jalisco", "GONJ850615HJLZNN09", "Address 123", Careers.Systems, "A2", "123");
+        Student student2 = new Student("Alberto", "Montoya", "04-01-2005", "Morelia", "Michoacan", "MOAA050104HMNMNS09", "Address 123", Careers.Systems, "IA24ISC00", "123");
         student2.setSemester(semester.getId());
         student2.setGroup(group.getGroupId());
         student2.setNullGrades(semester, group);
         student2.setGroupType(group.getGroupType());
         group.getStudentList().add(student2.getControlNumber());
-        Student student3 = new Student("Chuy", "Hernandez", "15-06-1985", "Guadalajara", "Jalisco", "SONJ850615HJLZNN09", "Address 123", Careers.Systems, "A3", "123");
+        Student student3 = new Student("Rene", "Olvera", "04-01-2005", "Morelia", "Michoacan", "SONJ850615HJLZNN09", "Address 123", Careers.Systems, "IR24ISC00", "123");
         student3.setSemester(semester.getId());
         student3.setGroup(group.getGroupId());
         student3.setNullGrades(semester, group);
@@ -157,14 +157,14 @@ public class Mindbox {
         Mindbox.users.get(Role.STUDENT).add(student2);
         Mindbox.users.get(Role.STUDENT).add(student3);
 
-        Teacher teacher = new Teacher("Miguel", "Garcia", "15-06-1985", "Guadalajara", "Jalisco", "PONJ850615HJLZNN09", "Address 123", Careers.Systems, "PSIS", "123", "RFC567", 60000.0f);
+        Teacher teacher = new Teacher("Murillo", "Jimenez", "15-06-1985", "Morelia", "Michoacan", "PONJ850615HJLZNN09", "Address 123", Careers.Systems, "MM24ISC00", "123", "RFCGOD", 70000.0f);
         Mindbox.users.get(Role.TEACHER).add(teacher);
     }
 
     public static void registerCoordinators() {
-        Coordinator coordinator1 = new Coordinator("Juan", "González", "15-06-1985", "Guadalajara", "Jalisco", "PONJ850615HJLZNN09", "Address 123", Careers.Systems, "1", "1", "RFC567", 60000.0f);
-        Coordinator coordinator2 = new Coordinator("Ronaldo", "Perez", "15-06-1985", "Guadalajara", "Jalisco", "GONJ850615HJLZNN09", "Address 123", Careers.Electronics, "2", "2", "RFC568", 60000.0f);
-        Coordinator coordinator3 = new Coordinator("Eli", "Chagoya", "15-06-1985", "Guadalajara", "Jalisco", "SONJ850615HJLZNN09", "Address 123", Careers.Materials, "3", "3", "RFC569", 60000.0f);
+        Coordinator coordinator1 = new Coordinator("Nelly", "Alvarado", "10-4-1985", "Morelia", "Michoacan", "PONJ850615MJLZNN09", "Address 123", Careers.Systems, "CN24ISC00", "1", "RFC567", 60000.0f);
+        Coordinator coordinator2 = new Coordinator("Eduardo", "Saenz", "12-3-1985", "Morelia", "Michoacan", "GONJ850615HJLZNN09", "Address 123", Careers.Electronics, "CE24ELC00", "2", "RFC568", 60000.0f);
+        Coordinator coordinator3 = new Coordinator("Derek", "Muller", "7-9-1985", "Morelia", "Michoacan", "SONJ850615HJLZNN09", "Address 123", Careers.Materials, "CD24IMAT00", "3", "RFC569", 60000.0f);
         users.get(Role.COORDINATOR).add(coordinator1);
         users.get(Role.COORDINATOR).add(coordinator2);
         users.get(Role.COORDINATOR).add(coordinator3);
@@ -291,21 +291,21 @@ public class Mindbox {
         Coordinator.removeTeacherFromSubject();
     }
 
-    // Professor
-    public static void registerProfessor() {
-        Professor.registerProfessor();
+    // Teacher
+    public static void registerTeacher() {
+        Teacher.registerTeacher();
     }
 
-    public static void updateProfessor() {
-        Professor.updateCommonData();
+    public static void updateTeacher() {
+        Teacher.updateCommonData();
     }
 
-    public static void showAllProfessors() {
-        Professor.showAllProfessors();
+    public static void showAllTeachers() {
+        Teacher.showAllTeachers();
     }
 
-    public static void deleteProfessor() {
-        Professor.deleteProfessor();
+    public static void deleteTeacher() {
+        Teacher.deleteTeacher();
     }
 
     // Students
@@ -325,3 +325,4 @@ public class Mindbox {
         Student.expelStudent();
     }
 }
+

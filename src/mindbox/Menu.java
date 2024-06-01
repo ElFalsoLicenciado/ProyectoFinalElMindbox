@@ -1,18 +1,19 @@
 package mindbox;
 
-import users.User;
+import academicinfo.*;
+import gson.serializers.*;
+import gson.deserializers.*;
+import mindbox.*;
 import users.*;
-import utils.UserInSession;
-
-import java.util.Scanner;
-
+import users.utils.*;
+import utils.*;
+import java.util.*;
 
 public class Menu {
 
     static Scanner reader = new Scanner(System.in);
 
     public static void logIn() {
-
         boolean correctData = false;
         int attempts = 5;
 
@@ -118,7 +119,7 @@ public class Menu {
             System.out.println("3. Observe students by filter.");
             System.out.println("4. Promote Group");
             System.out.println("5. Student Options");
-            System.out.println("6. Professor Options");
+            System.out.println("6. Teacher Options");
             System.out.println("7. Show all Groups.");
             System.out.println("8. Show Graduated Students");
             System.out.println("9. Show my information.");
@@ -201,7 +202,7 @@ public class Menu {
                                 System.out.print("-------------------------------------------------\n");
                                 break;
                             case "3":
-                                Mindbox.deleteStudent();
+                                Mindbox.expelStudent();
                                 System.out.print("-------------------------------------------------\n");
                                 break;
                             case "4":
@@ -221,38 +222,38 @@ public class Menu {
                     break;
                 case "6":
                     do {
-                        System.out.println("1. Register Professor");
-                        System.out.println("2. Modify Professor");
-                        System.out.println("3. Delete Professor");
-                        System.out.println("4. Show Professors");
-                        System.out.println("5. Add a professor to a subject.");
-                        System.out.println("6. Remove a professor from a subject.");
+                        System.out.println("1. Register Teacher");
+                        System.out.println("2. Modify Teacher");
+                        System.out.println("3. Delete Teacher");
+                        System.out.println("4. Show Teachers");
+                        System.out.println("5. Add a teacher to a subject.");
+                        System.out.println("6. Remove a teacher from a subject.");
                         System.out.println("E. Exit the menu");
                         System.out.print("Enter an option:");
                         option = reader.nextLine();
                         switch (option) {
                             case "1":
-                                Mindbox.registerProfessor();
+                                Mindbox.registerTeacher();
                                 System.out.print("-------------------------------------------------\n");
                                 break;
                             case "2":
-                                Mindbox.updateProfessor();
+                                Mindbox.updateTeacher();
                                 System.out.print("-------------------------------------------------\n");
                                 break;
                             case "3":
-                                Mindbox.deleteProfessor();
+                                Mindbox.deleteTeacher();
                                 System.out.print("-------------------------------------------------\n");
                                 break;
                             case "4":
-                                Mindbox.showAllProfessors();
+                                Mindbox.showAllTeachers();
                                 System.out.print("-------------------------------------------------\n");
                                 break;
                             case "5":
-                                Mindbox.assignProfessorToSubject();
+                                Mindbox.assignTeacherToSubject();
                                 System.out.print("-------------------------------------------------\n");
                                 break;
                             case "6":
-                                Mindbox.removeProfessorFromSubject();
+                                Mindbox.removeTeacherFromSubject();
                                 System.out.print("-------------------------------------------------\n");
                                 break;
                             case "E":
@@ -293,8 +294,8 @@ public class Menu {
 
     private static void executeTeacherMenu() {
         String option = "";
-        Worker professor = (Worker) UserInSession.getInstance().getCurrentUser();
-        System.out.println("Welcome Professor " + professor.getFirstName() + " " + professor.getLastName());
+        Worker teacher = (Worker) UserInSession.getInstance().getCurrentUser();
+        System.out.println("Welcome Teacher " + teacher.getFirstName() + " " + teacher.getLastName());
         do {
             System.out.println("1. View all my current subjects.");
             System.out.println("2. Observe students by filter.");
@@ -307,11 +308,11 @@ public class Menu {
             switch (option) {
                 case "1":
                     System.out.println("Showing all your current subjects.");
-                    professor.showMySubjects();
+                    teacher.showMySubjects();
                     System.out.print("-------------------------------------------------\n");
                     break;
                 case "2":
-                    if (professor.getSubjects().isEmpty()) {
+                    if (teacher.getSubjects().isEmpty()) {
                         System.out.println("No filters available, you have no groups assigned.");
                     } else {
                         System.out.println("Observe grades by filter.");
@@ -326,15 +327,15 @@ public class Menu {
                             filterOption = reader.nextLine();
                             switch (filterOption) {
                                 case "1":
-                                    professor.filterBySemester();
+                                    teacher.filterBySemester();
                                     System.out.print("-------------------------------------------------\n");
                                     break;
                                 case "2":
-                                    professor.filterByGroup();
+                                    teacher.filterByGroup();
                                     System.out.print("-------------------------------------------------\n");
                                     break;
                                 case "3":
-                                    professor.filterBySubject();
+                                    teacher.filterBySubject();
                                     System.out.print("-------------------------------------------------\n");
                                     break;
                                 case "E":
@@ -351,17 +352,17 @@ public class Menu {
                     break;
                 case "3":
                     System.out.println("Selected: Assign grades");
-                    professor.assignGrade();
+                    teacher.assignGrade();
                     System.out.print("-------------------------------------------------\n");
                     break;
                 case "4":
-                    System.out.println(professor.toString());
+                    System.out.println(teacher.toString());
                     System.out.print("-------------------------------------------------\n");
                     break;
                 case "E":
                 case "e":
                     System.out.println("Logging out...");
-                    UserInSession.getInstance().logOut();
+                    UserInSession.getInstance().logout();
                     System.out.print("-------------------------------------------------\n");
                     break;
                 default:

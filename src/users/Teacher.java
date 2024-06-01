@@ -1,113 +1,107 @@
-package Usuarios.Trabajadores;
+package users;
 
-import Tec.Tec;
-import Usuarios.Usuario;
-import Usuarios.Utils.Carreras;
-import Usuarios.Utils.Rol;
-import Usuarios.Utils.Utils;
-import java.util.ArrayList;
-import java.util.InputMismatchException;
-import java.util.Scanner;
-import Utils.UsuarioEnSesion;
-import users.Worker;
+import academicinfo.*;
+import mindbox.*;
+import users.*;
+import users.utils.*;
+import utils.*;
+import java.util.*;
 
 public class Teacher extends Worker {
-    public Profesor(String nombre, String apellido, String fechaNacimiento, String ciudad, String estado, String curp, String direccion, Carreras carrera, String nControl, String contrasena, String RFC, float salario) {
-        super(nombre, apellido, fechaNacimiento, ciudad, estado, curp, direccion, carrera, nControl, contrasena, Rol.Profesor, RFC, salario);
+    public Teacher(String name, String lastName, String birthDate, String city, String state, String curp, String address, Careers career, String controlNumber, String password, String RFC, float salary) {
+        super(name, lastName, birthDate, city, state, curp, address, career, controlNumber, password, Role.TEACHER, RFC, salary);
     }
 
-    public static void registrarProfesor(){
-        System.out.println("Has seleccionado la opcion de registrar a un Profesor. ");
-        ArrayList<String> datosComun = Utils.obtenerDatosComun(Rol.Profesor);
+    public static void registerTeacher() {
+        System.out.println("You have selected the option to register a Teacher.");
+        ArrayList<String> commonData = CommonData.getCommonData(Role.TEACHER);
         Scanner sc = new Scanner(System.in);
 
-        String nombre = datosComun.get(0);
-        String apellido = datosComun.get(1);
-        String fechaNacimiento = datosComun.get(2);
-        String ciudad = datosComun.get(3);
-        String estado = datosComun.get(4);
-        String curp = datosComun.get(5);
-        String direccion = datosComun.get(6);
-        String contrasena = datosComun.get(7);
-        String nControl = datosComun.get(8);
-        Carreras carrera = datosComun.get(9) == "Sistemas" ? Carreras.Sistemas: datosComun.get(9) == "Materiales" ? Carreras.Materiales : Carreras.Electronica;
-        String rfc = datosComun.get(10);
-        float sueldo = 0;
+        String name = commonData.get(0);
+        String lastName = commonData.get(1);
+        String birthDate = commonData.get(2);
+        String city = commonData.get(3);
+        String state = commonData.get(4);
+        String curp = commonData.get(5);
+        String address = commonData.get(6);
+        String password = commonData.get(7);
+        String controlNumber = commonData.get(8);
+        Careers career = commonData.get(9).equals("Systems") ? Careers.Systems : commonData.get(9).equals("Materials") ? Careers.Materials : Careers.Electronics;
+        String rfc = commonData.get(10);
+        float salary = 0;
         do {
             try {
-                System.out.println("Digite el sueldo del Profesor");
-                sueldo = sc.nextFloat();
-                if (sueldo <= 0) {
-                    sueldo = 0;
+                System.out.println("Enter the teacher's salary:");
+                salary = sc.nextFloat();
+                if (salary <= 0) {
+                    salary = 0;
                     throw new Exception("");
                 }
             } catch (InputMismatchException e) {
-                System.out.println("Valor debe ser un numero.");
+                System.out.println("Value must be a number.");
                 sc.nextLine();
             } catch (Exception e) {
-                System.out.println("Valor debe ser mayor a 0.");
+                System.out.println("Value must be greater than 0.");
                 sc.nextLine();
             }
-        } while (sueldo == 0);
+        } while (salary == 0);
 
-        Profesor profesor = new Profesor(nombre, apellido, fechaNacimiento, ciudad, estado, curp, direccion, carrera, nControl, contrasena,rfc, sueldo);
-        Tec.usuarios.get(Rol.Profesor).add(profesor);
-        System.out.println("Profesor registrado con exito.");
+        Teacher teacher = new Teacher(name, lastName, birthDate, city, state, curp, address, career, controlNumber, password, rfc, salary);
+        Mindbox.users.get(Role.TEACHER).add(teacher);
+        System.out.println("Teacher successfully registered.");
     }
 
-    public static void mostrarAllProfesores(){
-        ArrayList<Usuario> usuariosProfesores = Tec.usuarios.get(Rol.Profesor);
-        System.out.println("Profesores del TEC de MORELIA");
-        for (Usuario usuarios : usuariosProfesores) {
-            if (usuarios.getCarrera().equals(UsuarioEnSesion.getUsuarioActual().getCarrera())){
-                Profesor profesores = (Profesor) usuarios;
-                System.out.println(profesores.aString());
+    public static void showAllTeachers() {
+        ArrayList<User> teacherUsers = Mindbox.users.get(Role.TEACHER);
+        System.out.println("Teachers of Mindbox");
+        for (User user : teacherUsers) {
+            if (user.getCareer().equals(UserInSession.getCurrentUser().getCareer())) {
+                Teacher teacher = (Teacher) user;
+                System.out.println(teacher.toString());
             }
-
         }
     }
 
-    public static Profesor obtenerProfesor(){
+    public static Teacher getTeacher() {
         Scanner sc = new Scanner(System.in);
-        ArrayList<Usuario> profes = Tec.usuarios.get(Rol.Profesor);
-        String nControl = "";
-        boolean band = false;
-        Profesor maestro = null;
+        ArrayList<User> teachers = Mindbox.users.get(Role.TEACHER);
+        String controlNumber = "";
+        boolean found = false;
+        Teacher teacher = null;
         do {
-            mostrarAllProfesores();
-            System.out.println("Ingresa el numero de control del profesor que deseas: ");
-            nControl = sc.nextLine();
-            for (Usuario usuario : profes) {
-                if (usuario.getnControl().equals(nControl)){
-                    band = true;
-                    maestro = (Profesor) usuario;
+            showAllTeachers();
+            System.out.println("Enter the control number of the teacher you want:");
+            controlNumber = sc.nextLine();
+            for (User user : teachers) {
+                if (user.getControlNumber().equals(controlNumber)) {
+                    found = true;
+                    teacher = (Teacher) user;
                     break;
                 }
             }
-        } while (!band);
-        return maestro;
+        } while (!found);
+        return teacher;
     }
 
-    public static void eliminarProfesor(){
-        if (Tec.usuarios.get(Rol.Profesor).isEmpty()){
-            System.out.println("No hay maestros a eliminar. ");
+    public static void deleteTeacher() {
+        if (Mindbox.users.get(Role.TEACHER).isEmpty()) {
+            System.out.println("There are no teachers to delete.");
             return;
         }
-        System.out.println("Has seleccionado la opcion eliminar Profesor.");
-        Profesor profesor = obtenerProfesor();
-        if(profesor.getMaterias().isEmpty()){
-            Tec.usuarios.get(Rol.Profesor).remove(profesor);
-            System.out.println("Se ha elimando el profesor "+profesor.getNombre()+", con numero de control "+profesor.getnControl());
-        }
-        else{
-            System.out.println("No se ha eliminado el profesor, ya que cuenta con materias asignadas");
+        System.out.println("You have selected the option to delete a Teacher.");
+        Teacher teacher = getTeacher();
+        if (teacher.getSubjects().isEmpty()) {
+            Mindbox.users.get(Role.TEACHER).remove(teacher);
+            System.out.println("The teacher " + teacher.getFirstName() + " " + teacher.getLastName() + " with control number " + teacher.getControlNumber() + " has been deleted.");
+        } else {
+            System.out.println("The teacher has not been deleted because they have assigned subjects.");
         }
     }
 
-    public static void actualizarDatosComunes(){
-        System.out.println("Has seleccionado la opcion Actualizar Profesor.");
-        mostrarAllProfesores();
-        Profesor profesor = obtenerProfesor();
-        Utils.actualizarInformacion(profesor);
+    public static void updateCommonData() {
+        System.out.println("You have selected the option to Update Teacher.");
+        showAllTeachers();
+        Teacher teacher = getTeacher();
+        CommonData.updateInformation(teacher);
     }
 }
