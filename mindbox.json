@@ -1,190 +1,5 @@
 {
   "semesters": {
-    "Electronics": [
-      {
-        "id": "S1ELC",
-        "semesterNumber": 1,
-        "career": "Electronics",
-        "groups": [
-          {
-            "career": "Electronics",
-            "studentList": [],
-            "subjects": [
-              {
-                "id": "Networks 1A",
-                "career": "Electronics",
-                "group": "G1AELC",
-                "teacher": null
-              },
-              {
-                "id": "Circuits 1A",
-                "career": "Electronics",
-                "group": "G1AELC",
-                "teacher": null
-              },
-              {
-                "id": "Calculus 1A",
-                "career": "Electronics",
-                "group": "G1AELC",
-                "teacher": null
-              }
-            ],
-            "semester": "S1ELC",
-            "groupType": "A",
-            "groupId": "G1AELC"
-          },
-          {
-            "career": "Electronics",
-            "studentList": [],
-            "subjects": [
-              {
-                "id": "Networks 1B",
-                "career": "Electronics",
-                "group": "G1BELC",
-                "teacher": null
-              },
-              {
-                "id": "Circuits 1B",
-                "career": "Electronics",
-                "group": "G1BELC",
-                "teacher": null
-              },
-              {
-                "id": "Calculus 1B",
-                "career": "Electronics",
-                "group": "G1BELC",
-                "teacher": null
-              }
-            ],
-            "semester": "S1ELC",
-            "groupType": "B",
-            "groupId": "G1BELC"
-          }
-        ]
-      },
-      {
-        "id": "S2ELC",
-        "semesterNumber": 2,
-        "career": "Electronics",
-        "groups": [
-          {
-            "career": "Electronics",
-            "studentList": [],
-            "subjects": [
-              {
-                "id": "Networks 2A",
-                "career": "Electronics",
-                "group": "G2AELC",
-                "teacher": null
-              },
-              {
-                "id": "Circuits 2A",
-                "career": "Electronics",
-                "group": "G2AELC",
-                "teacher": null
-              },
-              {
-                "id": "Calculus 2A",
-                "career": "Electronics",
-                "group": "G2AELC",
-                "teacher": null
-              }
-            ],
-            "semester": "S2ELC",
-            "groupType": "A",
-            "groupId": "G2AELC"
-          },
-          {
-            "career": "Electronics",
-            "studentList": [],
-            "subjects": [
-              {
-                "id": "Networks 2B",
-                "career": "Electronics",
-                "group": "G2BELC",
-                "teacher": null
-              },
-              {
-                "id": "Circuits 2B",
-                "career": "Electronics",
-                "group": "G2BELC",
-                "teacher": null
-              },
-              {
-                "id": "Calculus 2B",
-                "career": "Electronics",
-                "group": "G2BELC",
-                "teacher": null
-              }
-            ],
-            "semester": "S2ELC",
-            "groupType": "B",
-            "groupId": "G2BELC"
-          }
-        ]
-      },
-      {
-        "id": "S3ELC",
-        "semesterNumber": 3,
-        "career": "Electronics",
-        "groups": [
-          {
-            "career": "Electronics",
-            "studentList": [],
-            "subjects": [
-              {
-                "id": "Networks 3A",
-                "career": "Electronics",
-                "group": "G3AELC",
-                "teacher": null
-              },
-              {
-                "id": "Circuits 3A",
-                "career": "Electronics",
-                "group": "G3AELC",
-                "teacher": null
-              },
-              {
-                "id": "Calculus 3A",
-                "career": "Electronics",
-                "group": "G3AELC",
-                "teacher": null
-              }
-            ],
-            "semester": "S3ELC",
-            "groupType": "A",
-            "groupId": "G3AELC"
-          },
-          {
-            "career": "Electronics",
-            "studentList": [],
-            "subjects": [
-              {
-                "id": "Networks 3B",
-                "career": "Electronics",
-                "group": "G3BELC",
-                "teacher": null
-              },
-              {
-                "id": "Circuits 3B",
-                "career": "Electronics",
-                "group": "G3BELC",
-                "teacher": null
-              },
-              {
-                "id": "Calculus 3B",
-                "career": "Electronics",
-                "group": "G3BELC",
-                "teacher": null
-              }
-            ],
-            "semester": "S3ELC",
-            "groupType": "B",
-            "groupId": "G3BELC"
-          }
-        ]
-      }
-    ],
     "Systems": [
       {
         "id": "S1ISC",
@@ -555,6 +370,191 @@
             "semester": "S3IMAT",
             "groupType": "B",
             "groupId": "G3BIMAT"
+          }
+        ]
+      }
+    ],
+    "Electronics": [
+      {
+        "id": "S1ELC",
+        "semesterNumber": 1,
+        "career": "Electronics",
+        "groups": [
+          {
+            "career": "Electronics",
+            "studentList": [],
+            "subjects": [
+              {
+                "id": "Networks 1A",
+                "career": "Electronics",
+                "group": "G1AELC",
+                "teacher": null
+              },
+              {
+                "id": "Circuits 1A",
+                "career": "Electronics",
+                "group": "G1AELC",
+                "teacher": null
+              },
+              {
+                "id": "Calculus 1A",
+                "career": "Electronics",
+                "group": "G1AELC",
+                "teacher": null
+              }
+            ],
+            "semester": "S1ELC",
+            "groupType": "A",
+            "groupId": "G1AELC"
+          },
+          {
+            "career": "Electronics",
+            "studentList": [],
+            "subjects": [
+              {
+                "id": "Networks 1B",
+                "career": "Electronics",
+                "group": "G1BELC",
+                "teacher": null
+              },
+              {
+                "id": "Circuits 1B",
+                "career": "Electronics",
+                "group": "G1BELC",
+                "teacher": null
+              },
+              {
+                "id": "Calculus 1B",
+                "career": "Electronics",
+                "group": "G1BELC",
+                "teacher": null
+              }
+            ],
+            "semester": "S1ELC",
+            "groupType": "B",
+            "groupId": "G1BELC"
+          }
+        ]
+      },
+      {
+        "id": "S2ELC",
+        "semesterNumber": 2,
+        "career": "Electronics",
+        "groups": [
+          {
+            "career": "Electronics",
+            "studentList": [],
+            "subjects": [
+              {
+                "id": "Networks 2A",
+                "career": "Electronics",
+                "group": "G2AELC",
+                "teacher": null
+              },
+              {
+                "id": "Circuits 2A",
+                "career": "Electronics",
+                "group": "G2AELC",
+                "teacher": null
+              },
+              {
+                "id": "Calculus 2A",
+                "career": "Electronics",
+                "group": "G2AELC",
+                "teacher": null
+              }
+            ],
+            "semester": "S2ELC",
+            "groupType": "A",
+            "groupId": "G2AELC"
+          },
+          {
+            "career": "Electronics",
+            "studentList": [],
+            "subjects": [
+              {
+                "id": "Networks 2B",
+                "career": "Electronics",
+                "group": "G2BELC",
+                "teacher": null
+              },
+              {
+                "id": "Circuits 2B",
+                "career": "Electronics",
+                "group": "G2BELC",
+                "teacher": null
+              },
+              {
+                "id": "Calculus 2B",
+                "career": "Electronics",
+                "group": "G2BELC",
+                "teacher": null
+              }
+            ],
+            "semester": "S2ELC",
+            "groupType": "B",
+            "groupId": "G2BELC"
+          }
+        ]
+      },
+      {
+        "id": "S3ELC",
+        "semesterNumber": 3,
+        "career": "Electronics",
+        "groups": [
+          {
+            "career": "Electronics",
+            "studentList": [],
+            "subjects": [
+              {
+                "id": "Networks 3A",
+                "career": "Electronics",
+                "group": "G3AELC",
+                "teacher": null
+              },
+              {
+                "id": "Circuits 3A",
+                "career": "Electronics",
+                "group": "G3AELC",
+                "teacher": null
+              },
+              {
+                "id": "Calculus 3A",
+                "career": "Electronics",
+                "group": "G3AELC",
+                "teacher": null
+              }
+            ],
+            "semester": "S3ELC",
+            "groupType": "A",
+            "groupId": "G3AELC"
+          },
+          {
+            "career": "Electronics",
+            "studentList": [],
+            "subjects": [
+              {
+                "id": "Networks 3B",
+                "career": "Electronics",
+                "group": "G3BELC",
+                "teacher": null
+              },
+              {
+                "id": "Circuits 3B",
+                "career": "Electronics",
+                "group": "G3BELC",
+                "teacher": null
+              },
+              {
+                "id": "Calculus 3B",
+                "career": "Electronics",
+                "group": "G3BELC",
+                "teacher": null
+              }
+            ],
+            "semester": "S3ELC",
+            "groupType": "B",
+            "groupId": "G3BELC"
           }
         ]
       }

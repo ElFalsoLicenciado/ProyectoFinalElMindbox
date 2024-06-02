@@ -5,9 +5,8 @@ import gson.serializers.*;
 public class Main {
 
     public static void main(String[] args) {
-        UserDeserializer.deserialize();
-        MindboxDeserializer.deserialize();
-        Menu.logIn();
+
+        Menu.showMenu();
 
     }
 

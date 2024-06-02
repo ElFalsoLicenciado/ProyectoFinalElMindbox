@@ -4,6 +4,10 @@ import java.time.LocalDate;
 import java.util.*;
 
 import academicinfo.*;
+import gson.deserializers.MindboxDeserializer;
+import gson.deserializers.UserDeserializer;
+import gson.serializers.MindboxSerializer;
+import gson.serializers.UserSerializer;
 import mindbox.*;
 import users.*;
 import users.utils.*;
@@ -323,6 +327,16 @@ public class Mindbox {
 
     public static void expelStudent() {
         Student.expelStudent();
+    }
+
+    public static void saveJson(){
+        MindboxSerializer.serialize();
+        UserSerializer.serialize();
+    }
+
+    public static void loadJson(){
+        MindboxDeserializer.deserialize();
+        UserDeserializer.deserialize();
     }
 }
 

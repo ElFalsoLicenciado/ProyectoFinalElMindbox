@@ -11,7 +11,35 @@ import java.util.*;
 
 public class Menu {
 
-    static Scanner reader = new Scanner(System.in);
+    public static Scanner reader = new Scanner(System.in);
+
+    public static void showMenu(){
+
+        while (true) {
+            Mindbox.loadJson();
+
+            System.out.println("WELCOME TO THE MINDBOX SYSTEM.");
+            System.out.println("1. LogIn");
+            System.out.println("E. Exit");
+            System.out.println("Elige una opción: ");
+
+            String option = reader.nextLine();
+
+            switch (option.toUpperCase()) {
+                case "1":
+                    logIn();
+                    break;
+                case "E":
+                    Mindbox.saveJson();
+                    System.exit(0);
+                    break;
+                default:
+                    System.out.println("INCORRECT OPTION");
+                    break;
+            }
+        }
+
+    }
 
     public static void logIn() {
         boolean correctData = false;
@@ -20,8 +48,6 @@ public class Menu {
         UserInSession.getInstance().logout();
 
         do {
-            System.out.println("WELCOME TO THE MINDBOX SYSTEM.");
-            System.out.println("Type [EXIT] in both fields if you want to exit the program directly.");
             System.out.printf("Log in to continue, you have %d attempts: \n", attempts);
 
             System.out.println("Enter your control number: ");
@@ -30,27 +56,19 @@ public class Menu {
             System.out.println("Enter your password: ");
             String password = reader.nextLine();
 
-            if (controlNumber.equals("EXIT") && password.equals("EXIT")) {
-                System.out.println("Ending the program.");
-                UserSerializer.serialize();
-                MindboxSerializer.serialize();
+            User currentUser = Mindbox.verifyLogin(controlNumber, password);
+
+            if (currentUser != null && attempts > 0) {
+                UserInSession.getInstance().setUser(currentUser);
+                selectMenu();
+                attempts = 5;
+            } else if (attempts == 1) {
+                System.out.println("ATTEMPTS EXHAUSTED, ENDING THE PROGRAM.");
+                Mindbox.saveJson();
                 correctData = true;
             } else {
-                User currentUser = Mindbox.verifyLogin(controlNumber, password);
-
-                if (currentUser != null && attempts > 0) {
-                    UserInSession.getInstance().setUser(currentUser);
-                    selectMenu();
-                    attempts = 5;
-                } else if (attempts == 1) {
-                    System.out.println("ATTEMPTS EXHAUSTED, ENDING THE PROGRAM.");
-                    UserSerializer.serialize();
-                    MindboxSerializer.serialize();
-                    correctData = true;
-                } else {
-                    System.out.println("INCORRECT DATA.");
-                    attempts--;
-                }
+                System.out.println("INCORRECT DATA.");
+                attempts--;
             }
 
         } while (!correctData);
@@ -77,7 +95,7 @@ public class Menu {
             System.out.print("Enter an option: ");
             System.out.println();
             option = reader.nextLine();
-            switch (option) {
+            switch (option.toUpperCase()) {
                 case "1":
                     student.showGrades();
                     System.out.print("-------------------------------------------------\n");
@@ -99,9 +117,7 @@ public class Menu {
                     System.out.print("-------------------------------------------------\n");
                     break;
                 default:
-                    if (!option.equalsIgnoreCase("E")) {
-                        System.out.println("Invalid Option");
-                    }
+                    System.out.println("Invalid Option");
                     System.out.print("-------------------------------------------------\n");
                     break;
             }
@@ -127,7 +143,7 @@ public class Menu {
             System.out.print("Enter an option:");
             System.out.println();
             option = reader.nextLine();
-            switch (option) {
+            switch (option.toUpperCase()) {
                 case "1":
                     System.out.println("Selected: Assign grades");
                     coordinator.assignGrade();
@@ -153,7 +169,7 @@ public class Menu {
                             System.out.println("[3]. By subject.");
                             System.out.println("[E]. Exit the menu");
                             filterOption = reader.nextLine();
-                            switch (filterOption) {
+                            switch (filterOption.toUpperCase()) {
                                 case "1":
                                     coordinator.filterBySemester();
                                     System.out.print("-------------------------------------------------\n");
@@ -192,7 +208,7 @@ public class Menu {
                         System.out.println("E. Exit the menu");
                         System.out.print("Enter an option:");
                         option = reader.nextLine();
-                        switch (option) {
+                        switch (option.toUpperCase()) {
                             case "1":
                                 Mindbox.registerStudent();
                                 System.out.print("-------------------------------------------------\n");
@@ -231,7 +247,7 @@ public class Menu {
                         System.out.println("E. Exit the menu");
                         System.out.print("Enter an option:");
                         option = reader.nextLine();
-                        switch (option) {
+                        switch (option.toUpperCase()) {
                             case "1":
                                 Mindbox.registerTeacher();
                                 System.out.print("-------------------------------------------------\n");
@@ -325,7 +341,7 @@ public class Menu {
                             System.out.println("[3]. By subject.");
                             System.out.println("[E]. Exit the menu");
                             filterOption = reader.nextLine();
-                            switch (filterOption) {
+                            switch (filterOption.toUpperCase()) {
                                 case "1":
                                     teacher.filterBySemester();
                                     System.out.print("-------------------------------------------------\n");
@@ -360,7 +376,6 @@ public class Menu {
                     System.out.print("-------------------------------------------------\n");
                     break;
                 case "E":
-                case "e":
                     System.out.println("Logging out...");
                     UserInSession.getInstance().logout();
                     System.out.print("-------------------------------------------------\n");
