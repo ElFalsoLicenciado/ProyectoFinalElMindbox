@@ -1,0 +1,564 @@
+{
+  "semesters": {
+    "Systems": [
+      {
+        "id": "S1ISC",
+        "semesterNumber": 1,
+        "career": "Systems",
+        "groups": [
+          {
+            "career": "Systems",
+            "studentList": [
+              "IL24ISC00",
+              "IA24ISC00",
+              "IR24ISC00"
+            ],
+            "subjects": [
+              {
+                "id": "Programming 1A",
+                "career": "Systems",
+                "group": "G1AISC",
+                "teacher": null
+              },
+              {
+                "id": "Probability 1A",
+                "career": "Systems",
+                "group": "G1AISC",
+                "teacher": null
+              },
+              {
+                "id": "Calculus 1A",
+                "career": "Systems",
+                "group": "G1AISC",
+                "teacher": null
+              }
+            ],
+            "semester": "S1ISC",
+            "groupType": "A",
+            "groupId": "G1AISC"
+          },
+          {
+            "career": "Systems",
+            "studentList": [],
+            "subjects": [
+              {
+                "id": "Programming 1B",
+                "career": "Systems",
+                "group": "G1BISC",
+                "teacher": null
+              },
+              {
+                "id": "Probability 1B",
+                "career": "Systems",
+                "group": "G1BISC",
+                "teacher": null
+              },
+              {
+                "id": "Calculus 1B",
+                "career": "Systems",
+                "group": "G1BISC",
+                "teacher": null
+              }
+            ],
+            "semester": "S1ISC",
+            "groupType": "B",
+            "groupId": "G1BISC"
+          }
+        ]
+      },
+      {
+        "id": "S2ISC",
+        "semesterNumber": 2,
+        "career": "Systems",
+        "groups": [
+          {
+            "career": "Systems",
+            "studentList": [],
+            "subjects": [
+              {
+                "id": "Programming 2A",
+                "career": "Systems",
+                "group": "G2AISC",
+                "teacher": null
+              },
+              {
+                "id": "Probability 2A",
+                "career": "Systems",
+                "group": "G2AISC",
+                "teacher": null
+              },
+              {
+                "id": "Calculus 2A",
+                "career": "Systems",
+                "group": "G2AISC",
+                "teacher": null
+              }
+            ],
+            "semester": "S2ISC",
+            "groupType": "A",
+            "groupId": "G2AISC"
+          },
+          {
+            "career": "Systems",
+            "studentList": [],
+            "subjects": [
+              {
+                "id": "Programming 2B",
+                "career": "Systems",
+                "group": "G2BISC",
+                "teacher": null
+              },
+              {
+                "id": "Probability 2B",
+                "career": "Systems",
+                "group": "G2BISC",
+                "teacher": null
+              },
+              {
+                "id": "Calculus 2B",
+                "career": "Systems",
+                "group": "G2BISC",
+                "teacher": null
+              }
+            ],
+            "semester": "S2ISC",
+            "groupType": "B",
+            "groupId": "G2BISC"
+          }
+        ]
+      },
+      {
+        "id": "S3ISC",
+        "semesterNumber": 3,
+        "career": "Systems",
+        "groups": [
+          {
+            "career": "Systems",
+            "studentList": [],
+            "subjects": [
+              {
+                "id": "Programming 3A",
+                "career": "Systems",
+                "group": "G3AISC",
+                "teacher": null
+              },
+              {
+                "id": "Probability 3A",
+                "career": "Systems",
+                "group": "G3AISC",
+                "teacher": null
+              },
+              {
+                "id": "Calculus 3A",
+                "career": "Systems",
+                "group": "G3AISC",
+                "teacher": null
+              }
+            ],
+            "semester": "S3ISC",
+            "groupType": "A",
+            "groupId": "G3AISC"
+          },
+          {
+            "career": "Systems",
+            "studentList": [],
+            "subjects": [
+              {
+                "id": "Programming 3B",
+                "career": "Systems",
+                "group": "G3BISC",
+                "teacher": null
+              },
+              {
+                "id": "Probability 3B",
+                "career": "Systems",
+                "group": "G3BISC",
+                "teacher": null
+              },
+              {
+                "id": "Calculus 3B",
+                "career": "Systems",
+                "group": "G3BISC",
+                "teacher": null
+              }
+            ],
+            "semester": "S3ISC",
+            "groupType": "B",
+            "groupId": "G3BISC"
+          }
+        ]
+      }
+    ],
+    "Materials": [
+      {
+        "id": "S1IMAT",
+        "semesterNumber": 1,
+        "career": "Materials",
+        "groups": [
+          {
+            "career": "Materials",
+            "studentList": [],
+            "subjects": [
+              {
+                "id": "Statistics 1A",
+                "career": "Materials",
+                "group": "G1AIMAT",
+                "teacher": null
+              },
+              {
+                "id": "Accounting 1A",
+                "career": "Materials",
+                "group": "G1AIMAT",
+                "teacher": null
+              },
+              {
+                "id": "Calculus 1A",
+                "career": "Materials",
+                "group": "G1AIMAT",
+                "teacher": null
+              }
+            ],
+            "semester": "S1IMAT",
+            "groupType": "A",
+            "groupId": "G1AIMAT"
+          },
+          {
+            "career": "Materials",
+            "studentList": [],
+            "subjects": [
+              {
+                "id": "Statistics 1B",
+                "career": "Materials",
+                "group": "G1BIMAT",
+                "teacher": null
+              },
+              {
+                "id": "Accounting 1B",
+                "career": "Materials",
+                "group": "G1BIMAT",
+                "teacher": null
+              },
+              {
+                "id": "Calculus 1B",
+                "career": "Materials",
+                "group": "G1BIMAT",
+                "teacher": null
+              }
+            ],
+            "semester": "S1IMAT",
+            "groupType": "B",
+            "groupId": "G1BIMAT"
+          }
+        ]
+      },
+      {
+        "id": "S2IMAT",
+        "semesterNumber": 2,
+        "career": "Materials",
+        "groups": [
+          {
+            "career": "Materials",
+            "studentList": [],
+            "subjects": [
+              {
+                "id": "Statistics 2A",
+                "career": "Materials",
+                "group": "G2AIMAT",
+                "teacher": null
+              },
+              {
+                "id": "Accounting 2A",
+                "career": "Materials",
+                "group": "G2AIMAT",
+                "teacher": null
+              },
+              {
+                "id": "Calculus 2A",
+                "career": "Materials",
+                "group": "G2AIMAT",
+                "teacher": null
+              }
+            ],
+            "semester": "S2IMAT",
+            "groupType": "A",
+            "groupId": "G2AIMAT"
+          },
+          {
+            "career": "Materials",
+            "studentList": [],
+            "subjects": [
+              {
+                "id": "Statistics 2B",
+                "career": "Materials",
+                "group": "G2BIMAT",
+                "teacher": null
+              },
+              {
+                "id": "Accounting 2B",
+                "career": "Materials",
+                "group": "G2BIMAT",
+                "teacher": null
+              },
+              {
+                "id": "Calculus 2B",
+                "career": "Materials",
+                "group": "G2BIMAT",
+                "teacher": null
+              }
+            ],
+            "semester": "S2IMAT",
+            "groupType": "B",
+            "groupId": "G2BIMAT"
+          }
+        ]
+      },
+      {
+        "id": "S3IMAT",
+        "semesterNumber": 3,
+        "career": "Materials",
+        "groups": [
+          {
+            "career": "Materials",
+            "studentList": [],
+            "subjects": [
+              {
+                "id": "Statistics 3A",
+                "career": "Materials",
+                "group": "G3AIMAT",
+                "teacher": null
+              },
+              {
+                "id": "Accounting 3A",
+                "career": "Materials",
+                "group": "G3AIMAT",
+                "teacher": null
+              },
+              {
+                "id": "Calculus 3A",
+                "career": "Materials",
+                "group": "G3AIMAT",
+                "teacher": null
+              }
+            ],
+            "semester": "S3IMAT",
+            "groupType": "A",
+            "groupId": "G3AIMAT"
+          },
+          {
+            "career": "Materials",
+            "studentList": [],
+            "subjects": [
+              {
+                "id": "Statistics 3B",
+                "career": "Materials",
+                "group": "G3BIMAT",
+                "teacher": null
+              },
+              {
+                "id": "Accounting 3B",
+                "career": "Materials",
+                "group": "G3BIMAT",
+                "teacher": null
+              },
+              {
+                "id": "Calculus 3B",
+                "career": "Materials",
+                "group": "G3BIMAT",
+                "teacher": null
+              }
+            ],
+            "semester": "S3IMAT",
+            "groupType": "B",
+            "groupId": "G3BIMAT"
+          }
+        ]
+      }
+    ],
+    "Electronics": [
+      {
+        "id": "S1ELC",
+        "semesterNumber": 1,
+        "career": "Electronics",
+        "groups": [
+          {
+            "career": "Electronics",
+            "studentList": [],
+            "subjects": [
+              {
+                "id": "Networks 1A",
+                "career": "Electronics",
+                "group": "G1AELC",
+                "teacher": null
+              },
+              {
+                "id": "Circuits 1A",
+                "career": "Electronics",
+                "group": "G1AELC",
+                "teacher": null
+              },
+              {
+                "id": "Calculus 1A",
+                "career": "Electronics",
+                "group": "G1AELC",
+                "teacher": null
+              }
+            ],
+            "semester": "S1ELC",
+            "groupType": "A",
+            "groupId": "G1AELC"
+          },
+          {
+            "career": "Electronics",
+            "studentList": [],
+            "subjects": [
+              {
+                "id": "Networks 1B",
+                "career": "Electronics",
+                "group": "G1BELC",
+                "teacher": null
+              },
+              {
+                "id": "Circuits 1B",
+                "career": "Electronics",
+                "group": "G1BELC",
+                "teacher": null
+              },
+              {
+                "id": "Calculus 1B",
+                "career": "Electronics",
+                "group": "G1BELC",
+                "teacher": null
+              }
+            ],
+            "semester": "S1ELC",
+            "groupType": "B",
+            "groupId": "G1BELC"
+          }
+        ]
+      },
+      {
+        "id": "S2ELC",
+        "semesterNumber": 2,
+        "career": "Electronics",
+        "groups": [
+          {
+            "career": "Electronics",
+            "studentList": [],
+            "subjects": [
+              {
+                "id": "Networks 2A",
+                "career": "Electronics",
+                "group": "G2AELC",
+                "teacher": null
+              },
+              {
+                "id": "Circuits 2A",
+                "career": "Electronics",
+                "group": "G2AELC",
+                "teacher": null
+              },
+              {
+                "id": "Calculus 2A",
+                "career": "Electronics",
+                "group": "G2AELC",
+                "teacher": null
+              }
+            ],
+            "semester": "S2ELC",
+            "groupType": "A",
+            "groupId": "G2AELC"
+          },
+          {
+            "career": "Electronics",
+            "studentList": [],
+            "subjects": [
+              {
+                "id": "Networks 2B",
+                "career": "Electronics",
+                "group": "G2BELC",
+                "teacher": null
+              },
+              {
+                "id": "Circuits 2B",
+                "career": "Electronics",
+                "group": "G2BELC",
+                "teacher": null
+              },
+              {
+                "id": "Calculus 2B",
+                "career": "Electronics",
+                "group": "G2BELC",
+                "teacher": null
+              }
+            ],
+            "semester": "S2ELC",
+            "groupType": "B",
+            "groupId": "G2BELC"
+          }
+        ]
+      },
+      {
+        "id": "S3ELC",
+        "semesterNumber": 3,
+        "career": "Electronics",
+        "groups": [
+          {
+            "career": "Electronics",
+            "studentList": [],
+            "subjects": [
+              {
+                "id": "Networks 3A",
+                "career": "Electronics",
+                "group": "G3AELC",
+                "teacher": null
+              },
+              {
+                "id": "Circuits 3A",
+                "career": "Electronics",
+                "group": "G3AELC",
+                "teacher": null
+              },
+              {
+                "id": "Calculus 3A",
+                "career": "Electronics",
+                "group": "G3AELC",
+                "teacher": null
+              }
+            ],
+            "semester": "S3ELC",
+            "groupType": "A",
+            "groupId": "G3AELC"
+          },
+          {
+            "career": "Electronics",
+            "studentList": [],
+            "subjects": [
+              {
+                "id": "Networks 3B",
+                "career": "Electronics",
+                "group": "G3BELC",
+                "teacher": null
+              },
+              {
+                "id": "Circuits 3B",
+                "career": "Electronics",
+                "group": "G3BELC",
+                "teacher": null
+              },
+              {
+                "id": "Calculus 3B",
+                "career": "Electronics",
+                "group": "G3BELC",
+                "teacher": null
+              }
+            ],
+            "semester": "S3ELC",
+            "groupType": "B",
+            "groupId": "G3BELC"
+          }
+        ]
+      }
+    ]
+  },
+  "graduates": []
+}
