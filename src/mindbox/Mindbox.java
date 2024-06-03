@@ -139,20 +139,20 @@ public class Mindbox {
             }
         }
 
-        Student student1 = new Student("Luis", "Roman", "04-01-2005", "Morelia", "Michoacan", "ROSL050104HMNMNSA3", "Address 123", Careers.Systems, "IL24ISC00", "pass");
+        Student student1 = new Student("Luis", "Roman","Sanchez", "04-01-2005", "Morelia", "Michoacan", "ROSL050104HMNMNSA3", "Address 123", Careers.Systems, "IL24ISC00", "Lars","pass");
         student1.setSemester(semester.getId());
         assert group != null;
         student1.setGroup(group.getGroupId());
         student1.setNullGrades(semester, group);
         student1.setGroupType(group.getGroupType());
         group.getStudentList().add(student1.getControlNumber());
-        Student student2 = new Student("Alberto", "Montoya", "04-01-2005", "Morelia", "Michoacan", "MOAA050104HMNMNS09", "Address 123", Careers.Systems, "IA24ISC00", "123");
+        Student student2 = new Student("Alberto", "Montoya","Arriaga", "04-01-2005", "Morelia", "Michoacan", "MOAA050104HMNMNS09", "Address 123", Careers.Systems, "IA24ISC00", "Asbesto","123",new HashMap<>());
         student2.setSemester(semester.getId());
         student2.setGroup(group.getGroupId());
         student2.setNullGrades(semester, group);
         student2.setGroupType(group.getGroupType());
         group.getStudentList().add(student2.getControlNumber());
-        Student student3 = new Student("Rene", "Olvera", "04-01-2005", "Morelia", "Michoacan", "SONJ850615HJLZNN09", "Address 123", Careers.Systems, "IR24ISC00", "123");
+        Student student3 = new Student("Rene", "Olvera","Estrada", "04-01-2005", "Morelia", "Michoacan", "SONJ850615HJLZNN09", "Address 123", Careers.Systems, "IR24ISC00","ElPay", "123");
         student3.setSemester(semester.getId());
         student3.setGroup(group.getGroupId());
         student3.setNullGrades(semester, group);
@@ -162,7 +162,7 @@ public class Mindbox {
         Mindbox.users.get(Role.STUDENT).add(student2);
         Mindbox.users.get(Role.STUDENT).add(student3);
 
-        Teacher teacher = new Teacher("Murillo", "Jimenez", "15-06-1985", "Morelia", "Michoacan", "PONJ850615HJLZNN09", "Address 123", Careers.Systems, "MM24ISC00", "123", "RFCGOD", 70000.0f);
+        Teacher teacher = new Teacher("Murillo", "Jimenez","Cardenas", "15-06-1985", "Morelia", "Michoacan", "PONJ850615HJLZNN09", "Address 123", Careers.Systems, "MM24ISC00", "Margarito","123", "RFCGOD", 70000);
         Mindbox.users.get(Role.TEACHER).add(teacher);
     }
 

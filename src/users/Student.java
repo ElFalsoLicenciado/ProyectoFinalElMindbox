@@ -16,9 +16,9 @@ public class Student extends User {
     // Semester, subject
     private HashMap<String, HashMap<String, Integer>> grades;
 
-    public Student(String firstName, String lastName, String birthDate, String city, String state, String curp, String address, Careers career, String controlNumber, String password) {
-        super(firstName, lastName, birthDate, city, state, curp, address, career, controlNumber, password, Role.STUDENT);
-        this.grades = new HashMap<>();
+    public Student(String firstName, String lastName1,String lastName2, String birthDate, String city, String state, String curp, String address, Careers career, String controlNumber, String username, String password, HashMap<String, HashMap<String, Integer>> grades) {
+        super(firstName, lastName1,lastName2, birthDate, city, state, curp, address, career, controlNumber, username, password, Role.STUDENT);
+        this.grades = grades;
     }
 
     public String toString() {
@@ -30,20 +30,9 @@ public class Student extends User {
 
     public static void registerStudent() {
         DialogHelper.info("You have selected the option to register a student.");
-        ArrayList<String> commonData = CommonData.getCommonData(Role.STUDENT);
+        User aux = CommonData.getCommonData(Role.STUDENT);
 
-        String firstName = commonData.get(0);
-        String lastName = commonData.get(1);
-        String birthDate = commonData.get(2);
-        String city = commonData.get(3);
-        String state = commonData.get(4);
-        String curp = commonData.get(5);
-        String address = commonData.get(6);
-        String password = commonData.get(7);
-        String controlNumber = commonData.get(8);
-        Careers career = commonData.get(9).equals("Systems") ? Careers.Systems : commonData.get(9).equals("Materials") ? Careers.Materials : Careers.Electronics;
-
-        Student student = new Student(firstName, lastName, birthDate, city, state, curp, address, career, controlNumber, password);
+        Student student = new Student(aux.firstName, aux.lastName1,aux.lastName2, aux.birthDate, aux.city, aux.state, aux.curp, aux.address, aux.career, aux.controlNumber,aux.username, aux.password, new HashMap<>());
         Semester semester = Semester.getSemesterByNumber(1);
         if (semester == null) {
             DialogHelper.error("Could not find the specified semester.");
@@ -105,7 +94,7 @@ public class Student extends User {
         ArrayList<User> studentUsers = Mindbox.users.get(Role.STUDENT);
         aux.add("Students of Mindbox Institute");
         for (User user : studentUsers) {
-            if (user.getCareer().equals(UserInSession.getCurrentUser().getCareer())) {
+            if (user.getCareer().equals(UserInSession.getInstance().getCurrentUser().getCareer())) {
                 Student student = (Student) user;
                 aux.add(student.toString());
             }
@@ -120,10 +109,12 @@ public class Student extends User {
         }
         ArrayList<String> aux = new ArrayList<>();
         Semester semester = Mindbox.getSemester(getSemester());
+        assert semester != null;
         aux.add("Semester: " + semester.getSemesterNumber());
         HashMap<String, Integer> subjects = grades.get(semester.getId());
         for (String subject : subjects.keySet()) {
             Subject subject1 = Mindbox.getSubject(subject);
+            assert subject1 != null;
             if (grades.get(semester.getId()).get(subject1.getId()) == null) {
                 aux.add("Subject: " + subject1.getId() + " - Grade: Not assigned");
             } else {
@@ -142,7 +133,7 @@ public class Student extends User {
         aux.add("Current Classes");
 
         Group group1 = Mindbox.getGroup(group);
-        for (int i = 0; i < group1.getSubjects().size(); i++) {
+        for (int i = 0; i < Objects.requireNonNull(group1).getSubjects().size(); i++) {
             aux.add(group1.getSubjects().get(i).getId());
         }
         DialogHelper.info(Arrays.toString(aux.toArray()).replace("[", "").replace("]", ""));
@@ -155,10 +146,12 @@ public class Student extends User {
             double totalGrade = 0;
             for (String semester : grades.keySet()) {
                 Semester semester1 = Mindbox.getSemester(semester);
+                assert semester1 != null;
                 aux.add("Semester: " + semester1.getSemesterNumber());
                 double semesterGrade = 0;
                 for (String subject1 : grades.get(semester).keySet()) {
                     Subject subject = Mindbox.getSubject(subject1);
+                    assert subject != null;
                     aux.add("Subject: " + subject.getId() + " - Grade: " + grades.get(semester).get(subject1));
                     semesterGrade += grades.get(semester).get(subject1);
                     totalGrade += grades.get(semester).get(subject1);
@@ -171,13 +164,16 @@ public class Student extends User {
             aux.add("Student history up to now.");
             for (String semester : grades.keySet()) {
                 Semester semester1 = Mindbox.getSemester(semester);
+                assert semester1 != null;
                 aux.add("Semester: " + semester1.getSemesterNumber());
                 double semesterGrade = 0;
                 for (String subject1 : grades.get(semester).keySet()) {
                     Subject subject = Mindbox.getSubject(subject1);
                     if (grades.get(semester).get(subject1) == null) {
+                        assert subject != null;
                         aux.add("Subject: " + subject.getId() + " - Grade: Not assigned");
                     } else {
+                        assert subject != null;
                         aux.add("Subject: " + subject.getId() + " - Grade: " + grades.get(semester).get(subject1));
                         semesterGrade += grades.get(semester).get(subject1);
                     }
@@ -202,7 +198,7 @@ public class Student extends User {
             int confirmation = DialogHelper.optionD(String.format("Are you sure you want to expel the student %s with control number %s", student.getFirstName(), student.getControlNumber()), new String[]{"Yes", "No"});
             if (confirmation == 0) {
                 Mindbox.users.get(Role.STUDENT).remove(student);
-                Mindbox.getGroup(student.getGroup()).getStudentList().remove(student.getControlNumber());
+                Objects.requireNonNull(Mindbox.getGroup(student.getGroup())).getStudentList().remove(student.getControlNumber());
                 DialogHelper.info("The student has been expelled successfully");
                 break;
             } else if (confirmation == 1) {

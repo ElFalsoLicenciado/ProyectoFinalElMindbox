@@ -1,19 +1,16 @@
 package users;
 
 import academicinfo.*;
-import mindbox.*;
-import users.*;
 import users.utils.*;
 import utils.*;
-import java.util.*;
 
 import java.time.LocalDate;
-import java.util.Scanner;
 
 public class User {
 
     protected String firstName;
-    protected String lastName;
+    protected String lastName1;
+    protected String lastName2;
     protected String birthDate;
     protected String city;
     protected String state;
@@ -26,9 +23,10 @@ public class User {
     protected String password;
     protected Role role;
 
-    public User(String firstName, String lastName, String birthDate, String city, String state, String curp, String address, Careers career, String controlNumber,String username, String password, Role role) {
+    public User(String firstName, String lastName1,String lastName2, String birthDate, String city, String state, String curp, String address, Careers career, String controlNumber,String username, String password, Role role) {
         this.firstName = firstName;
-        this.lastName = lastName;
+        this.lastName1 = lastName1;
+        this.lastName2 = lastName2;
         this.birthDate = birthDate;
         this.city = city;
         this.state = state;
@@ -43,15 +41,7 @@ public class User {
     }
 
     protected void showUser() {
-        System.out.println("First Name: " + firstName);
-        System.out.println("Last Name: " + lastName);
-        System.out.println("Birth Date: " + birthDate);
-        System.out.println("City: " + city);
-        System.out.println("State: " + state);
-        System.out.println("CURP: " + curp);
-        System.out.println("Address: " + address);
-        System.out.println("Registration Date: " + registrationDate);
-        System.out.println("Role: " + role);
+        DialogHelper.info("Full name: " + firstName+" " + lastName1+" " + lastName2+"\nBirth Date: " + birthDate+"\nCity: " + city+ " State: " + state+"\nCURP: " + curp+"\nAddress: " + address+"\nRegistration Date: " + registrationDate+"\nRole: " + role);
     }
 
     public String toString() {
@@ -62,161 +52,155 @@ public class User {
     }
 
     public static void updateInformation(User user) {
-        Scanner read = new Scanner(System.in);
-        String option = "";
-        Role role = user.getRole();
+        boolean flag = false;
         do {
-            System.out.println("Which characteristics do you want to change for the selected user?");
-            System.out.println("1. City of residence.");
-            System.out.println("2. State of residence.");
-            System.out.println("3. Address.");
-            System.out.println("4. Password.");
-            System.out.println("E. EXIT THIS MENU.");
-            option = read.nextLine();
-
-            if (option.equals("1")) {
-                do {
-                    System.out.println("Enter the new city of residence:");
-                    String city = read.nextLine();
-                    if (CommonData.emptyOrNum(city)) {
-                        System.out.println("City with numbers/empty is not valid, please enter another.");
-                    } else {
-                        user.setCity(city);
-                        break;
-                    }
-                } while (true);
-                System.out.println("City changed successfully.");
-            } else if (option.equals("2")) {
-                do {
-                    System.out.println("Enter the new state of residence:");
-                    String state = read.nextLine();
-                    if (CommonData.emptyOrNum(state)) {
-                        System.out.println("State with numbers/empty is not valid, please enter another.");
-                    } else {
-                        user.setState(state);
-                        break;
-                    }
-                } while (true);
-                System.out.println("State changed successfully.");
-            } else if (option.equals("3")) {
-                System.out.println("Enter the new address:");
-                String address = read.nextLine();
-                user.setAddress(address);
-                System.out.println("Address changed successfully.");
-            } else if (option.equals("4")) {
-                System.out.println("Enter the new password:");
-                String password = read.nextLine();
-                user.setPassword(password);
-                System.out.println("Password changed successfully.");
-            } else if (option.equals("E")) {
-                System.out.println("EXITING THE MENU.");
-                break;
-            } else {
-                System.out.println("INVALID OPTION.");
+            switch (DialogHelper.optionD("Which characteristics do you want to change for the selected user?", new String[]{"City", "State", "Address", "Username", "Password", "Exit"})) {
+                case 0 -> {
+                    do {
+                        String city = DialogHelper.stringIn("Enter the new city of residence:");
+                        if (CommonData.emptyOrNum(city))
+                            DialogHelper.warning("City with numbers/empty is not valid, please enter another.");
+                        else {
+                            user.setCity(city);
+                            break;
+                        }
+                    } while (true);
+                }
+                case 1 -> {
+                    do {
+                        String state = DialogHelper.stringIn("Enter the new state of residence:");
+                        if (CommonData.emptyOrNum(state)) {
+                            DialogHelper.error("State with numbers/empty is not valid, please enter another.");
+                        } else {
+                            user.setState(state);
+                            break;
+                        }
+                    } while (true);
+                } case 2 -> {
+                    String address = DialogHelper.stringIn("Enter the new address: ");
+                    user.setAddress(address);
+                } case 3 -> {
+                    String username = CommonData.verifyUsername();
+                    user.setUsername(username);
+                } case 4 ->{
+                    String password = DialogHelper.stringIn("Enter the new username: ");
+                    user.setPassword(password);
+                }
+                case 5 -> {
+                    DialogHelper.warning("EXITING THE MENU.");
+                    flag = true;
+                }
             }
+        }while (!flag);
+        }
 
-        } while (true);
-    }
+        // Setters
+        public void setFirstName(String firstName) {
+            this.firstName = firstName;
+        }
 
-    // Setters
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
+        public void setLastName1(String lastName1) {
+            this.lastName1 = lastName1;
+        }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
+        public void setLastName2(String lastName2) {
+            this.lastName2 = lastName2;
+        }
 
-    public void setBirthDate(String birthDate) {
-        this.birthDate = birthDate;
-    }
+        public void setBirthDate(String birthDate) {
+            this.birthDate = birthDate;
+        }
 
-    public void setCity(String city) {
-        this.city = city;
-    }
+        public void setCity(String city) {
+            this.city = city;
+        }
 
-    public void setState(String state) {
-        this.state = state;
-    }
+        public void setState(String state) {
+            this.state = state;
+        }
 
-    public void setCurp(String curp) {
-        this.curp = curp;
-    }
+        public void setCurp(String curp) {
+            this.curp = curp;
+        }
 
-    public void setAddress(String address) {
-        this.address = address;
-    }
+        public void setAddress(String address) {
+            this.address = address;
+        }
 
-    public void setRegistrationDate(String registrationDate) {
-        this.registrationDate = registrationDate;
-    }
+        public void setRegistrationDate(String registrationDate) {
+            this.registrationDate = registrationDate;
+        }
 
-    public void setCareer(Careers career) {
-        this.career = career;
-    }
+        public void setCareer(Careers career) {
+            this.career = career;
+        }
 
-    public void setControlNumber(String controlNumber) {
-        this.controlNumber = controlNumber;
-    }
+        public void setControlNumber(String controlNumber) {
+            this.controlNumber = controlNumber;
+        }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+        public void setUsername(String username) {
+            this.username = username;
+        }
 
-    public void setRole(Role role) {
-        this.role = role;
-    }
+        public void setPassword(String password) {
+            this.password = password;
+        }
 
-    // Getters
-    public String getFirstName() {
-        return firstName;
-    }
+        public void setRole(Role role) {
+            this.role = role;
+        }
 
-    public String getLastName() {
-        return lastName;
-    }
+        // Getters
+        public String getFirstName() {
+            return firstName;
+        }
 
-    public String getBirthDate() {
-        return birthDate;
-    }
+        public String getLastName() {
+            return String.format("%s %s",lastName1,lastName2);
+        }
 
-    public String getCity() {
-        return city;
-    }
+        public String getBirthDate() {
+            return birthDate;
+        }
 
-    public String getState() {
-        return state;
-    }
+        public String getCity() {
+            return city;
+        }
 
-    public String getCurp() {
-        return curp;
-    }
+        public String getState() {
+            return state;
+        }
 
-    public String getAddress() {
-        return address;
-    }
+        public String getCurp() {
+            return curp;
+        }
 
-    public String getRegistrationDate() {
-        return registrationDate;
-    }
+        public String getAddress() {
+            return address;
+        }
 
-    public Careers getCareer() {
-        return career;
-    }
+        public String getRegistrationDate() {
+            return registrationDate;
+        }
 
-    public String getControlNumber() {
-        return controlNumber;
-    }
+        public Careers getCareer() {
+            return career;
+        }
 
-    public String getUsername(){
-        return username;
-    }
+        public String getControlNumber() {
+            return controlNumber;
+        }
 
-    public String getPassword() {
-        return password;
-    }
+        public String getUsername(){
+            return username;
+        }
 
-    public Role getRole() {
-        return role;
+        public String getPassword() {
+            return password;
+        }
+
+        public Role getRole() {
+            return role;
+        }
     }
-}

@@ -24,7 +24,7 @@ public class Semester {
     }
 
     public static Semester getSemesterByNumber(int semesterNumber) {
-        Careers career = UserInSession.getCurrentUser().getCareer();
+        Careers career = UserInSession.getInstance().getCurrentUser().getCareer();
         ArrayList<Semester> semesters = Mindbox.semesters.get(career);
 
         if (semesters != null) {

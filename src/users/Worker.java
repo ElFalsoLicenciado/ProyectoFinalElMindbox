@@ -14,10 +14,10 @@ public class Worker extends User {
 
     protected ArrayList<String> subjects;
     protected String RFC;
-    protected float salary;
+    protected int salary;
 
-    public Worker(String firstName, String lastName, String birthDate, String city, String state, String curp, String address, Careers career, String controlNumber,String username, String password, Role role, String RFC, float salary) {
-        super(firstName, lastName, birthDate, city, state, curp, address, career, controlNumber,username, password, role);
+    public Worker(String firstName, String lastName1,String lastName2, String birthDate, String city, String state, String curp, String address, Careers career, String controlNumber,String username, String password, Role role, String RFC, int salary) {
+        super(firstName, lastName1,lastName2, birthDate, city, state, curp, address, career, controlNumber,username, password, role);
         this.RFC = RFC;
         this.salary = salary;
         this.subjects = new ArrayList<>();
@@ -70,7 +70,7 @@ public class Worker extends User {
                 ArrayList<Subject> subjects = group.getSubjects();
                 for (Subject subject : subjects) {
                     if (subject.getTeacher() != null) {
-                        if (Mindbox.getWorker(subject.getTeacher()).equals(UserInSession.getInstance().getCurrentUser())) {
+                        if (Objects.equals(Mindbox.getWorker(subject.getTeacher()), UserInSession.getInstance().getCurrentUser())) {
                             subjectsFound = true;
                             ArrayList<String> checkPassed = subject.getApprovedStudents(semester.getId());
                             for (String student : checkPassed) {
@@ -107,24 +107,24 @@ public class Worker extends User {
                         case "1":
                             System.out.println("All passed students:");
                             for (String student : passed) {
-                                System.out.println(Mindbox.getStudent(student).toString());
-                                System.out.println("Group: " + Mindbox.getStudent(student).getGroup());
+                                System.out.println(Objects.requireNonNull(Mindbox.getStudent(student)).toString());
+                                System.out.println("Group: " + Objects.requireNonNull(Mindbox.getStudent(student)).getGroup());
                                 System.out.println();
                             }
                             break;
                         case "2":
                             System.out.println("All failed students:");
                             for (String student : failed) {
-                                System.out.println(Mindbox.getStudent(student).toString());
-                                System.out.println("Group: " + Mindbox.getStudent(student).getGroup());
+                                System.out.println(Objects.requireNonNull(Mindbox.getStudent(student)).toString());
+                                System.out.println("Group: " + Objects.requireNonNull(Mindbox.getStudent(student)).getGroup());
                                 System.out.println();
                             }
                             break;
                         case "3":
                             System.out.println("All students:");
                             for (String student : all) {
-                                System.out.println(Mindbox.getStudent(student).toString());
-                                System.out.println("Group: " + Mindbox.getStudent(student).getGroup());
+                                System.out.println(Objects.requireNonNull(Mindbox.getStudent(student)).toString());
+                                System.out.println("Group: " + Objects.requireNonNull(Mindbox.getStudent(student)).getGroup());
                                 System.out.println();
                             }
                             break;
@@ -202,7 +202,7 @@ public class Worker extends User {
                 boolean subjectsFound = false;
                 for (Subject subject : subjects) {
                     if (subject.getTeacher() != null) {
-                        if (Mindbox.getWorker(subject.getTeacher()).equals(UserInSession.getInstance().getCurrentUser())) {
+                        if (Objects.equals(Mindbox.getWorker(subject.getTeacher()), UserInSession.getInstance().getCurrentUser())) {
                             subjectsFound = true;
                             ArrayList<String> checkPassed = subject.getApprovedStudents(semester.getId());
                             for (String student : checkPassed) {
@@ -238,24 +238,24 @@ public class Worker extends User {
                             case "1":
                                 System.out.println("All passed students:");
                                 for (String student : passed) {
-                                    System.out.println(Mindbox.getStudent(student).toString());
-                                    System.out.println("Group: " + Mindbox.getStudent(student).getGroup());
+                                    System.out.println(Objects.requireNonNull(Mindbox.getStudent(student)).toString());
+                                    System.out.println("Group: " + Objects.requireNonNull(Mindbox.getStudent(student)).getGroup());
                                     System.out.println();
                                 }
                                 break;
                             case "2":
                                 System.out.println("All failed students:");
                                 for (String student : failed) {
-                                    System.out.println(Mindbox.getStudent(student).toString());
-                                    System.out.println("Group: " + Mindbox.getStudent(student).getGroup());
+                                    System.out.println(Objects.requireNonNull(Mindbox.getStudent(student)).toString());
+                                    System.out.println("Group: " + Objects.requireNonNull(Mindbox.getStudent(student)).getGroup());
                                     System.out.println();
                                 }
                                 break;
                             case "3":
                                 System.out.println("All students:");
                                 for (String student : all) {
-                                    System.out.println(Mindbox.getStudent(student).toString());
-                                    System.out.println("Group: " + Mindbox.getStudent(student).getGroup());
+                                    System.out.println(Objects.requireNonNull(Mindbox.getStudent(student)).toString());
+                                    System.out.println("Group: " + Objects.requireNonNull(Mindbox.getStudent(student)).getGroup());
                                     System.out.println();
                                 }
                                 break;
@@ -447,6 +447,7 @@ public class Worker extends User {
         }
         do {
             Student student = Mindbox.getStudent(subject.getStudent(subject.getId()));
+            assert student != null;
             HashMap<String, Integer> semesterGrades = student.getGrades().get(student.getSemester());
             if (semesterGrades.get(subject.getId()) != null) {
                 int existingGrade = semesterGrades.get(subject.getId());
@@ -514,7 +515,7 @@ public class Worker extends User {
         this.RFC = RFC;
     }
 
-    public void setSalary(float salary) {
+    public void setSalary(int salary) {
         this.salary = salary;
     }
 }

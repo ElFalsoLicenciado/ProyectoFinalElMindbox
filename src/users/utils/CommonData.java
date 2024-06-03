@@ -80,10 +80,9 @@ public class CommonData {
         return false;
     }
 
-    public static ArrayList<String> getCommonData(Role role) {
-        ArrayList<String> commonData = new ArrayList<>();
-        String firstName, middleName, parentalLastName, maternalLastName, password, address;
-        String city, state, curp, controlNumber, gender, career;
+    public static User getCommonData(Role role) {
+        String firstName, middleName, parentalLastName, maternalLastName,username, password, address;
+        String city, state, curp, controlNumber, gender; Careers career;
 
         String currentRole = role == Role.STUDENT ? "Student" : role == Role.COORDINATOR ? "Coordinator" : "Teacher";
         DialogHelper.info("ROLE: " + currentRole);
@@ -122,7 +121,7 @@ public class CommonData {
             else break;
         } while (true);
 
-        boolean invalidState = false;
+        boolean invalidState;
         do {
             state = DialogHelper.stringIn("Enter your state: (if born abroad, write \"NACIDO EN EL EXTRANJERO\")").toUpperCase();
             try {
@@ -143,104 +142,51 @@ public class CommonData {
 
         String birthDate = TimeFunctions.getDate();
 
-        //Comento que no podre ejecutarlo asi que tu solo podras ver que onda
-        // como que no podras ejecutarlo?? por que no
 
-        // nononon mira le das en file, project structure y libraries agregar de maeven copias y pegas: google.code.gson y elijes la version y ya esta
-        // esta facil en 1 minuto lo haces
-        // vale deja copiar y vere,
-        // ta bien, voy a salir un rato, en una media hora vuelvo
-        // Haz commit y le sigo
         gender = DialogHelper.optionD("Enter your gender: ",new String[]{"Male","Female"}) ==0 ? "MALE": "FEMALE";
         DialogHelper.info(gender);
 
         curp = generateCURP(firstName, parentalLastName, maternalLastName, birthDate, gender, state);
-        String rfc = generateRFC(firstName, parentalLastName, maternalLastName, birthDate);
-        String fullLastName = parentalLastName + " " + maternalLastName;
 
         do {
-            System.out.println("Enter your city: ");
-            city = read.nextLine();
-            if (emptyOrNum(city)){
-                System.out.println("City with numbers/empty/characters/spaces is not valid, please enter another. ");
-            } else {
-                System.out.println("City registered successfully.");
-                break;
-            }
+            city = DialogHelper.stringIn("Enter your city: ");
+            if (emptyOrNum(city))
+                DialogHelper.error("City with numbers/empty/characters/spaces is not valid, please enter another. ");
+            else break;
         } while (true);
 
-        career = UserInSession.getInstance().getCurrentUser().getCareer().getFullName();
+        career = UserInSession.getInstance().getCurrentUser().getCareer();
 
-        System.out.println("You will be assigned to the career: " + career);
-        controlNumber = generateControlNumber(role, firstName, career);
-        System.out.println("Your Control Number/User ID is: " + controlNumber);
+        controlNumber = generateControlNumber(role, firstName, String.valueOf(career));
+        DialogHelper.info("You will be assigned to the career: " + career+"\nYour Control Number/User ID is: " + controlNumber);
 
-        do {
-            System.out.println("Enter your password: ");
-            password = read.nextLine();
-            if (password.isEmpty()) {
-                System.out.println("Empty password is not valid. ");
-            } else {
-                break;
-            }
-        } while (true);
+        username = verifyUsername();
 
-        commonData.addAll(Arrays.asList(firstName, fullLastName, birthDate.toString(), city, state, curp, address, password, controlNumber, career, rfc));
-        return commonData;
+        password = DialogHelper.stringIn("Enter your password: ");
+
+
+
+        return new User(firstName,parentalLastName,maternalLastName,birthDate,city,state,curp,address,career,controlNumber,username,password,role);
     }
 
-    public static LocalDate getBirthDate() {
-        int day, month, year;
-        LocalDate birthDate;
-        while (true) {
-            try {
-                System.out.println("Enter your birth day: ");
-                int number = read.nextInt();
-
-                if (number >= 1 && number <= 31) {
-                    day = number;
-                    break;
-                } else {
-                    System.out.println("Invalid number. It must be an integer between 01 and 31.");
+    public static String verifyUsername(){
+        String availableUsername;
+        boolean nonExistent;
+        do {
+            nonExistent = false;
+            availableUsername = DialogHelper.stringIn("User's username");
+            for (Map.Entry<Role, ArrayList<User>> entry : Mindbox.users.entrySet() ) {
+                ArrayList<User> userList = entry.getValue();
+                for (User current : userList) {
+                    if (current.getUsername().equals(availableUsername)) {
+                        nonExistent = true;
+                        DialogHelper.warning("Repeated username.");
+                        break;
+                    }
                 }
-            } catch (InputMismatchException e) {
-                System.out.println("Invalid input. Please enter an integer.");
-                read.nextLine(); // Clear the scanner buffer to avoid an infinite loop
             }
-        }
-        while (true) {
-            try {
-                System.out.println("Enter your birth month: ");
-                int number = read.nextInt();
-
-                if (number >= 1 && number <= 12) {
-                    month = number;
-                    break;
-                } else {
-                    System.out.println("Invalid number. It must be an integer between 01 and 12.");
-                }
-            } catch (InputMismatchException e) {
-                System.out.println("Invalid input. Please enter an integer.");
-                read.nextLine(); // Clear the scanner buffer to avoid an infinite loop
-            }
-        }
-        while (true) {
-            try {
-                System.out.println("Enter your birth year: ");
-                int number = read.nextInt();
-
-                if (number >= 1920 && number <= 2006) {
-                    year = number;
-                    break;
-                } else {
-                    System.out.println("Invalid number. It must be an integer between 1920 and 2006.");
-                }
-            } catch (InputMismatchException e) {
-                System.out.println("Invalid input. Please enter an integer.");
-                read.nextLine(); // Clear the scanner buffer to avoid an infinite loop
-            }
-        }
-        return birthDate = LocalDate.of(year, month, day);
+        }while (nonExistent);
+        return availableUsername;
     }
 
     private static String generateRandomCharacters(int length) {
@@ -272,8 +218,8 @@ public class CommonData {
                 maternalLastName.substring(0, 1).toUpperCase() +
                 firstName.substring(0, 1).toUpperCase() +
                 birthDate.substring(2, 4) +
-                String.format("%02d", birthDate.substring(5, 7)) +
-                String.format("%02d", birthDate.getDayOfMonth()) +
+                birthDate.substring(5, 7) +
+                birthDate.substring(8, 10) +
                 gender.toUpperCase().charAt(0) +
                 federalEntities.getOrDefault(state, "NE");
 
@@ -335,21 +281,17 @@ public class CommonData {
         return finalControlNumber;
     }
 
-    public static String generateRFC(String firstName, String parentalLastName, String maternalLastName, LocalDate birthDate) {
+    public static String generateRFC(String firstName, String parentalLastName, String maternalLastName, String birthDate) {
         Random random = new Random();
         maternalLastName = maternalLastName.toUpperCase();
         parentalLastName = parentalLastName.toUpperCase();
         int randomDigit1 = random.nextInt(10);
         int randomDigit2 = random.nextInt(10);
         char randomLetter = (char)(random.nextInt(27) + 65);
-        int year = birthDate.getYear();
-        int yearTwoDigits = year % 100;
-        String yearFormattedTwoDigits = String.format("%02d", yearTwoDigits);
-        String rfc = String.valueOf(parentalLastName.toUpperCase().charAt(0)) + String.valueOf(parentalLastName.toUpperCase().charAt(1)) +
-                String.valueOf(maternalLastName.toUpperCase().charAt(0)) + String.valueOf(firstName.toUpperCase().charAt(0)) +
-                String.valueOf(yearFormattedTwoDigits) + String.valueOf(birthDate.getMonthValue()) + String.valueOf(birthDate.getDayOfMonth()) +
-                String.valueOf(randomDigit1) + String.valueOf(randomLetter) + String.valueOf(randomDigit2);
-        return rfc;
+        return parentalLastName.toUpperCase().charAt(0) + String.valueOf(parentalLastName.toUpperCase().charAt(1)) +
+                maternalLastName.toUpperCase().charAt(0) + firstName.toUpperCase().charAt(0) +
+                birthDate.substring(2,4) + birthDate.substring(5,7) + birthDate.substring(8,10) +
+                randomDigit1 + randomLetter + randomDigit2;
     }
 
     public static void updateInformation(User user){
