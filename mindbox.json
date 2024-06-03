@@ -1,5 +1,190 @@
 {
   "semesters": {
+    "Materials": [
+      {
+        "id": "S1IMAT",
+        "semesterNumber": 1,
+        "career": "Materials",
+        "groups": [
+          {
+            "career": "Materials",
+            "studentList": [],
+            "subjects": [
+              {
+                "id": "Statistics 1A",
+                "career": "Materials",
+                "group": "G1AIMAT",
+                "teacher": null
+              },
+              {
+                "id": "Accounting 1A",
+                "career": "Materials",
+                "group": "G1AIMAT",
+                "teacher": null
+              },
+              {
+                "id": "Calculus 1A",
+                "career": "Materials",
+                "group": "G1AIMAT",
+                "teacher": null
+              }
+            ],
+            "semester": "S1IMAT",
+            "groupType": "A",
+            "groupId": "G1AIMAT"
+          },
+          {
+            "career": "Materials",
+            "studentList": [],
+            "subjects": [
+              {
+                "id": "Statistics 1B",
+                "career": "Materials",
+                "group": "G1BIMAT",
+                "teacher": null
+              },
+              {
+                "id": "Accounting 1B",
+                "career": "Materials",
+                "group": "G1BIMAT",
+                "teacher": null
+              },
+              {
+                "id": "Calculus 1B",
+                "career": "Materials",
+                "group": "G1BIMAT",
+                "teacher": null
+              }
+            ],
+            "semester": "S1IMAT",
+            "groupType": "B",
+            "groupId": "G1BIMAT"
+          }
+        ]
+      },
+      {
+        "id": "S2IMAT",
+        "semesterNumber": 2,
+        "career": "Materials",
+        "groups": [
+          {
+            "career": "Materials",
+            "studentList": [],
+            "subjects": [
+              {
+                "id": "Statistics 2A",
+                "career": "Materials",
+                "group": "G2AIMAT",
+                "teacher": null
+              },
+              {
+                "id": "Accounting 2A",
+                "career": "Materials",
+                "group": "G2AIMAT",
+                "teacher": null
+              },
+              {
+                "id": "Calculus 2A",
+                "career": "Materials",
+                "group": "G2AIMAT",
+                "teacher": null
+              }
+            ],
+            "semester": "S2IMAT",
+            "groupType": "A",
+            "groupId": "G2AIMAT"
+          },
+          {
+            "career": "Materials",
+            "studentList": [],
+            "subjects": [
+              {
+                "id": "Statistics 2B",
+                "career": "Materials",
+                "group": "G2BIMAT",
+                "teacher": null
+              },
+              {
+                "id": "Accounting 2B",
+                "career": "Materials",
+                "group": "G2BIMAT",
+                "teacher": null
+              },
+              {
+                "id": "Calculus 2B",
+                "career": "Materials",
+                "group": "G2BIMAT",
+                "teacher": null
+              }
+            ],
+            "semester": "S2IMAT",
+            "groupType": "B",
+            "groupId": "G2BIMAT"
+          }
+        ]
+      },
+      {
+        "id": "S3IMAT",
+        "semesterNumber": 3,
+        "career": "Materials",
+        "groups": [
+          {
+            "career": "Materials",
+            "studentList": [],
+            "subjects": [
+              {
+                "id": "Statistics 3A",
+                "career": "Materials",
+                "group": "G3AIMAT",
+                "teacher": null
+              },
+              {
+                "id": "Accounting 3A",
+                "career": "Materials",
+                "group": "G3AIMAT",
+                "teacher": null
+              },
+              {
+                "id": "Calculus 3A",
+                "career": "Materials",
+                "group": "G3AIMAT",
+                "teacher": null
+              }
+            ],
+            "semester": "S3IMAT",
+            "groupType": "A",
+            "groupId": "G3AIMAT"
+          },
+          {
+            "career": "Materials",
+            "studentList": [],
+            "subjects": [
+              {
+                "id": "Statistics 3B",
+                "career": "Materials",
+                "group": "G3BIMAT",
+                "teacher": null
+              },
+              {
+                "id": "Accounting 3B",
+                "career": "Materials",
+                "group": "G3BIMAT",
+                "teacher": null
+              },
+              {
+                "id": "Calculus 3B",
+                "career": "Materials",
+                "group": "G3BIMAT",
+                "teacher": null
+              }
+            ],
+            "semester": "S3IMAT",
+            "groupType": "B",
+            "groupId": "G3BIMAT"
+          }
+        ]
+      }
+    ],
     "Systems": [
       {
         "id": "S1ISC",
@@ -185,191 +370,6 @@
             "semester": "S3ISC",
             "groupType": "B",
             "groupId": "G3BISC"
-          }
-        ]
-      }
-    ],
-    "Materials": [
-      {
-        "id": "S1IMAT",
-        "semesterNumber": 1,
-        "career": "Materials",
-        "groups": [
-          {
-            "career": "Materials",
-            "studentList": [],
-            "subjects": [
-              {
-                "id": "Statistics 1A",
-                "career": "Materials",
-                "group": "G1AIMAT",
-                "teacher": null
-              },
-              {
-                "id": "Accounting 1A",
-                "career": "Materials",
-                "group": "G1AIMAT",
-                "teacher": null
-              },
-              {
-                "id": "Calculus 1A",
-                "career": "Materials",
-                "group": "G1AIMAT",
-                "teacher": null
-              }
-            ],
-            "semester": "S1IMAT",
-            "groupType": "A",
-            "groupId": "G1AIMAT"
-          },
-          {
-            "career": "Materials",
-            "studentList": [],
-            "subjects": [
-              {
-                "id": "Statistics 1B",
-                "career": "Materials",
-                "group": "G1BIMAT",
-                "teacher": null
-              },
-              {
-                "id": "Accounting 1B",
-                "career": "Materials",
-                "group": "G1BIMAT",
-                "teacher": null
-              },
-              {
-                "id": "Calculus 1B",
-                "career": "Materials",
-                "group": "G1BIMAT",
-                "teacher": null
-              }
-            ],
-            "semester": "S1IMAT",
-            "groupType": "B",
-            "groupId": "G1BIMAT"
-          }
-        ]
-      },
-      {
-        "id": "S2IMAT",
-        "semesterNumber": 2,
-        "career": "Materials",
-        "groups": [
-          {
-            "career": "Materials",
-            "studentList": [],
-            "subjects": [
-              {
-                "id": "Statistics 2A",
-                "career": "Materials",
-                "group": "G2AIMAT",
-                "teacher": null
-              },
-              {
-                "id": "Accounting 2A",
-                "career": "Materials",
-                "group": "G2AIMAT",
-                "teacher": null
-              },
-              {
-                "id": "Calculus 2A",
-                "career": "Materials",
-                "group": "G2AIMAT",
-                "teacher": null
-              }
-            ],
-            "semester": "S2IMAT",
-            "groupType": "A",
-            "groupId": "G2AIMAT"
-          },
-          {
-            "career": "Materials",
-            "studentList": [],
-            "subjects": [
-              {
-                "id": "Statistics 2B",
-                "career": "Materials",
-                "group": "G2BIMAT",
-                "teacher": null
-              },
-              {
-                "id": "Accounting 2B",
-                "career": "Materials",
-                "group": "G2BIMAT",
-                "teacher": null
-              },
-              {
-                "id": "Calculus 2B",
-                "career": "Materials",
-                "group": "G2BIMAT",
-                "teacher": null
-              }
-            ],
-            "semester": "S2IMAT",
-            "groupType": "B",
-            "groupId": "G2BIMAT"
-          }
-        ]
-      },
-      {
-        "id": "S3IMAT",
-        "semesterNumber": 3,
-        "career": "Materials",
-        "groups": [
-          {
-            "career": "Materials",
-            "studentList": [],
-            "subjects": [
-              {
-                "id": "Statistics 3A",
-                "career": "Materials",
-                "group": "G3AIMAT",
-                "teacher": null
-              },
-              {
-                "id": "Accounting 3A",
-                "career": "Materials",
-                "group": "G3AIMAT",
-                "teacher": null
-              },
-              {
-                "id": "Calculus 3A",
-                "career": "Materials",
-                "group": "G3AIMAT",
-                "teacher": null
-              }
-            ],
-            "semester": "S3IMAT",
-            "groupType": "A",
-            "groupId": "G3AIMAT"
-          },
-          {
-            "career": "Materials",
-            "studentList": [],
-            "subjects": [
-              {
-                "id": "Statistics 3B",
-                "career": "Materials",
-                "group": "G3BIMAT",
-                "teacher": null
-              },
-              {
-                "id": "Accounting 3B",
-                "career": "Materials",
-                "group": "G3BIMAT",
-                "teacher": null
-              },
-              {
-                "id": "Calculus 3B",
-                "career": "Materials",
-                "group": "G3BIMAT",
-                "teacher": null
-              }
-            ],
-            "semester": "S3IMAT",
-            "groupType": "B",
-            "groupId": "G3BIMAT"
           }
         ]
       }
