@@ -1,16 +1,10 @@
 package academicinfo;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Objects;
-import java.util.Scanner;
+import mindbox.Mindbox;
+import utils.DialogHelper;
+import utils.UserInSession;
 
-import academicinfo.*;
-import mindbox.*;
-import users.*;
-import users.utils.*;
-import utils.*;
+import java.util.*;
 
 public class Group {
 
@@ -36,15 +30,14 @@ public class Group {
         );
     }
 
-    public String showSubjects() {
+    public void showSubjects() {
         if (subjects == null) {
-            return "";
+            DialogHelper.error("No subjects");
+        }else {
+            ArrayList<String> aux = new ArrayList<>();
+            for (Subject subject : subjects) aux.add(subject.toString());
+            DialogHelper.info(Arrays.toString(aux.toArray()).replace('[', ' ').replace(']', ' '));
         }
-        for (Subject subject : subjects) {
-            System.out.println(subject.toString());
-            System.out.println();
-        }
-        return "";
     }
 
     public static void showAllGroups() {

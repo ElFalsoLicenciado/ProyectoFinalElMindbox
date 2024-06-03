@@ -1,17 +1,20 @@
 package mindbox;
 
-import java.time.LocalDate;
-import java.util.*;
-
-import academicinfo.*;
+import academicinfo.Careers;
+import academicinfo.Group;
+import academicinfo.Semester;
+import academicinfo.Subject;
 import gson.deserializers.MindboxDeserializer;
 import gson.deserializers.UserDeserializer;
 import gson.serializers.MindboxSerializer;
 import gson.serializers.UserSerializer;
-import mindbox.*;
 import users.*;
-import users.utils.*;
-import utils.*;
+import users.utils.Role;
+import utils.UserInSession;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Mindbox {
 
@@ -22,13 +25,15 @@ public class Mindbox {
     public static ArrayList<Graduates> graduates = new ArrayList<>();
 
     public static Semester getSemester(String sem) {
+        Semester aux = null;
         ArrayList<Semester> semesters = Mindbox.semesters.get(UserInSession.getInstance().getCurrentUser().getCareer());
         for (Semester semester : semesters) {
+            aux = semester;
             if (semester.getId().equals(sem)) {
-                return semester;
+                break;
             }
         }
-        return null;
+        return aux;
     }
 
     public static Group getGroup(String gru) {
@@ -139,7 +144,7 @@ public class Mindbox {
             }
         }
 
-        Student student1 = new Student("Luis", "Roman","Sanchez", "04-01-2005", "Morelia", "Michoacan", "ROSL050104HMNMNSA3", "Address 123", Careers.Systems, "IL24ISC00", "Lars","pass");
+        Student student1 = new Student("Luis", "Roman","Sanchez", "04-01-2005", "Morelia", "Michoacan", "ROSL050104HMNMNSA3", "Address 123", Careers.Systems, "IL24ISC00", "Lars","pass",new HashMap<>());
         student1.setSemester(semester.getId());
         assert group != null;
         student1.setGroup(group.getGroupId());
@@ -152,7 +157,7 @@ public class Mindbox {
         student2.setNullGrades(semester, group);
         student2.setGroupType(group.getGroupType());
         group.getStudentList().add(student2.getControlNumber());
-        Student student3 = new Student("Rene", "Olvera","Estrada", "04-01-2005", "Morelia", "Michoacan", "SONJ850615HJLZNN09", "Address 123", Careers.Systems, "IR24ISC00","ElPay", "123");
+        Student student3 = new Student("Rene", "Olvera","Estrada", "04-01-2005", "Morelia", "Michoacan", "SONJ850615HJLZNN09", "Address 123", Careers.Systems, "IR24ISC00","ElPay", "123",new HashMap<>());
         student3.setSemester(semester.getId());
         student3.setGroup(group.getGroupId());
         student3.setNullGrades(semester, group);
@@ -167,9 +172,9 @@ public class Mindbox {
     }
 
     public static void registerCoordinators() {
-        Coordinator coordinator1 = new Coordinator("Nelly", "Alvarado", "10-4-1985", "Morelia", "Michoacan", "PONJ850615MJLZNN09", "Address 123", Careers.Systems, "CN24ISC00", "1", "RFC567", 60000.0f);
-        Coordinator coordinator2 = new Coordinator("Eduardo", "Saenz", "12-3-1985", "Morelia", "Michoacan", "GONJ850615HJLZNN09", "Address 123", Careers.Electronics, "CE24ELC00", "2", "RFC568", 60000.0f);
-        Coordinator coordinator3 = new Coordinator("Derek", "Muller", "7-9-1985", "Morelia", "Michoacan", "SONJ850615HJLZNN09", "Address 123", Careers.Materials, "CD24IMAT00", "3", "RFC569", 60000.0f);
+        Coordinator coordinator1 = new Coordinator("Nelly", "Alvarado","Zamora", "10-4-1985", "Morelia", "Michoacan", "PONJ850615MJLZNN09", "Address 123", Careers.Systems, "CN24ISC00", "ISC","1", "RFC567", 60000);
+        Coordinator coordinator2 = new Coordinator("Eduardo", "Saenz","", "12-3-1985", "Morelia", "Michoacan", "GONJ850615HJLZNN09", "Address 123", Careers.Electronics, "CE24ELC00", "ELC","2", "RFC568", 60000);
+        Coordinator coordinator3 = new Coordinator("Derek", "Muller","", "7-9-1985", "Morelia", "Michoacan", "SONJ850615HJLZNN09", "Address 123", Careers.Materials, "CD24IMAT00", "IMAT","3", "RFC569", 60000);
         users.get(Role.COORDINATOR).add(coordinator1);
         users.get(Role.COORDINATOR).add(coordinator2);
         users.get(Role.COORDINATOR).add(coordinator3);

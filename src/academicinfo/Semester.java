@@ -24,19 +24,17 @@ public class Semester {
     }
 
     public static Semester getSemesterByNumber(int semesterNumber) {
+        Semester sem = null;
         Careers career = UserInSession.getInstance().getCurrentUser().getCareer();
         ArrayList<Semester> semesters = Mindbox.semesters.get(career);
 
         if (semesters != null) {
             for (Semester semester : semesters) {
-                if (semesterNumber == semester.getSemesterNumber()) {
-                    return semester;
-                }
+                sem = semester;
+                if (semesterNumber == semester.getSemesterNumber()) break;
             }
-        } else {
-            System.out.println("No registered semesters.");
-        }
-        return null;
+        } else DialogHelper.error("No registered semesters.");
+        return sem;
     }
 
     public Group getGroup(String groupType) {
