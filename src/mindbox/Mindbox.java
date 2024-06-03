@@ -22,7 +22,7 @@ public class Mindbox {
     public static ArrayList<Graduates> graduates = new ArrayList<>();
 
     public static Semester getSemester(String sem) {
-        ArrayList<Semester> semesters = Mindbox.semesters.get(UserInSession.getCurrentUser().getCareer());
+        ArrayList<Semester> semesters = Mindbox.semesters.get(UserInSession.getInstance().getCurrentUser().getCareer());
         for (Semester semester : semesters) {
             if (semester.getId().equals(sem)) {
                 return semester;
@@ -32,7 +32,7 @@ public class Mindbox {
     }
 
     public static Group getGroup(String gru) {
-        ArrayList<Semester> semesters = Mindbox.semesters.get(UserInSession.getCurrentUser().getCareer());
+        ArrayList<Semester> semesters = Mindbox.semesters.get(UserInSession.getInstance().getCurrentUser().getCareer());
         for (Semester semester : semesters) {
             for (Group group : semester.getGroups()) {
                 if (group.getGroupId().equals(gru)) {
@@ -44,7 +44,7 @@ public class Mindbox {
     }
 
     public static Subject getSubject(String mat) {
-        ArrayList<Semester> semesters = Mindbox.semesters.get(UserInSession.getCurrentUser().getCareer());
+        ArrayList<Semester> semesters = Mindbox.semesters.get(UserInSession.getInstance().getCurrentUser().getCareer());
         for (Semester semester : semesters) {
             for (Group group : semester.getGroups()) {
                 for (Subject subject : group.getSubjects()) {
@@ -141,6 +141,7 @@ public class Mindbox {
 
         Student student1 = new Student("Luis", "Roman", "04-01-2005", "Morelia", "Michoacan", "ROSL050104HMNMNSA3", "Address 123", Careers.Systems, "IL24ISC00", "pass");
         student1.setSemester(semester.getId());
+        assert group != null;
         student1.setGroup(group.getGroupId());
         student1.setNullGrades(semester, group);
         student1.setGroupType(group.getGroupType());
@@ -174,12 +175,18 @@ public class Mindbox {
         users.get(Role.COORDINATOR).add(coordinator3);
     }
 
-    public static User verifyLogin(String controlNumber, String password) {
+    public static User verifyLogin(String input, String password,boolean flag) {
         for (Map.Entry<Role, ArrayList<User>> entry : users.entrySet()) {
             ArrayList<User> userList = entry.getValue();
             for (User currentUser : userList) {
-                if (currentUser.getControlNumber().equals(controlNumber) && currentUser.getPassword().equals(password)) {
-                    return currentUser;
+                if (flag) {
+                    if (currentUser.getControlNumber().equals(input) && currentUser.getPassword().equals(password)) {
+                        return currentUser;
+                    }
+                }else {
+                    if (currentUser.getUsername().equals(input) && currentUser.getPassword().equals(password)) {
+                        return currentUser;
+                    }
                 }
             }
         }

@@ -82,69 +82,81 @@ public class CommonData {
 
     public static ArrayList<String> getCommonData(Role role) {
         ArrayList<String> commonData = new ArrayList<>();
-        String firstName = "", middleName = "", lastName = "", password = "", address = "";
-        String city = "", state = "", curp = "", controlNumber = "", gender = "", career = "";
+        String firstName, middleName, parentalLastName, maternalLastName, password, address;
+        String city, state, curp, controlNumber, gender, career;
 
         String currentRole = role == Role.STUDENT ? "Student" : role == Role.COORDINATOR ? "Coordinator" : "Teacher";
-        System.out.println("ROLE: " + currentRole);
+        DialogHelper.info("ROLE: " + currentRole);
 
         do {
-            System.out.println("Enter your first name: ");
-            firstName = read.nextLine();
+            firstName = DialogHelper.stringIn("Enter your first name: ");;
             if (emptyOrNum(firstName)){
-                System.out.println("Name with numbers/empty/characters/spaces is not valid, please enter another. ");
-            } else {
-                break;
-            }
+                DialogHelper.error("Name with numbers/empty/characters/spaces is not valid, please enter another. ");
+            } else break;
+        } while (true);
+
+
+        if (DialogHelper.confirmD("Do you have a middle name?")) {
+            do {
+                middleName = DialogHelper.stringIn("Enter your middle name: ");
+                if (emptyOrNum(middleName))
+                    DialogHelper.error("Name with numbers/empty is not valid, please enter another. ");
+                else {
+                    firstName = firstName + " " + middleName;
+                    break;
+                }
+            } while (true);
+        }
+
+        do {
+            parentalLastName = DialogHelper.stringIn("Enter your parental last name: ");
+            if (emptyOrNum(parentalLastName))
+                DialogHelper.error("Last name with numbers/empty/characters/spaces is not valid, please enter another. ");
+            else break;
         } while (true);
 
         do {
-            System.out.println("Do you have a middle name? [Y]/[N] ");
-            String option = read.nextLine();
-            if (option.equalsIgnoreCase("Y")){
-                do {
-                    System.out.println("Enter your middle name: ");
-                    middleName = read.nextLine();
-                    if (emptyOrNum(middleName)){
-                        System.out.println("Name with numbers/empty/characters/spaces is not valid, please enter another. ");
-                    } else {
-                        firstName = firstName + " " + middleName;
-                        break;
-                    }
-                } while (true);
-                break;
-            } else if (option.equalsIgnoreCase("N")){
-                break;
-            } else {
-                System.out.println("Invalid option. ");
-            }
-        } while (true);
-
-        do {
-            System.out.println("Enter your last name: ");
-            lastName = read.nextLine();
-            if (emptyOrNum(lastName)){
-                System.out.println("Last name with numbers/empty/characters/spaces is not valid, please enter another. ");
-            } else {
-                break;
-            }
+            maternalLastName = DialogHelper.stringIn("Enter your maternal last name: ");
+            if (emptyOrNum(maternalLastName))
+                DialogHelper.error("Last name with numbers/empty/characters/spaces is not valid, please enter another. ");
+            else break;
         } while (true);
 
         boolean invalidState = false;
         do {
-            System.out.println("Enter your state: (if born abroad, write \"NACIDO EN EL EXTRANJERO\")");
-            state = read.nextLine();
-            state = state.toUpperCase();
+            state = DialogHelper.stringIn("Enter your state: (if born abroad, write \"NACIDO EN EL EXTRANJERO\")").toUpperCase();
             try {
                 federalEntities.get(state);
-                if (!federalEntities.keySet().contains(state)){
-                    throw new Exception("");
-                }
+                if (!federalEntities.containsKey(state)) throw new Exception("");
                 invalidState = false;
             } catch (Exception e) {
                 invalidState = true;
             }
         } while (invalidState);
+
+        do {
+            address = DialogHelper.stringIn("Enter your address: ");
+            if (emptyOrNum(address))
+                DialogHelper.error("Address with numbers/empty/characters/spaces is not valid, please enter another.");
+            else break;
+        } while (true);
+
+        String birthDate = TimeFunctions.getDate();
+
+        //Comento que no podre ejecutarlo asi que tu solo podras ver que onda
+        // como que no podras ejecutarlo?? por que no
+
+        // nononon mira le das en file, project structure y libraries agregar de maeven copias y pegas: google.code.gson y elijes la version y ya esta
+        // esta facil en 1 minuto lo haces
+        // vale deja copiar y vere,
+        // ta bien, voy a salir un rato, en una media hora vuelvo
+        // Haz commit y le sigo
+        gender = DialogHelper.optionD("Enter your gender: ",new String[]{"Male","Female"}) ==0 ? "MALE": "FEMALE";
+        DialogHelper.info(gender);
+
+        curp = generateCURP(firstName, parentalLastName, maternalLastName, birthDate, gender, state);
+        String rfc = generateRFC(firstName, parentalLastName, maternalLastName, birthDate);
+        String fullLastName = parentalLastName + " " + maternalLastName;
 
         do {
             System.out.println("Enter your city: ");
@@ -157,30 +169,14 @@ public class CommonData {
             }
         } while (true);
 
-        LocalDate birthDate = getBirthDate();
-        read.nextLine();
-
-        do {
-            System.out.println("Enter your gender [Male] [Female]: ");
-            gender = read.nextLine().toUpperCase();
-            if (gender.equals("MALE") || gender.equals("FEMALE")) {
-                System.out.println("Gender registered successfully.");
-                break;
-            } else {
-                System.out.println("Invalid gender.");
-            }
-        } while (true);
-
-        curp = generateCURP(firstName, lastName, birthDate, gender, state);
-
-        career = UserInSession.getCurrentUser().getCareer().getFullName();
+        career = UserInSession.getInstance().getCurrentUser().getCareer().getFullName();
 
         System.out.println("You will be assigned to the career: " + career);
         controlNumber = generateControlNumber(role, firstName, career);
         System.out.println("Your Control Number/User ID is: " + controlNumber);
 
         do {
-            System.out.println("Finally, enter your password: ");
+            System.out.println("Enter your password: ");
             password = read.nextLine();
             if (password.isEmpty()) {
                 System.out.println("Empty password is not valid. ");
@@ -189,17 +185,7 @@ public class CommonData {
             }
         } while (true);
 
-        do {
-            System.out.println("Enter your address: ");
-            address = read.nextLine();
-            if (emptyOrNum(address)) {
-                System.out.println("Address with numbers/empty/characters/spaces is not valid, please enter another.");
-            } else {
-                break;
-            }
-        } while (true);
-
-        commonData.addAll(Arrays.asList(firstName, lastName, birthDate.toString(), city, state, curp, address, password, controlNumber, career));
+        commonData.addAll(Arrays.asList(firstName, fullLastName, birthDate.toString(), city, state, curp, address, password, controlNumber, career, rfc));
         return commonData;
     }
 
@@ -280,12 +266,13 @@ public class CommonData {
         return "X";
     }
 
-    public static String generateCURP(String firstName, String lastName, LocalDate birthDate, String gender, String state) {
-        String curpBase = lastName.substring(0, 1).toUpperCase() +
-                getFirstInternalVowel(lastName) +
+    public static String generateCURP(String firstName, String parentalLastName, String maternalLastName, String birthDate, String gender, String state) {
+        String curpBase = parentalLastName.substring(0, 1).toUpperCase() +
+                getFirstInternalVowel(parentalLastName) +
+                maternalLastName.substring(0, 1).toUpperCase() +
                 firstName.substring(0, 1).toUpperCase() +
-                birthDate.toString().substring(2, 4) +
-                String.format("%02d", birthDate.getMonthValue()) +
+                birthDate.substring(2, 4) +
+                String.format("%02d", birthDate.substring(5, 7)) +
                 String.format("%02d", birthDate.getDayOfMonth()) +
                 gender.toUpperCase().charAt(0) +
                 federalEntities.getOrDefault(state, "NE");
@@ -348,23 +335,20 @@ public class CommonData {
         return finalControlNumber;
     }
 
-    public static String generateRFC(String firstName, String lastName, LocalDate birthDate) {
+    public static String generateRFC(String firstName, String parentalLastName, String maternalLastName, LocalDate birthDate) {
         Random random = new Random();
+        maternalLastName = maternalLastName.toUpperCase();
+        parentalLastName = parentalLastName.toUpperCase();
         int randomDigit1 = random.nextInt(10);
         int randomDigit2 = random.nextInt(10);
-        char randomLetter = (char)(random.nextInt(26) + 'A');
+        char randomLetter = (char)(random.nextInt(27) + 65);
         int year = birthDate.getYear();
         int yearTwoDigits = year % 100;
-        String yearFormatted = String.format("%02d", yearTwoDigits);
-        String rfc = lastName.toUpperCase().charAt(0) + "" +
-                lastName.toUpperCase().charAt(1) + "" +
-                firstName.toUpperCase().charAt(0) + "" +
-                yearFormatted +
-                String.format("%02d", birthDate.getMonthValue()) +
-                String.format("%02d", birthDate.getDayOfMonth()) +
-                randomDigit1 +
-                randomLetter +
-                randomDigit2;
+        String yearFormattedTwoDigits = String.format("%02d", yearTwoDigits);
+        String rfc = String.valueOf(parentalLastName.toUpperCase().charAt(0)) + String.valueOf(parentalLastName.toUpperCase().charAt(1)) +
+                String.valueOf(maternalLastName.toUpperCase().charAt(0)) + String.valueOf(firstName.toUpperCase().charAt(0)) +
+                String.valueOf(yearFormattedTwoDigits) + String.valueOf(birthDate.getMonthValue()) + String.valueOf(birthDate.getDayOfMonth()) +
+                String.valueOf(randomDigit1) + String.valueOf(randomLetter) + String.valueOf(randomDigit2);
         return rfc;
     }
 

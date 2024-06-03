@@ -113,4 +113,8 @@ public class DialogHelper {
 
     public static void outOfBonds(){ JOptionPane.showMessageDialog(null,"Out of bonds","",JOptionPane.ERROR_MESSAGE);}
 
+    public static void invalidD(){
+        JOptionPane.showMessageDialog(null,"Invalid option.","",JOptionPane.WARNING_MESSAGE);
+    }
+
 }

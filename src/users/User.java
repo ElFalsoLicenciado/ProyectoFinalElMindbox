@@ -22,10 +22,11 @@ public class User {
     protected String registrationDate;
     protected Careers career;
     protected String controlNumber;
+    protected String username;
     protected String password;
     protected Role role;
 
-    public User(String firstName, String lastName, String birthDate, String city, String state, String curp, String address, Careers career, String controlNumber, String password, Role role) {
+    public User(String firstName, String lastName, String birthDate, String city, String state, String curp, String address, Careers career, String controlNumber,String username, String password, Role role) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthDate = birthDate;
@@ -36,6 +37,7 @@ public class User {
         this.registrationDate = LocalDate.now().toString();
         this.career = career;
         this.controlNumber = controlNumber;
+        this.username = username;
         this.password = password;
         this.role = role;
     }
@@ -204,6 +206,10 @@ public class User {
 
     public String getControlNumber() {
         return controlNumber;
+    }
+
+    public String getUsername(){
+        return username;
     }
 
     public String getPassword() {

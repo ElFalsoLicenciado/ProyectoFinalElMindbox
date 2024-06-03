@@ -55,7 +55,7 @@ public class Teacher extends Worker {
         ArrayList<User> teacherUsers = Mindbox.users.get(Role.TEACHER);
         System.out.println("Teachers of Mindbox");
         for (User user : teacherUsers) {
-            if (user.getCareer().equals(UserInSession.getCurrentUser().getCareer())) {
+            if (user.getCareer().equals(UserInSession.getInstance().getCurrentUser().getCareer())) {
                 Teacher teacher = (Teacher) user;
                 System.out.println(teacher.toString());
             }

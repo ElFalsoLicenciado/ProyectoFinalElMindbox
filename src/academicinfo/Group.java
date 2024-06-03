@@ -3,6 +3,7 @@ package academicinfo;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.Scanner;
 
 import academicinfo.*;
@@ -31,7 +32,7 @@ public class Group {
 
     public String toString() {
         return String.format(
-                "ID: %s, Group Type: %s, Career: %s, Semester: %d", getGroupId(), getGroupType(), getCareer(), Mindbox.getSemester(getSemester()).getSemesterNumber()
+                "ID: %s, Group Type: %s, Career: %s, Semester: %d", getGroupId(), getGroupType(), getCareer(), Objects.requireNonNull(Mindbox.getSemester(getSemester())).getSemesterNumber()
         );
     }
 
@@ -56,7 +57,7 @@ public class Group {
             System.out.println("[E]. Exit this menu.");
             option = sc.nextLine();
             if (option.equalsIgnoreCase("1")) {
-                ArrayList<Semester> semesters = Mindbox.semesters.get(UserInSession.getCurrentUser().getCareer());
+                ArrayList<Semester> semesters = Mindbox.semesters.get(UserInSession.getInstance().getCurrentUser().getCareer());
                 for (Semester semester : semesters) {
                     ArrayList<Group> groups = semester.getGroups();
                     for (Group group : groups) {
@@ -70,7 +71,7 @@ public class Group {
                     }
                 }
             } else if (option.equalsIgnoreCase("2")) {
-                ArrayList<Semester> semesters = Mindbox.semesters.get(UserInSession.getCurrentUser().getCareer());
+                ArrayList<Semester> semesters = Mindbox.semesters.get(UserInSession.getInstance().getCurrentUser().getCareer());
                 for (Semester semester : semesters) {
                     ArrayList<Group> groups = semester.getGroups();
                     for (Group group : groups) {
@@ -78,7 +79,7 @@ public class Group {
                         ArrayList<String> students = group.getStudentList();
                         System.out.println("Students of the group: " + group.getGroupId());
                         for (String student : students) {
-                            System.out.println(Mindbox.getStudent(student).toString());
+                            System.out.println(Objects.requireNonNull(Mindbox.getStudent(student)).toString());
                         }
                         System.out.println("----------------------------");
                     }
@@ -88,7 +89,7 @@ public class Group {
     }
 
     public static Group getGroup(String c, Semester semester) {
-        Careers career = UserInSession.getCurrentUser().getCareer();
+        Careers career = UserInSession.getInstance().getCurrentUser().getCareer();
         for (Group group : semester.getGroups()) {
             if (group.getGroupType().equals(c)) {
                 return group;
@@ -104,7 +105,7 @@ public class Group {
             return "";
         }
         for (String student : studentList) {
-            System.out.println(Mindbox.getStudent(student).toString());
+            System.out.println(Objects.requireNonNull(Mindbox.getStudent(student)).toString());
         }
         return "";
     }
@@ -112,8 +113,8 @@ public class Group {
     public ArrayList<String> getApprovedStudents() {
         ArrayList<String> approvedList = new ArrayList<>();
         for (String student : studentList) {
-            HashMap<String, HashMap<String, Integer>> grades = Mindbox.getStudent(student).getGrades();
-            for (Integer grade : grades.get(Mindbox.getSemester(Mindbox.getStudent(student).getSemester()).getId()).values()) {
+            HashMap<String, HashMap<String, Integer>> grades = Objects.requireNonNull(Mindbox.getStudent(student)).getGrades();
+            for (Integer grade : grades.get(Objects.requireNonNull(Mindbox.getSemester(Objects.requireNonNull(Mindbox.getStudent(student)).getSemester())).getId()).values()) {
                 if (grade >= 70) {
                     if (!approvedList.contains(student)) {
                         approvedList.add(student);
@@ -127,8 +128,8 @@ public class Group {
     public ArrayList<String> getFailedStudents() {
         ArrayList<String> failedList = new ArrayList<>();
         for (String student : studentList) {
-            HashMap<String, HashMap<String, Integer>> grades = Mindbox.getStudent(student).getGrades();
-            for (Integer grade : grades.get(Mindbox.getSemester(Mindbox.getStudent(student).getSemester()).getId()).values()) {
+            HashMap<String, HashMap<String, Integer>> grades = Objects.requireNonNull(Mindbox.getStudent(student)).getGrades();
+            for (Integer grade : grades.get(Objects.requireNonNull(Mindbox.getSemester(Objects.requireNonNull(Mindbox.getStudent(student)).getSemester())).getId()).values()) {
                 if (grade < 70) {
                     if (!failedList.contains(student)) {
                         failedList.add(student);
@@ -141,8 +142,8 @@ public class Group {
 
     public boolean checkGrades() {
         for (String student : studentList) {
-            HashMap<String, HashMap<String, Integer>> grades = Mindbox.getStudent(student).getGrades();
-            for (Integer grade : grades.get(Mindbox.getSemester(Mindbox.getStudent(student).getSemester()).getId()).values()) {
+            HashMap<String, HashMap<String, Integer>> grades = Objects.requireNonNull(Mindbox.getStudent(student)).getGrades();
+            for (Integer grade : grades.get(Mindbox.getSemester(Objects.requireNonNull(Mindbox.getStudent(student)).getSemester()).getId()).values()) {
                 if (grade == null) {
                     return false;
                 }

@@ -2,7 +2,6 @@ package users;
 
 import academicinfo.*;
 import mindbox.*;
-import users.*;
 import users.utils.*;
 import utils.*;
 import java.util.*;
@@ -30,7 +29,7 @@ public class Student extends User {
     }
 
     public static void registerStudent() {
-        System.out.println("You have selected the option to register a student.");
+        DialogHelper.info("You have selected the option to register a student.");
         ArrayList<String> commonData = CommonData.getCommonData(Role.STUDENT);
 
         String firstName = commonData.get(0);
@@ -42,12 +41,12 @@ public class Student extends User {
         String address = commonData.get(6);
         String password = commonData.get(7);
         String controlNumber = commonData.get(8);
-        Careers career = commonData.get(9).equals("Sistemas") ? Careers.Systems : commonData.get(9).equals("Materiales") ? Careers.Materials : Careers.Electronics;
+        Careers career = commonData.get(9).equals("Systems") ? Careers.Systems : commonData.get(9).equals("Materials") ? Careers.Materials : Careers.Electronics;
 
         Student student = new Student(firstName, lastName, birthDate, city, state, curp, address, career, controlNumber, password);
         Semester semester = Semester.getSemesterByNumber(1);
         if (semester == null) {
-            System.out.println("Could not find the specified semester.");
+            DialogHelper.error("Could not find the specified semester.");
             return;
         }
         student.setSemester(semester.getId());
@@ -62,7 +61,7 @@ public class Student extends User {
             }
         }
         Mindbox.users.get(Role.STUDENT).add(student);
-        System.out.println("Student registered successfully.");
+        DialogHelper.info("Student registered successfully.");
     }
 
     public void setNullGrades(Semester semester, Group group) {
@@ -73,31 +72,23 @@ public class Student extends User {
     }
 
     public static String getGroupType() {
-        Scanner sc = new Scanner(System.in);
-        String option;
-        do {
-            System.out.println("Enter the group type to register [A/B]: ");
-            option = sc.nextLine();
-            if (option.equals("A")) {
-                return "A";
-            } else if (option.equals("B")) {
-                return "B";
-            } else {
-                System.out.println("Invalid option.");
-            }
-        } while (true);
+        String option = null;
+
+        switch(DialogHelper.optionD("Select the group type to register:",new String[]{"A","B"})) {
+            case 0 -> option = "A";
+            case 1 -> option = "B";
+        }
+        return option;
     }
 
     public static Student getStudent() {
-        Scanner sc = new Scanner(System.in);
         ArrayList<User> students = Mindbox.users.get(Role.STUDENT);
-        String controlNumber = "";
+        String controlNumber;
         boolean found = false;
         Student student = null;
         do {
             showAllStudents();
-            System.out.println("Enter the control number of the student you want: ");
-            controlNumber = sc.nextLine();
+            controlNumber = DialogHelper.stringIn("Enter the control number of the student you want: ");
             for (User user : students) {
                 if (user.getControlNumber().equals(controlNumber)) {
                     found = true;
@@ -110,115 +101,119 @@ public class Student extends User {
     }
 
     public static void showAllStudents() {
+        ArrayList<String> aux = new ArrayList<>(); //Que ves Artur
         ArrayList<User> studentUsers = Mindbox.users.get(Role.STUDENT);
-        System.out.println("Students of Mindbox Institute");
+        aux.add("Students of Mindbox Institute");
         for (User user : studentUsers) {
             if (user.getCareer().equals(UserInSession.getCurrentUser().getCareer())) {
                 Student student = (Student) user;
-                System.out.println(student.toString());
+                aux.add(student.toString());
             }
         }
+        DialogHelper.info(Arrays.toString(aux.toArray()).replace("[", "").replace("]", ""));
     }
 
     public void showGrades() {
         if (getSemester() == null) {
-            System.out.println("You have already graduated.");
+            DialogHelper.info("You have already graduated.");
             return;
         }
+        ArrayList<String> aux = new ArrayList<>();
         Semester semester = Mindbox.getSemester(getSemester());
-        System.out.println("Semester: " + semester.getSemesterNumber());
+        aux.add("Semester: " + semester.getSemesterNumber());
         HashMap<String, Integer> subjects = grades.get(semester.getId());
         for (String subject : subjects.keySet()) {
             Subject subject1 = Mindbox.getSubject(subject);
             if (grades.get(semester.getId()).get(subject1.getId()) == null) {
-                System.out.println("Subject: " + subject1.getId() + " - Grade: Not assigned");
+                aux.add("Subject: " + subject1.getId() + " - Grade: Not assigned");
             } else {
-                System.out.println("Subject: " + subject1.getId() + " - Grade: " + grades.get(semester.getId()).get(subject1.getId()));
+                aux.add("Subject: " + subject1.getId() + " - Grade: " + grades.get(semester.getId()).get(subject1.getId()));
             }
         }
+        DialogHelper.info(Arrays.toString(aux.toArray()).replace("[", "").replace("]", ""));
     }
 
     public void showCurrentClasses() {
         if (getSemester() == null) {
-            System.out.println("You have already graduated.");
+            DialogHelper.info("You have already graduated.");
             return;
         }
-        System.out.println("Current Classes");
+        ArrayList<String> aux = new ArrayList<>();
+        aux.add("Current Classes");
 
         Group group1 = Mindbox.getGroup(group);
         for (int i = 0; i < group1.getSubjects().size(); i++) {
-            System.out.println(group1.getSubjects().get(i).getId());
+            aux.add(group1.getSubjects().get(i).getId());
         }
+        DialogHelper.info(Arrays.toString(aux.toArray()).replace("[", "").replace("]", ""));
     }
 
     public void showHistory() {
+        ArrayList<String> aux = new ArrayList<>();
         if (semester == null) {
-            System.out.println("History of the graduated student:");
+            aux.add("History of the graduated student:");
             double totalGrade = 0;
             for (String semester : grades.keySet()) {
                 Semester semester1 = Mindbox.getSemester(semester);
-                System.out.println("Semester: " + semester1.getSemesterNumber());
+                aux.add("Semester: " + semester1.getSemesterNumber());
                 double semesterGrade = 0;
                 for (String subject1 : grades.get(semester).keySet()) {
                     Subject subject = Mindbox.getSubject(subject1);
-                    System.out.println("Subject: " + subject.getId() + " - Grade: " + grades.get(semester).get(subject1));
+                    aux.add("Subject: " + subject.getId() + " - Grade: " + grades.get(semester).get(subject1));
                     semesterGrade += grades.get(semester).get(subject1);
                     totalGrade += grades.get(semester).get(subject1);
                 }
-                System.out.println("Semester average: " + semesterGrade / 3);
+                aux.add("Semester average: " + semesterGrade / 3);
             }
             this.average = totalGrade / 9;
-            System.out.println("Final career average: " + totalGrade / 9);
+            aux.add("Final career average: " + totalGrade / 9);
         } else {
-            System.out.println("Student history up to now.");
+            aux.add("Student history up to now.");
             for (String semester : grades.keySet()) {
                 Semester semester1 = Mindbox.getSemester(semester);
-                System.out.println("Semester: " + semester1.getSemesterNumber());
+                aux.add("Semester: " + semester1.getSemesterNumber());
                 double semesterGrade = 0;
                 for (String subject1 : grades.get(semester).keySet()) {
                     Subject subject = Mindbox.getSubject(subject1);
                     if (grades.get(semester).get(subject1) == null) {
-                        System.out.println("Subject: " + subject.getId() + " - Grade: Not assigned");
+                        aux.add("Subject: " + subject.getId() + " - Grade: Not assigned");
                     } else {
-                        System.out.println("Subject: " + subject.getId() + " - Grade: " + grades.get(semester).get(subject1));
+                        aux.add("Subject: " + subject.getId() + " - Grade: " + grades.get(semester).get(subject1));
                         semesterGrade += grades.get(semester).get(subject1);
                     }
                 }
-                System.out.println("Semester average: " + semesterGrade / 3);
+                aux.add("Semester average: " + semesterGrade / 3);
             }
         }
+        DialogHelper.info(Arrays.toString(aux.toArray()).replace("[", "").replace("]", ""));
     }
 
     public static void expelStudent() {
         if (Mindbox.users.get(Role.STUDENT).isEmpty()) {
-            System.out.println("No students to expel.");
+            DialogHelper.error("No students to expel.");
             return;
         }
-        Scanner sc = new Scanner(System.in);
         Student student = getStudent();
         if (student.getSemester() == null) {
-            System.out.println("The student has already graduated.");
+            DialogHelper.info("The student has already graduated.");
             return;
         }
         do {
-            System.out.println("Are you sure you want to expel the student " + student.getFirstName() + ", with control number " + student.getControlNumber() + " [Y] / [N]");
-            String confirmation = sc.nextLine();
-            if (confirmation.equalsIgnoreCase("Y")) {
+            int confirmation = DialogHelper.optionD(String.format("Are you sure you want to expel the student %s with control number %s", student.getFirstName(), student.getControlNumber()), new String[]{"Yes", "No"});
+            if (confirmation == 0) {
                 Mindbox.users.get(Role.STUDENT).remove(student);
                 Mindbox.getGroup(student.getGroup()).getStudentList().remove(student.getControlNumber());
-                System.out.println("The student has been expelled successfully");
+                DialogHelper.info("The student has been expelled successfully");
                 break;
-            } else if (confirmation.equalsIgnoreCase("N")) {
-                System.out.println("Student not expelled");
+            } else if (confirmation == 1) {
+                DialogHelper.info("Student not expelled");
                 break;
-            } else {
-                System.out.println("Invalid option.");
             }
-        } while (true);
+        }while (true);
     }
 
     public static void updateCommonData() {
-        System.out.println("You have selected the option to update Student.");
+        DialogHelper.info("You have selected the option to update Student.");
         Student student = getStudent();
         CommonData.updateInformation(student);
     }

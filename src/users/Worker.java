@@ -16,8 +16,8 @@ public class Worker extends User {
     protected String RFC;
     protected float salary;
 
-    public Worker(String firstName, String lastName, String birthDate, String city, String state, String curp, String address, Careers career, String controlNumber, String password, Role role, String RFC, float salary) {
-        super(firstName, lastName, birthDate, city, state, curp, address, career, controlNumber, password, role);
+    public Worker(String firstName, String lastName, String birthDate, String city, String state, String curp, String address, Careers career, String controlNumber,String username, String password, Role role, String RFC, float salary) {
+        super(firstName, lastName, birthDate, city, state, curp, address, career, controlNumber,username, password, role);
         this.RFC = RFC;
         this.salary = salary;
         this.subjects = new ArrayList<>();
@@ -70,7 +70,7 @@ public class Worker extends User {
                 ArrayList<Subject> subjects = group.getSubjects();
                 for (Subject subject : subjects) {
                     if (subject.getTeacher() != null) {
-                        if (Mindbox.getWorker(subject.getTeacher()).equals(UserInSession.getCurrentUser())) {
+                        if (Mindbox.getWorker(subject.getTeacher()).equals(UserInSession.getInstance().getCurrentUser())) {
                             subjectsFound = true;
                             ArrayList<String> checkPassed = subject.getApprovedStudents(semester.getId());
                             for (String student : checkPassed) {
@@ -202,7 +202,7 @@ public class Worker extends User {
                 boolean subjectsFound = false;
                 for (Subject subject : subjects) {
                     if (subject.getTeacher() != null) {
-                        if (Mindbox.getWorker(subject.getTeacher()).equals(UserInSession.getCurrentUser())) {
+                        if (Mindbox.getWorker(subject.getTeacher()).equals(UserInSession.getInstance().getCurrentUser())) {
                             subjectsFound = true;
                             ArrayList<String> checkPassed = subject.getApprovedStudents(semester.getId());
                             for (String student : checkPassed) {
@@ -438,11 +438,11 @@ public class Worker extends User {
         }
         Group group = Mindbox.getGroup(subject.getGroup());
         if (group.getStudentList().isEmpty()) {
-            System.out.println("There are no students in this subject for now.");
+            DialogHelper.error("There are no students in this subject for now.");
             return;
         }
         if (group.getStudentList().size() < 3) {
-            System.out.println("The group does not have at least 3 students.");
+            DialogHelper.error("The group does not have at least 3 students.");
             return;
         }
         do {
@@ -451,15 +451,9 @@ public class Worker extends User {
             if (semesterGrades.get(subject.getId()) != null) {
                 int existingGrade = semesterGrades.get(subject.getId());
                 do {
-                    System.out.println("The student already has an assigned grade: " + existingGrade);
-                    System.out.println("Do you want to modify the grade? [Y]/[N]");
-                    String response = sc.next();
-                    if (response.equalsIgnoreCase("n")) {
-                        return;
-                    } else if (response.equalsIgnoreCase("y")) {
-                        break;
+                    if (DialogHelper.confirmD("\"The student already has an assigned grade: " + existingGrade+ "\nDo you want to modify the grade?")) {
                     } else {
-                        System.out.println("Invalid option.");
+                        break;
                     }
                 } while (true);
             }
