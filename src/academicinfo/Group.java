@@ -56,7 +56,7 @@ public class Group {
             System.out.println("[E]. Exit this menu.");
             option = sc.nextLine();
             if (option.equalsIgnoreCase("1")) {
-                ArrayList<Semester> semesters = Mindbox.semesters.get(UserInSession.getCurrentUser().getCareer());
+                ArrayList<Semester> semesters = Mindbox.semesters.get(UserInSession.getInstance().getCurrentUser().getCareer());
                 for (Semester semester : semesters) {
                     ArrayList<Group> groups = semester.getGroups();
                     for (Group group : groups) {
@@ -70,7 +70,7 @@ public class Group {
                     }
                 }
             } else if (option.equalsIgnoreCase("2")) {
-                ArrayList<Semester> semesters = Mindbox.semesters.get(UserInSession.getCurrentUser().getCareer());
+                ArrayList<Semester> semesters = Mindbox.semesters.get(UserInSession.getInstance().getCurrentUser().getCareer());
                 for (Semester semester : semesters) {
                     ArrayList<Group> groups = semester.getGroups();
                     for (Group group : groups) {
@@ -88,7 +88,7 @@ public class Group {
     }
 
     public static Group getGroup(String c, Semester semester) {
-        Careers career = UserInSession.getCurrentUser().getCareer();
+        Careers career = UserInSession.getInstance().getCurrentUser().getCareer();
         for (Group group : semester.getGroups()) {
             if (group.getGroupType().equals(c)) {
                 return group;

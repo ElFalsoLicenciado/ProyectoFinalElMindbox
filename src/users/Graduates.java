@@ -40,7 +40,7 @@ public class Graduates {
     public static void showGraduates() {
         System.out.println("Graduated students of Mindbox Institute");
         for (Graduates graduates : Mindbox.graduates) {
-            if (graduates.careers == UserInSession.getCurrentUser().getCareer()) {
+            if (graduates.careers == UserInSession.getInstance().getCurrentUser().getCareer()) {
                 System.out.println(graduates.toString());
                 System.out.println("Students:");
                 graduates.printGraduates();

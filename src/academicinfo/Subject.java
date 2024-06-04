@@ -76,7 +76,7 @@ public class Subject {
         Subject subject1 = null;
         String name = "";
         boolean found = false;
-        Careers career = UserInSession.getCurrentUser().getCareer();
+        Careers career = UserInSession.getInstance().getCurrentUser().getCareer();
         Semester semester1 = Mindbox.getSemester(semester);
         ArrayList<Subject> subjects = Mindbox.getGroup(group).getSubjects();
         do {
@@ -96,7 +96,7 @@ public class Subject {
     }
 
     public static void showAllSubjects(Group group) {
-        Careers career = UserInSession.getCurrentUser().getCareer();
+        Careers career = UserInSession.getInstance().getCurrentUser().getCareer();
         ArrayList<Subject> subjects = Mindbox.getGroup(group.getGroupId()).getSubjects();
         if (subjects.isEmpty()) {
             System.out.println("You don't have any subjects.");

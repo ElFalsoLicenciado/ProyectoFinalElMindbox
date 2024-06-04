@@ -2,7 +2,6 @@ package users;
 
 import academicinfo.*;
 import mindbox.*;
-import users.*;
 import users.utils.*;
 import utils.*;
 import java.util.*;
@@ -13,7 +12,7 @@ public class Teacher extends Worker {
     }
 
     public static void registerTeacher() {
-        System.out.println("You have selected the option to register a Teacher.");
+        DialogHelper.info("You have selected the option to register a Teacher.");
         ArrayList<String> commonData = CommonData.getCommonData(Role.TEACHER);
         Scanner sc = new Scanner(System.in);
 
@@ -31,47 +30,42 @@ public class Teacher extends Worker {
         float salary = 0;
         do {
             try {
-                System.out.println("Enter the teacher's salary:");
-                salary = sc.nextFloat();
+                salary = Float.parseFloat(DialogHelper.stringIn("Enter the teacher's salary:"));
                 if (salary <= 0) {
                     salary = 0;
                     throw new Exception("");
                 }
-            } catch (InputMismatchException e) {
-                System.out.println("Value must be a number.");
-                sc.nextLine();
+            } catch (NumberFormatException e) {
+                DialogHelper.warning("Value must be a number.");
             } catch (Exception e) {
-                System.out.println("Value must be greater than zero.");
-                sc.nextLine();
+                DialogHelper.warning("Value must be greater than zero.");
             }
         } while (salary == 0);
 
         Teacher teacher = new Teacher(name, lastName, birthDate, city, state, curp, address, career, controlNumber, password, rfc, salary);
         Mindbox.users.get(Role.TEACHER).add(teacher);
-        System.out.println("Teacher successfully registered.");
+        DialogHelper.info("Teacher successfully registered.");
     }
 
     public static void showAllTeachers() {
         ArrayList<User> teacherUsers = Mindbox.users.get(Role.TEACHER);
-        System.out.println("Teachers of Mindbox ITM");
+        DialogHelper.info("Teachers of Mindbox ITM");
         for (User user : teacherUsers) {
-            if (user.getCareer().equals(UserInSession.getCurrentUser().getCareer())) {
+            if (user.getCareer().equals(UserInSession.getInstance().getCurrentUser().getCareer())) {
                 Teacher teacher = (Teacher) user;
-                System.out.println(teacher.toString());
+                DialogHelper.info(teacher.toString());
             }
         }
     }
 
     public static Teacher getTeacher() {
-        Scanner sc = new Scanner(System.in);
         ArrayList<User> teachers = Mindbox.users.get(Role.TEACHER);
-        String controlNumber = "";
+        String controlNumber;
         boolean found = false;
         Teacher teacher = null;
         do {
             showAllTeachers();
-            System.out.println("Enter the control number of the teacher you want:");
-            controlNumber = sc.nextLine();
+            controlNumber = DialogHelper.stringIn("Enter the control number of the teacher you want:");
             for (User user : teachers) {
                 if (user.getControlNumber().equals(controlNumber)) {
                     found = true;
@@ -85,21 +79,19 @@ public class Teacher extends Worker {
 
     public static void deleteTeacher() {
         if (Mindbox.users.get(Role.TEACHER).isEmpty()) {
-            System.out.println("There are no teachers to delete.");
+            DialogHelper.info("There are no teachers to delete.");
             return;
         }
-        System.out.println("You have selected the option to delete a Teacher.");
+        DialogHelper.info("You have selected the option to delete a Teacher.");
         Teacher teacher = getTeacher();
         if (teacher.getSubjects().isEmpty()) {
             Mindbox.users.get(Role.TEACHER).remove(teacher);
-            System.out.println("The teacher " + teacher.getFirstName() + " " + teacher.getLastName() + " with control number " + teacher.getControlNumber() + " has been deleted.");
-        } else {
-            System.out.println("The teacher has not been deleted because they have assigned subjects.");
-        }
+            DialogHelper.info("The teacher " + teacher.getFirstName() + " " + teacher.getLastName() + " with control number " + teacher.getControlNumber() + " has been deleted.");
+        } else DialogHelper.info("The teacher has not been deleted because they have assigned subjects.");
     }
 
     public static void updateCommonData() {
-        System.out.println("You have selected the option to Update Teacher.");
+        DialogHelper.info("You have selected the option to Update Teacher.");
         showAllTeachers();
         Teacher teacher = getTeacher();
         CommonData.updateInformation(teacher);

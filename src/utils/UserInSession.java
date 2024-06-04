@@ -15,7 +15,7 @@ public class UserInSession {
         return instance;
     }
 
-    public static User getCurrentUser() {
+    public User getCurrentUser() {
         return user;
     }
 

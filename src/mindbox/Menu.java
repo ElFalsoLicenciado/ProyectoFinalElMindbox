@@ -1,86 +1,62 @@
 package mindbox;
 
 import academicinfo.*;
-import gson.serializers.*;
-import gson.deserializers.*;
-import mindbox.*;
 import users.*;
-import users.utils.*;
 import utils.*;
-import java.util.*;
 
 public class Menu {
 
-    public static Scanner reader = new Scanner(System.in);
-
-    public static void showMenuFirstTime(){
+    public static void showMenuFirstTime() {
 
         while (true) {
             Mindbox.loadJson();
 
-            System.out.println("WELCOME TO THE MINDBOX SYSTEM.");
-            System.out.println("1. LogIn");
-            System.out.println("E. Exit");
-            System.out.println("Elige una opción: ");
+            DialogHelper.info("WELCOME TO THE MINDBOX SYSTEM OF ITM.");
 
-            String option = reader.nextLine();
+            int choice = DialogHelper.optionD("Select an option:", new String[]{"Log In", "Exit"});
 
-            switch (option.toUpperCase()) {
-                case "1":
+            switch (choice) {
+                case 0:
                     logIn();
                     break;
-                case "E":
+                case 1:
                     Mindbox.saveJson();
                     System.exit(0);
                     break;
-                default:
-                    System.out.println("INCORRECT OPTION");
-                    break;
             }
         }
-
     }
 
-    public static void showMenu(){
+
+    public static void showMenu() {
 
         while (true) {
-            System.out.println("WELCOME TO THE MINDBOX SYSTEM.");
-            System.out.println("1. LogIn");
-            System.out.println("E. Exit");
-            System.out.println("Elige una opción: ");
+            int choice = DialogHelper.optionD("Select an option:", new String[]{"Log In", "Exit"});
 
-            String option = reader.nextLine();
-
-            switch (option.toUpperCase()) {
-                case "1":
+            switch (choice) {
+                case 0:
                     logIn();
                     break;
-                case "E":
+                case 1:
                     Mindbox.saveJson();
                     System.exit(0);
                     break;
-                default:
-                    System.out.println("INCORRECT OPTION");
-                    break;
             }
         }
-
     }
 
+
     public static void logIn() {
-        boolean correctData = false;
         int attempts = 5;
 
         UserInSession.getInstance().logout();
 
         do {
-            System.out.printf("Log in to continue, you have %d attempts: \n", attempts);
+            DialogHelper.info(String.format("Log in to continue, you have %s attempts",attempts));
 
-            System.out.println("Enter your control number: ");
-            String controlNumber = reader.nextLine();
-
-            System.out.println("Enter your password: ");
-            String password = reader.nextLine();
+            String controlNumber = DialogHelper.stringIn("Enter your control number:\n 0 To cancel");
+            if(controlNumber.equals("0")) break;
+            String password = DialogHelper.stringIn("Enter your password: ");
 
             User currentUser = Mindbox.verifyLogin(controlNumber, password);
 
@@ -89,16 +65,16 @@ public class Menu {
                 selectMenu();
                 attempts = 5;
             } else if (attempts == 1) {
-                System.out.println("ATTEMPTS EXHAUSTED, ENDING THE PROGRAM.");
+                DialogHelper.error("ATTEMPTS EXHAUSTED, ENDING THE PROGRAM.");
                 Mindbox.saveJson();
-                correctData = true;
+                break;
             } else {
-                System.out.println("INCORRECT DATA.");
+                DialogHelper.error("INCORRECT DATA.");
                 attempts--;
             }
-
-        } while (!correctData);
+        } while (true);
     }
+
 
     private static void selectMenu() {
         switch (UserInSession.getInstance().getCurrentUser().getRole()) {
@@ -108,314 +84,190 @@ public class Menu {
         }
     }
 
+
     private static void executeStudentMenu() {
-        String option = "";
         Student student = (Student) UserInSession.getInstance().getCurrentUser();
-        System.out.println("Welcome Student " + student.getFirstName() + " " + student.getLastName());
+        DialogHelper.info("Welcome Student " + student.getFirstName() + " " + student.getLastName());
+        boolean flag = false;
+
         do {
-            System.out.println("1. View grades");
-            System.out.println("2. Show current subjects");
-            System.out.println("3. View history");
-            System.out.println("4. Show my information.");
-            System.out.println("E. Log out");
-            System.out.print("Enter an option: ");
-            System.out.println();
-            option = reader.nextLine();
-            switch (option.toUpperCase()) {
-                case "1":
+            switch (DialogHelper.optionD("What do you wanna do?", "1. View grades\n2. Show current subjects\n3.View history\n4. Show my info", new String[]{"1", "2", "3", "4", "Exit"})) {
+                case 0:
                     student.showGrades();
-                    System.out.print("-------------------------------------------------\n");
-                    break;
-                case "2":
-                    student.showCurrentClasses();
-                    System.out.print("-------------------------------------------------\n");
-                    break;
-                case "3":
+                case 1:
+                    student.showCurrentSubjects();
+                case 2:
                     student.showHistory();
-                    System.out.print("-------------------------------------------------\n");
+                case 3:
+                    DialogHelper.info(student.toString());
                     break;
-                case "4":
-                    System.out.println(student.toString());
-                    System.out.print("-------------------------------------------------\n");
-                    break;
-                case "E":
-                    System.out.println("Logging out...");
-                    System.out.print("-------------------------------------------------\n");
-                    break;
-                default:
-                    System.out.println("Invalid Option");
-                    System.out.print("-------------------------------------------------\n");
-                    break;
+                case 4:
+                    DialogHelper.info("Logging out...");
+                    flag = true;
             }
-        } while (!option.equalsIgnoreCase("E"));
+        }while (!flag) ;
         UserInSession.getInstance().logout();
         showMenu();
     }
 
     private static void executeCoordinatorMenu() {
-        String option = "";
         Coordinator coordinator = (Coordinator) UserInSession.getInstance().getCurrentUser();
-        System.out.println("Welcome Coordinator " + coordinator.getFirstName() + " " + coordinator.getLastName());
+        DialogHelper.info("Welcome Coordinator " + coordinator.getFirstName() + " " + coordinator.getLastName());
+        boolean flag = true;
         do {
-            System.out.println("1. Assign grades");
-            System.out.println("2. View all my current subjects.");
-            System.out.println("3. Observe students by filter.");
-            System.out.println("4. Promote Group");
-            System.out.println("5. Student Options");
-            System.out.println("6. Teacher Options");
-            System.out.println("7. Show all Groups.");
-            System.out.println("8. Show Graduated Students");
-            System.out.println("9. Show my information.");
-            System.out.println("E. Exit the system");
-            System.out.print("Enter an option:");
-            System.out.println();
-            option = reader.nextLine();
-            switch (option.toUpperCase()) {
-                case "1":
-                    System.out.println("Selected: Assign grades");
+            switch (DialogHelper.optionD("What do you wanna do?",
+                    new String[]{"Assign grades", "View all my current subjects", "Observe students by filter",
+                            "Promote Group", "Student Options", "Teacher Options", "Show all Groups", "Show Graduated Students",
+                            "Show my information", "Exit"})) {
+                case 0 -> {
+                    DialogHelper.info("Selected: Assign grades");
                     coordinator.assignGrade();
-                    System.out.print("-------------------------------------------------\n");
-                    break;
-                case "2":
-                    System.out.println("Showing all your current subjects.");
+                }
+                case 1 -> {
+                    DialogHelper.info("Showing all your current subjects.");
                     coordinator.showMySubjects();
-                    System.out.print("-------------------------------------------------\n");
-                    break;
-                case "3":
+                }
+                case 2 -> {
                     if (coordinator.getSubjects().isEmpty()) {
-                        System.out.println("You have no subjects assigned.");
-                        System.out.print("-------------------------------------------------\n");
+                        DialogHelper.info("You have no subjects assigned.");
                     } else {
-                        System.out.println("Observe grades by filter.");
-                        String filterOption;
-                        boolean exit = false;
+                        boolean exit = true;
                         do {
-                            System.out.println("Which filter do you want?");
-                            System.out.println("[1]. By semester.");
-                            System.out.println("[2]. By group.");
-                            System.out.println("[3]. By subject.");
-                            System.out.println("[E]. Exit the menu");
-                            filterOption = reader.nextLine();
-                            switch (filterOption.toUpperCase()) {
-                                case "1":
+                            switch (DialogHelper.optionD("Observe grades by filter",
+                                    new String[]{"By semester", "By group", "By subject", "Exit"})) {
+                                case 0:
                                     coordinator.filterBySemester();
-                                    System.out.print("-------------------------------------------------\n");
                                     break;
-                                case "2":
+                                case 1:
                                     coordinator.filterByGroup();
-                                    System.out.print("-------------------------------------------------\n");
                                     break;
-                                case "3":
+                                case 2:
                                     coordinator.filterBySubject();
-                                    System.out.print("-------------------------------------------------\n");
                                     break;
-                                case "E":
-                                    exit = true;
-                                    System.out.print("-------------------------------------------------\n");
-                                    break;
-                                default:
-                                    System.out.println("Invalid option.");
-                                    System.out.print("-------------------------------------------------\n");
+                                case 3:
+                                    exit = false;
                                     break;
                             }
-                        } while (!exit);
+                        } while (exit);
                     }
-                    break;
-                case "4":
-                    System.out.println("Selected: Promote Group");
+                }
+                case 3 -> {
+                    DialogHelper.info("Selected: Promote Group");
                     Coordinator.promoteGroup();
-                    System.out.print("-------------------------------------------------\n");
-                    break;
-                case "5":
+                }
+                case 4 -> {
+                    boolean aux = true;
                     do {
-                        System.out.println("1. Register Student");
-                        System.out.println("2. Modify Student");
-                        System.out.println("3. Delete Student");
-                        System.out.println("4. Show Students");
-                        System.out.println("E. Exit the menu");
-                        System.out.print("Enter an option:");
-                        option = reader.nextLine();
-                        switch (option.toUpperCase()) {
-                            case "1":
+                        switch (DialogHelper.optionD("Student Options",
+                                new String[]{"Register Student", "Modify Student", "Delete Student", "Show Students", "Exit"})) {
+                            case 0:
                                 Mindbox.registerStudent();
-                                System.out.print("-------------------------------------------------\n");
                                 break;
-                            case "2":
+                            case 1:
                                 Mindbox.updateStudent();
-                                System.out.print("-------------------------------------------------\n");
                                 break;
-                            case "3":
+                            case 2:
                                 Mindbox.expelStudent();
-                                System.out.print("-------------------------------------------------\n");
                                 break;
-                            case "4":
+                            case 3:
                                 Mindbox.showAllStudents();
-                                System.out.print("-------------------------------------------------\n");
                                 break;
-                            case "E":
-                                System.out.print("-------------------------------------------------\n");
-                                break;
-                            default:
-                                System.out.println("Invalid Option");
-                                System.out.print("-------------------------------------------------\n");
-                                break;
+                            case 4:
+                                DialogHelper.returnD();
+                                aux = false;
                         }
-                    } while (!option.equalsIgnoreCase("E"));
-                    option = "";
-                    break;
-                case "6":
-                    do {
-                        System.out.println("1. Register Teacher");
-                        System.out.println("2. Modify Teacher");
-                        System.out.println("3. Delete Teacher");
-                        System.out.println("4. Show Teachers");
-                        System.out.println("5. Add a teacher to a subject.");
-                        System.out.println("6. Remove a teacher from a subject.");
-                        System.out.println("E. Exit the menu");
-                        System.out.print("Enter an option:");
-                        option = reader.nextLine();
-                        switch (option.toUpperCase()) {
-                            case "1":
-                                Mindbox.registerTeacher();
-                                System.out.print("-------------------------------------------------\n");
-                                break;
-                            case "2":
-                                Mindbox.updateTeacher();
-                                System.out.print("-------------------------------------------------\n");
-                                break;
-                            case "3":
-                                Mindbox.deleteTeacher();
-                                System.out.print("-------------------------------------------------\n");
-                                break;
-                            case "4":
-                                Mindbox.showAllTeachers();
-                                System.out.print("-------------------------------------------------\n");
-                                break;
-                            case "5":
-                                Mindbox.assignTeacherToSubject();
-                                System.out.print("-------------------------------------------------\n");
-                                break;
-                            case "6":
-                                Mindbox.removeTeacherFromSubject();
-                                System.out.print("-------------------------------------------------\n");
-                                break;
-                            case "E":
-                                System.out.print("-------------------------------------------------\n");
-                                break;
-                            default:
-                                System.out.println("Invalid Option");
-                                System.out.print("-------------------------------------------------\n");
-                                break;
-                        }
-                    } while (!option.equalsIgnoreCase("E"));
-                    option = "";
-                    break;
-                case "7":
-                    Group.showAllGroups();
-                    System.out.print("-------------------------------------------------\n");
-                    break;
-                case "8":
-                    Graduates.showGraduates();
-                    System.out.print("-------------------------------------------------\n");
-                    break;
-                case "9":
-                    System.out.println(coordinator.toString());
-                    System.out.print("-------------------------------------------------\n");
-                    break;
-                default:
-                    if (!option.equalsIgnoreCase("E")) {
-                        System.out.println("Invalid Option");
+                    } while (aux);
+                }
+                case 5 -> {
+                boolean aux = true;
+                do {
+                    switch (DialogHelper.optionD("Teacher Options", new String[]{"Register Teacher", "Modify Teacher", "Delete Teacher", "Show Teachers", "Add teacher to subject", "Remove teacher from subject", "Exit"})) {
+                        case 0:
+                            Mindbox.registerTeacher();
+                            break;
+                        case 1:
+                            Mindbox.updateTeacher();
+                            break;
+                        case 2:
+                            Mindbox.deleteTeacher();
+                            break;
+                        case 3:
+                            Mindbox.showAllTeachers();
+                            break;
+                        case 4:
+                            Mindbox.assignTeacherToSubject();
+                            break;
+                        case 5:
+                            Mindbox.removeTeacherFromSubject();
+                            break;
+                        case 6:
+                            aux = false;
+                            DialogHelper.returnD();
                     }
-                    System.out.print("-------------------------------------------------\n");
-                    break;
+                } while (aux);
             }
-        } while (!option.equalsIgnoreCase("E"));
+                case 6 -> Group.showAllGroups();
+                case 7 -> Graduates.showGraduates();
+                case 8 -> DialogHelper.info(coordinator.toString());
+                case 9 -> {
+                    DialogHelper.returnD();
+                    flag = false;
+                }
+            }
+        } while (flag);
         UserInSession.getInstance().logout();
-        System.out.println("Logging Out...");
-        System.out.print("-------------------------------------------------\n");
+        DialogHelper.info("Logging Out...");
         showMenu();
     }
 
+
     private static void executeTeacherMenu() {
-        String option = "";
         Worker teacher = (Worker) UserInSession.getInstance().getCurrentUser();
-        System.out.println("Welcome Teacher " + teacher.getFirstName() + " " + teacher.getLastName());
+        DialogHelper.info("Welcome Teacher " + teacher.getFirstName() + " " + teacher.getLastName());
+        boolean flag = true;
         do {
-            System.out.println("1. View all my current subjects.");
-            System.out.println("2. Observe students by filter.");
-            System.out.println("3. Assign Grades");
-            System.out.println("4. Show my information.");
-            System.out.println("E. Log Out");
-            System.out.print("Enter an option:");
-            System.out.println();
-            option = reader.nextLine();
-            switch (option) {
-                case "1":
-                    System.out.println("Showing all your current subjects.");
+            switch (DialogHelper.optionD("What do you wanna do?",
+                    new String[]{"View all my current subjects", "Observe students by filter", "Assign Grades",
+                            "Show my information", "Exit"})) {
+                case 0 -> {
+                    DialogHelper.info("Showing all your current subjects.");
                     teacher.showMySubjects();
-                    System.out.print("-------------------------------------------------\n");
-                    break;
-                case "2":
+                }
+                case 1 -> {
                     if (teacher.getSubjects().isEmpty()) {
-                        System.out.println("No filters available, you have no groups assigned.");
+                        DialogHelper.error("No filters available, you have no groups assigned.");
                     } else {
-                        System.out.println("Observe grades by filter.");
-                        String filterOption;
                         boolean exit = false;
                         do {
-                            System.out.println("Which filter do you want?");
-                            System.out.println("[1]. By semester.");
-                            System.out.println("[2]. By group.");
-                            System.out.println("[3]. By subject.");
-                            System.out.println("[E]. Exit the menu");
-                            filterOption = reader.nextLine();
-                            switch (filterOption.toUpperCase()) {
-                                case "1":
-                                    teacher.filterBySemester();
-                                    System.out.print("-------------------------------------------------\n");
-                                    break;
-                                case "2":
-                                    teacher.filterByGroup();
-                                    System.out.print("-------------------------------------------------\n");
-                                    break;
-                                case "3":
-                                    teacher.filterBySubject();
-                                    System.out.print("-------------------------------------------------\n");
-                                    break;
-                                case "E":
+                            switch (DialogHelper.optionD("Observe grades by filter",
+                                    new String[]{"By semester", "By group", "By subject", "Exit"})) {
+                                case 0 -> teacher.filterBySemester();
+                                case 1 -> teacher.filterByGroup();
+                                case 2 -> teacher.filterBySubject();
+                                case 3 -> {
+                                    DialogHelper.returnD();
                                     exit = true;
-                                    System.out.print("-------------------------------------------------\n");
-                                    break;
-                                default:
-                                    System.out.println("Invalid option.");
-                                    System.out.print("-------------------------------------------------\n");
-                                    break;
+                                }
                             }
                         } while (!exit);
                     }
-                    break;
-                case "3":
-                    System.out.println("Selected: Assign grades");
+                }
+                case 2 -> {
+                    DialogHelper.info("Selected: Assign grades");
                     teacher.assignGrade();
-                    System.out.print("-------------------------------------------------\n");
-                    break;
-                case "4":
-                    System.out.println(teacher.toString());
-                    System.out.print("-------------------------------------------------\n");
-                    break;
-                case "E":
-                    System.out.println("Logging out...");
+                }
+                case 3 ->{
+                    DialogHelper.info(teacher.toString());
+                }
+                case 4 -> {
+                    DialogHelper.info("Logging out...");
                     UserInSession.getInstance().logout();
-                    System.out.print("-------------------------------------------------\n");
                     showMenu();
-                    break;
-                default:
-                    if (!option.equalsIgnoreCase("E")) {
-                        System.out.println("Invalid Option");
-                    }
-                    System.out.print("-------------------------------------------------\n");
-                    break;
+                    flag = false;
+                }
+
             }
-        } while (!option.equalsIgnoreCase("E"));
+        }while (flag);
     }
+
 }

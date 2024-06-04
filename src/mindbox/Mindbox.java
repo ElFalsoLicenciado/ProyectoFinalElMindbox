@@ -22,7 +22,7 @@ public class Mindbox {
     public static ArrayList<Graduates> graduates = new ArrayList<>();
 
     public static Semester getSemester(String sem) {
-        ArrayList<Semester> semesters = Mindbox.semesters.get(UserInSession.getCurrentUser().getCareer());
+        ArrayList<Semester> semesters = Mindbox.semesters.get(UserInSession.getInstance().getCurrentUser().getCareer());
         for (Semester semester : semesters) {
             if (semester.getId().equals(sem)) {
                 return semester;
@@ -32,7 +32,7 @@ public class Mindbox {
     }
 
     public static Group getGroup(String gru) {
-        ArrayList<Semester> semesters = Mindbox.semesters.get(UserInSession.getCurrentUser().getCareer());
+        ArrayList<Semester> semesters = Mindbox.semesters.get(UserInSession.getInstance().getCurrentUser().getCareer());
         for (Semester semester : semesters) {
             for (Group group : semester.getGroups()) {
                 if (group.getGroupId().equals(gru)) {
@@ -44,7 +44,7 @@ public class Mindbox {
     }
 
     public static Subject getSubject(String mat) {
-        ArrayList<Semester> semesters = Mindbox.semesters.get(UserInSession.getCurrentUser().getCareer());
+        ArrayList<Semester> semesters = Mindbox.semesters.get(UserInSession.getInstance().getCurrentUser().getCareer());
         for (Semester semester : semesters) {
             for (Group group : semester.getGroups()) {
                 for (Subject subject : group.getSubjects()) {
@@ -139,19 +139,19 @@ public class Mindbox {
             }
         }
 
-        Student student1 = new Student("Luis", "Roman", "04-01-2005", "Morelia", "Michoacan", "ROSL050104HMNMNSA3", "Address 123", Careers.Systems, "IL24ISC00", "pass");
+        Student student1 = new Student("Luis Arturo", "Roman Sanchez", "04-01-2005", "Morelia", "Michoacan", "ROSL050104HMNMNSA3", "Address 123", Careers.Systems, "IL24ISC00", "pass");
         student1.setSemester(semester.getId());
         student1.setGroup(group.getGroupId());
         student1.setNullGrades(semester, group);
         student1.setGroupType(group.getGroupType());
         group.getStudentList().add(student1.getControlNumber());
-        Student student2 = new Student("Alberto", "Montoya", "04-01-2005", "Morelia", "Michoacan", "MOAA050104HMNMNS09", "Address 123", Careers.Systems, "IA24ISC00", "123");
+        Student student2 = new Student("Alberto", "Montoya Arriaga", "04-01-2005", "Morelia", "Michoacan", "MOAA050104HMNMNTA9", "Address 123", Careers.Systems, "IA24ISC00", "123");
         student2.setSemester(semester.getId());
         student2.setGroup(group.getGroupId());
         student2.setNullGrades(semester, group);
         student2.setGroupType(group.getGroupType());
         group.getStudentList().add(student2.getControlNumber());
-        Student student3 = new Student("Rene", "Olvera", "04-01-2005", "Morelia", "Michoacan", "SONJ850615HJLZNN09", "Address 123", Careers.Systems, "IR24ISC00", "123");
+        Student student3 = new Student("Rene Antonio", "Olvera Estrada", "04-01-2005", "Morelia", "Michoacan", "OERR050104HMNLNR09", "Address 123", Careers.Systems, "IR24ISC00", "123");
         student3.setSemester(semester.getId());
         student3.setGroup(group.getGroupId());
         student3.setNullGrades(semester, group);
@@ -161,14 +161,18 @@ public class Mindbox {
         Mindbox.users.get(Role.STUDENT).add(student2);
         Mindbox.users.get(Role.STUDENT).add(student3);
 
-        Teacher teacher = new Teacher("Murillo", "Jimenez", "15-06-1985", "Morelia", "Michoacan", "PONJ850615HJLZNN09", "Address 123", Careers.Systems, "MM24ISC00", "123", "RFCGOD", 70000.0f);
-        Mindbox.users.get(Role.TEACHER).add(teacher);
+        Teacher teacher1 = new Teacher("Jose Alfredo", "Jimenez Murillo", "15-06-1965", "Morelia", "Michoacan", "JIMM650615HMLMRJF7", "Address 123", Careers.Systems, "MM24ISC00", "123", "JIMM650615KP8", 20000.0f);
+        Mindbox.users.get(Role.TEACHER).add(teacher1);
+        Teacher teacher2 = new Teacher("Eder", "Rivera Cisneros", "12-06-1998", "Morelia", "Michoacan", "RICN980612HMLVDRP8", "Address 123", Careers.Systems, "MM24ISC00", "123", "RICN980612FJ2", 20000.0f);
+        Mindbox.users.get(Role.TEACHER).add(teacher2);
+        Teacher teacher3 = new Teacher("Ruben", "Vega Cano", "10-06-1985", "Morelia", "Michoacan", "VECR850610HMLGNBR4", "Address 123", Careers.Systems, "MM24ISC00", "123", "VECR850610DA6", 20000.0f);
+        Mindbox.users.get(Role.TEACHER).add(teacher3);
     }
 
     public static void registerCoordinators() {
-        Coordinator coordinator1 = new Coordinator("Nelly", "Alvarado", "10-4-1985", "Morelia", "Michoacan", "PONJ850615MJLZNN09", "Address 123", Careers.Systems, "CN24ISC00", "1", "RFC567", 60000.0f);
-        Coordinator coordinator2 = new Coordinator("Eduardo", "Saenz", "12-3-1985", "Morelia", "Michoacan", "GONJ850615HJLZNN09", "Address 123", Careers.Electronics, "CE24ELC00", "2", "RFC568", 60000.0f);
-        Coordinator coordinator3 = new Coordinator("Derek", "Muller", "7-9-1985", "Morelia", "Michoacan", "SONJ850615HJLZNN09", "Address 123", Careers.Materials, "CD24IMAT00", "3", "RFC569", 60000.0f);
+        Coordinator coordinator1 = new Coordinator("Laura Nelly", "Alvarado Zamora", "10-4-1974", "Morelia", "Michoacan", "AAZL740410MMLRNRD7", "Address 123", Careers.Systems, "CN24ISC00", "123", "AAZL740410GK5", 65000.0f);
+        Coordinator coordinator2 = new Coordinator("Eduardo Saenz", "Cabezon Irrigaray", "12-3-1972", "Morelia", "Michoacan", "SACE720312HMLBNDF3", "Address 123", Careers.Electronics, "CE24ELC00", "123", "SACE720312DI9", 65000.0f);
+        Coordinator coordinator3 = new Coordinator("Derek Alexander", "Muller", "7-9-1982", "Morelia", "Michoacan", "MUAD820907HMLLRRK9", "Address 123", Careers.Materials, "CD24IMAT00", "123", "MUAD820907PU7", 65000.0f);
         users.get(Role.COORDINATOR).add(coordinator1);
         users.get(Role.COORDINATOR).add(coordinator2);
         users.get(Role.COORDINATOR).add(coordinator3);

@@ -22,7 +22,7 @@ public class Coordinator extends Worker {
         int semesterNumber = 0;
         String groupType = "";
         boolean validSemester = false, validGroup = false;
-        Careers career = UserInSession.getCurrentUser().getCareer();
+        Careers career = UserInSession.getInstance().getCurrentUser().getCareer();
         do {
             System.out.println("Which semester do you want to assign a teacher to [1], [2], [3] ?");
             String option = sc.nextLine().trim();
@@ -92,7 +92,7 @@ public class Coordinator extends Worker {
         int semesterNumber = 0;
         String groupType = "";
         boolean validSemester = false, validGroup = false;
-        Careers career = UserInSession.getCurrentUser().getCareer();
+        Careers career = UserInSession.getInstance().getCurrentUser().getCareer();
         do {
             System.out.println("From which semester do you want to remove a teacher [1], [2], [3] ?");
             String option = sc.nextLine();
@@ -159,7 +159,7 @@ public class Coordinator extends Worker {
         ArrayList<User> coordinatorUsers = Mindbox.users.get(Role.COORDINATOR);
         System.out.println("Coordinators of Mindbox");
         for (User user : coordinatorUsers) {
-            if (user.getCareer() == UserInSession.getCurrentUser().getCareer()) {
+            if (user.getCareer() == UserInSession.getInstance().getCurrentUser().getCareer()) {
                 Coordinator coordinator = (Coordinator) user;
                 System.out.println(coordinator.toString());
             }
@@ -196,7 +196,7 @@ public class Coordinator extends Worker {
         Scanner sc = new Scanner(System.in);
         int semesterNumber = 0;
         String groupType;
-        Careers career = UserInSession.getCurrentUser().getCareer();
+        Careers career = UserInSession.getInstance().getCurrentUser().getCareer();
         Semester semester;
 
         do {
