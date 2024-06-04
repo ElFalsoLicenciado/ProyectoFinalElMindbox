@@ -128,9 +128,6 @@ public class Coordinator extends Worker {
         CommonData.updateInformation(coordinator);
     }
 
-
-    // asbesto, esta bien la implemenmtacion del dialogue helper, estoy usando optionD
-
     public static void promoteGroup() {
         int semesterNumber = 0;
         String groupType = "";

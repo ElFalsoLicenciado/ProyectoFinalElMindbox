@@ -159,7 +159,7 @@ public class Student extends User {
             for (String semester : grades.keySet()) {
                 Semester semester1 = Mindbox.getSemester(semester);
                 assert semester1 != null;
-                DialogHelper.info("Semester: " + semester1.getSemesterNumber()); //Hay que quitar esto
+                DialogHelper.info("Semester: " + semester1.getSemesterNumber());
                 double semesterGrade = 0;
                 for (String subject1 : grades.get(semester).keySet()) {
                     Subject subject = Mindbox.getSubject(subject1);
