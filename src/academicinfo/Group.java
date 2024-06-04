@@ -1,14 +1,9 @@
 package academicinfo;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Scanner;
 
-import academicinfo.*;
 import mindbox.*;
-import users.*;
-import users.utils.*;
 import utils.*;
 
 public class Group {
@@ -39,50 +34,54 @@ public class Group {
         if (subjects == null) {
             return "";
         }
+        StringBuilder subjectsInfo = new StringBuilder();
         for (Subject subject : subjects) {
-            System.out.println(subject.toString());
-            System.out.println();
+            subjectsInfo.append(subject.toString()).append("\n");
         }
+        DialogHelper.info(subjectsInfo.toString());
         return "";
     }
 
+
     public static void showAllGroups() {
-        Scanner sc = new Scanner(System.in);
-        String option;
+        String option = "";
         do {
-            System.out.println("How do you want to see the groups?");
-            System.out.println("[1]. With their subjects.");
-            System.out.println("[2]. With their students.");
-            System.out.println("[E]. Exit this menu.");
-            option = sc.nextLine();
-            if (option.equalsIgnoreCase("1")) {
-                ArrayList<Semester> semesters = Mindbox.semesters.get(UserInSession.getInstance().getCurrentUser().getCareer());
-                for (Semester semester : semesters) {
-                    ArrayList<Group> groups = semester.getGroups();
-                    for (Group group : groups) {
-                        System.out.println(group.toString());
-                        ArrayList<Subject> subjects = group.getSubjects();
-                        System.out.println("Subjects of the group: " + group.getGroupId());
-                        for (Subject subject : subjects) {
-                            System.out.println(subject.toString());
+            switch (DialogHelper.optionD("How do you want to see the groups?", new String[]{"With their subjects", "With their students", "Exit this menu"})) {
+                case 0 -> {
+                    StringBuilder groupsInfo = new StringBuilder();
+                    ArrayList<Semester> semesters = Mindbox.semesters.get(UserInSession.getInstance().getCurrentUser().getCareer());
+                    for (Semester semester : semesters) {
+                        ArrayList<Group> groups = semester.getGroups();
+                        for (Group group : groups) {
+                            groupsInfo.append(group.toString()).append("\n");
+                            ArrayList<Subject> subjects = group.getSubjects();
+                            groupsInfo.append("Subjects of the group: ").append(group.getGroupId()).append("\n");
+                            for (Subject subject : subjects) {
+                                groupsInfo.append(subject.toString()).append("\n");
+                            }
+                            groupsInfo.append("----------------------------\n");
                         }
-                        System.out.println("----------------------------");
                     }
+                    DialogHelper.info(groupsInfo.toString());
                 }
-            } else if (option.equalsIgnoreCase("2")) {
-                ArrayList<Semester> semesters = Mindbox.semesters.get(UserInSession.getInstance().getCurrentUser().getCareer());
-                for (Semester semester : semesters) {
-                    ArrayList<Group> groups = semester.getGroups();
-                    for (Group group : groups) {
-                        System.out.println(group.toString());
-                        ArrayList<String> students = group.getStudentList();
-                        System.out.println("Students of the group: " + group.getGroupId());
-                        for (String student : students) {
-                            System.out.println(Mindbox.getStudent(student).toString());
+                case 1 -> {
+                    StringBuilder groupsInfo = new StringBuilder();
+                    ArrayList<Semester> semesters = Mindbox.semesters.get(UserInSession.getInstance().getCurrentUser().getCareer());
+                    for (Semester semester : semesters) {
+                        ArrayList<Group> groups = semester.getGroups();
+                        for (Group group : groups) {
+                            groupsInfo.append(group.toString()).append("\n");
+                            ArrayList<String> students = group.getStudentList();
+                            groupsInfo.append("Students of the group: ").append(group.getGroupId()).append("\n");
+                            for (String student : students) {
+                                groupsInfo.append(Mindbox.getStudent(student).toString()).append("\n");
+                            }
+                            groupsInfo.append("----------------------------\n");
                         }
-                        System.out.println("----------------------------");
                     }
+                    DialogHelper.info(groupsInfo.toString());
                 }
+                case 2 -> option = "E";
             }
         } while (!option.equalsIgnoreCase("E"));
     }
@@ -98,14 +97,15 @@ public class Group {
     }
 
     public String showStudentList() {
-        System.out.println("All students in this group:");
+        StringBuilder studentsInfo = new StringBuilder("All students in this group:\n");
         if (studentList == null) {
-            System.out.println("No students in the group.");
-            return "";
+            studentsInfo.append("No students in the group.\n");
+        } else {
+            for (String student : studentList) {
+                studentsInfo.append(Mindbox.getStudent(student).toString()).append("\n");
+            }
         }
-        for (String student : studentList) {
-            System.out.println(Mindbox.getStudent(student).toString());
-        }
+        DialogHelper.info(studentsInfo.toString());
         return "";
     }
 

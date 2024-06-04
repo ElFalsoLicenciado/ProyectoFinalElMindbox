@@ -40,80 +40,11 @@ public class User {
         this.role = role;
     }
 
-    protected void showUser() {
-        System.out.println("First Name: " + firstName);
-        System.out.println("Last Name: " + lastName);
-        System.out.println("Birth Date: " + birthDate);
-        System.out.println("City: " + city);
-        System.out.println("State: " + state);
-        System.out.println("CURP: " + curp);
-        System.out.println("Address: " + address);
-        System.out.println("Registration Date: " + registrationDate);
-        System.out.println("Role: " + role);
-    }
-
     public String toString() {
         return String.format(
                 "First Name: %s, Last Name: %s, Control Number: %s, Birth Date: %s, City: %s, State: %s, CURP: %s, Address: %s, Registration Date: %s, Career: %s ",
                 getFirstName(), getLastName(), getControlNumber(), getBirthDate(), getCity(), getState(), getCurp(), getAddress(), getRegistrationDate(), getCareer()
         );
-    }
-
-    public static void updateInformation(User user) {
-        Scanner read = new Scanner(System.in);
-        String option = "";
-        Role role = user.getRole();
-        do {
-            System.out.println("Which characteristics do you want to change for the selected user?");
-            System.out.println("1. City of residence.");
-            System.out.println("2. State of residence.");
-            System.out.println("3. Address.");
-            System.out.println("4. Password.");
-            System.out.println("E. EXIT THIS MENU.");
-            option = read.nextLine();
-
-            if (option.equals("1")) {
-                do {
-                    System.out.println("Enter the new city of residence:");
-                    String city = read.nextLine();
-                    if (CommonData.emptyOrNum(city)) {
-                        System.out.println("City with numbers/empty is not valid, please enter another.");
-                    } else {
-                        user.setCity(city);
-                        break;
-                    }
-                } while (true);
-                System.out.println("City changed successfully.");
-            } else if (option.equals("2")) {
-                do {
-                    System.out.println("Enter the new state of residence:");
-                    String state = read.nextLine();
-                    if (CommonData.emptyOrNum(state)) {
-                        System.out.println("State with numbers/empty is not valid, please enter another.");
-                    } else {
-                        user.setState(state);
-                        break;
-                    }
-                } while (true);
-                System.out.println("State changed successfully.");
-            } else if (option.equals("3")) {
-                System.out.println("Enter the new address:");
-                String address = read.nextLine();
-                user.setAddress(address);
-                System.out.println("Address changed successfully.");
-            } else if (option.equals("4")) {
-                System.out.println("Enter the new password:");
-                String password = read.nextLine();
-                user.setPassword(password);
-                System.out.println("Password changed successfully.");
-            } else if (option.equals("E")) {
-                System.out.println("EXITING THE MENU.");
-                break;
-            } else {
-                System.out.println("INVALID OPTION.");
-            }
-
-        } while (true);
     }
 
     // Setters

@@ -2,7 +2,6 @@ package users;
 
 import academicinfo.*;
 import mindbox.*;
-import users.*;
 import users.utils.*;
 import utils.*;
 
@@ -18,51 +17,23 @@ public class Coordinator extends Worker {
     }
 
     public static void assignTeacherToSubject() {
-        Scanner sc = new Scanner(System.in);
         int semesterNumber = 0;
         String groupType = "";
-        boolean validSemester = false, validGroup = false;
         Careers career = UserInSession.getInstance().getCurrentUser().getCareer();
-        do {
-            System.out.println("Which semester do you want to assign a teacher to [1], [2], [3] ?");
-            String option = sc.nextLine().trim();
-            switch (option) {
-                case "1":
-                    semesterNumber = 1;
-                    validSemester = true;
-                    break;
-                case "2":
-                    semesterNumber = 2;
-                    validSemester = true;
-                    break;
-                case "3":
-                    semesterNumber = 3;
-                    validSemester = true;
-                    break;
-                default:
-                    System.out.println("INVALID OPTION.");
-            }
-        } while (!validSemester);
+
+        switch (DialogHelper.optionD("Which semester do you want to assign a teacher to?", new String[]{"1", "2", "3"})) {
+            case 0 -> semesterNumber = 1;
+            case 1 -> semesterNumber = 2;
+            case 2 -> semesterNumber = 3;
+        }
         Semester semester = Semester.getSemesterByNumber(semesterNumber);
+
         if (semester != null) {
-            do {
-                System.out.println("Which group do you want?");
-                System.out.println("[1] A");
-                System.out.println("[2] B");
-                String option = sc.nextLine();
-                switch (option) {
-                    case "1":
-                        groupType = "A";
-                        validGroup = true;
-                        break;
-                    case "2":
-                        groupType = "B";
-                        validGroup = true;
-                        break;
-                    default:
-                        System.out.println("INVALID OPTION.");
-                }
-            } while (!validGroup);
+            switch (DialogHelper.optionD("Which group do you want?", new String[]{"A", "B"})) {
+                case 0 -> groupType = "A";
+                case 1 -> groupType = "B";
+            }
+
             Group group = Group.getGroup(groupType, semester);
             if (group != null) {
                 Subject subject = Subject.getSubject(semester.getId(), group.getGroupId());
@@ -73,108 +44,73 @@ public class Coordinator extends Worker {
                         if (checkTeacher == null) {
                             subject.setTeacher(teacher.getControlNumber());
                             teacher.getSubjects().add(subject.getId());
-                            System.out.println("Teacher successfully assigned.");
+                            DialogHelper.info("Teacher successfully assigned.");
                         } else {
-                            System.out.println("The subject already has a teacher assigned, you cannot assign another.");
+                            DialogHelper.warning("The subject already has a teacher assigned, you cannot assign another.");
                         }
                     }
                 }
             } else {
-                System.out.println("Group not found.");
+                DialogHelper.warning("Group not found.");
             }
         } else {
-            System.out.println("Semester not found.");
+            DialogHelper.warning("Semester not found.");
         }
     }
 
     public static void removeTeacherFromSubject() {
-        Scanner sc = new Scanner(System.in);
         int semesterNumber = 0;
         String groupType = "";
-        boolean validSemester = false, validGroup = false;
         Careers career = UserInSession.getInstance().getCurrentUser().getCareer();
-        do {
-            System.out.println("From which semester do you want to remove a teacher [1], [2], [3] ?");
-            String option = sc.nextLine();
-            switch (option) {
-                case "1":
-                    semesterNumber = 1;
-                    validSemester = true;
-                    break;
-                case "2":
-                    semesterNumber = 2;
-                    validSemester = true;
-                    break;
-                case "3":
-                    semesterNumber = 3;
-                    validSemester = true;
-                    break;
-                default:
-                    System.out.println("INVALID OPTION.");
-            }
-        } while (!validSemester);
+
+        switch (DialogHelper.optionD("From which semester do you want to remove a teacher?", new String[]{"1", "2", "3"})) {
+            case 0 -> semesterNumber = 1;
+            case 1 -> semesterNumber = 2;
+            case 2 -> semesterNumber = 3;
+        }
         Semester semester = Semester.getSemesterByNumber(semesterNumber);
+
         if (semester != null) {
-            do {
-                System.out.println("Which group do you want?");
-                System.out.println("[1] A");
-                System.out.println("[2] B");
-                String option = sc.nextLine();
-                switch (option) {
-                    case "1":
-                        groupType = "A";
-                        validGroup = true;
-                        break;
-                    case "2":
-                        groupType = "B";
-                        validGroup = true;
-                        break;
-                    default:
-                        System.out.println("INVALID OPTION.");
-                }
-            } while (!validGroup);
+            switch (DialogHelper.optionD("Which group do you want?", new String[]{"A", "B"})) {
+                case 0 -> groupType = "A";
+                case 1 -> groupType = "B";
+            }
+
             Group group = Group.getGroup(groupType, semester);
             if (group != null) {
                 Subject subject = Subject.getSubject(semester.getId(), group.getGroupId());
                 if (subject != null) {
                     Worker checkTeacher = Mindbox.getWorker(subject.getTeacher());
                     if (checkTeacher != null) {
-                        System.out.println(checkTeacher.toString());
+                        DialogHelper.info(checkTeacher.toString());
                         subject.removeTeacher();
                         checkTeacher.getSubjects().remove(subject.getId());
-                        System.out.println("Teacher successfully removed.");
-                    } else {
-                        System.out.println("The subject has no teacher, you cannot remove anything.");
-                    }
+                        DialogHelper.info("Teacher successfully removed.");
+                    } else DialogHelper.warning("The subject has no teacher, you cannot remove anything.");
                 }
-            } else {
-                System.out.println("Group not found.");
-            }
-        } else {
-            System.out.println("Semester not found.");
-        }
+            } else DialogHelper.warning("Group not found.");
+        } else DialogHelper.warning("Semester not found.");
     }
 
     public static void showAllCoordinators() {
         ArrayList<User> coordinatorUsers = Mindbox.users.get(Role.COORDINATOR);
-        System.out.println("Coordinators of Mindbox");
+        StringBuilder coordinatorsInfo = new StringBuilder("Coordinators of Mindbox\n");
         for (User user : coordinatorUsers) {
             if (user.getCareer() == UserInSession.getInstance().getCurrentUser().getCareer()) {
                 Coordinator coordinator = (Coordinator) user;
-                System.out.println(coordinator.toString());
+                coordinatorsInfo.append(coordinator.toString()).append("\n");
             }
         }
+        DialogHelper.info(coordinatorsInfo.toString());
     }
 
     public static Coordinator getCoordinator() {
-        Scanner sc = new Scanner(System.in);
         ArrayList<User> coordinators = Mindbox.users.get(Role.COORDINATOR);
-        String controlNumber = "";
+        String controlNumber;
         boolean found = false;
         Coordinator selectedCoordinator = null;
         do {
-            System.out.println("Enter the control number of the coordinator you want:");
-            controlNumber = sc.nextLine();
+            controlNumber = DialogHelper.stringIn("Enter the control number of the coordinator you want:");
             for (User user : coordinators) {
                 if (user.getControlNumber().equals(controlNumber)) {
                     found = true;
@@ -192,44 +128,35 @@ public class Coordinator extends Worker {
         CommonData.updateInformation(coordinator);
     }
 
+
+    // asbesto, esta bien la implemenmtacion del dialogue helper, estoy usando optionD
+
     public static void promoteGroup() {
-        Scanner sc = new Scanner(System.in);
         int semesterNumber = 0;
-        String groupType;
+        String groupType = "";
         Careers career = UserInSession.getInstance().getCurrentUser().getCareer();
         Semester semester;
 
-        do {
-            try {
-                System.out.println("From which semester do you want to promote the group: [1], [2], [3] ?");
-                semesterNumber = sc.nextInt();
-                sc.nextLine();
-            } catch (InputMismatchException e) {
-                System.out.println("The value must be an integer.");
-                sc.nextLine();
+        switch (DialogHelper.optionD("From which semester do you want to promote the group?", new String[]{"1", "2", "3"})) {
+            case 0 -> semesterNumber = 1;
+            case 1 -> semesterNumber = 2;
+            case 2 -> semesterNumber = 3;
+            default -> {
+                DialogHelper.warning("Invalid option.");
+                return;
             }
-            if (semesterNumber == 1 || semesterNumber == 2 || semesterNumber == 3) {
-                semester = Semester.getSemesterByNumber(semesterNumber);
-                break;
-            } else {
-                System.out.println("Invalid option.");
+        }
+
+        semester = Semester.getSemesterByNumber(semesterNumber);
+
+        switch (DialogHelper.optionD("Enter the group you want to promote", new String[]{"A", "B"})) {
+            case 0 -> groupType = "A";
+            case 1 -> groupType = "B";
+            default -> {
+                DialogHelper.warning("Invalid option.");
+                return;
             }
-        } while (true);
-
-        do {
-            System.out.println("Enter the group you want to promote [A], [B]:");
-            String input = sc.next();
-
-            if (input.length() == 1) {
-                groupType = String.valueOf(input.charAt(0));
-
-                if (groupType.equals("A") || groupType.equals("B")) {
-                    break;
-                }
-            }
-
-            System.out.println("Invalid option. Please enter 'A' or 'B'.");
-        } while (true);
+        }
 
         Group selectedGroup = null;
 
@@ -241,13 +168,12 @@ public class Coordinator extends Worker {
         }
 
         if (selectedGroup.getStudentList().isEmpty()) {
-            System.out.println("The group is empty.");
+            DialogHelper.warning("The group is empty.");
             return;
         }
 
         if (!selectedGroup.checkGrades()) {
-            System.out.println("Not all students have grades or do not have grades in all subjects.");
-            System.out.println();
+            DialogHelper.warning("Not all students have grades in all subjects.");
             return;
         }
         int newSemesterNumber = semesterNumber + 1;
@@ -256,8 +182,9 @@ public class Coordinator extends Worker {
         ArrayList<String> passedStudents = selectedGroup.getApprovedStudents();
 
         if (newSemesterNumber == 4) {
-            System.out.println("The group graduates.");
+            DialogHelper.info("The group graduates.");
             Graduates.registerGraduates(new Graduates(LocalDate.now().toString(), career, passedStudents, String.valueOf(LocalDate.now().getYear())));
+
             Iterator<String> iterator = selectedGroup.getStudentList().iterator();
             while (iterator.hasNext()) {
                 String student = iterator.next();
@@ -270,35 +197,30 @@ public class Coordinator extends Worker {
             Semester newSemester = Semester.getSemesterByNumber(newSemesterNumber);
 
             for (Group group : newSemester.getGroups()) {
-                if (group.getStudentList().isEmpty()) {
-                    if (group.getGroupType().equals(groupType)) {
-
-                        // Remove students from the previous group
-                        Iterator<String> iterator = selectedGroup.getStudentList().iterator();
-                        while (iterator.hasNext()) {
-                            String student = iterator.next();
-                            if (passedStudents.contains(student)) {
-                                iterator.remove();
-                            }
+                if (group.getStudentList().isEmpty() && group.getGroupType().equals(groupType)) {
+                    Iterator<String> iterator = selectedGroup.getStudentList().iterator();
+                    while (iterator.hasNext()) {
+                        String student = iterator.next();
+                        if (passedStudents.contains(student)) {
+                            iterator.remove();
                         }
-
-                        // Add passed students to the new group
-                        for (String student : passedStudents) {
-                            if (!group.getStudentList().contains(student)) {
-                                group.getStudentList().add(student);
-                                Mindbox.getStudent(student).setSemester(group.getSemester());
-                                Mindbox.getStudent(student).setGroup(group.getGroupId());
-                                Mindbox.getStudent(student).setNullGrades(Mindbox.getSemester(group.getSemester()), group);
-                            }
-                        }
-
-                        System.out.println("The students of the group have been successfully promoted.");
                     }
-                } else {
-                    System.out.println("The group cannot be moved because it still contains students.");
+                    for (String student : passedStudents) {
+                        if (!group.getStudentList().contains(student)) {
+                            group.getStudentList().add(student);
+                            Student studentObj = Mindbox.getStudent(student);
+                            studentObj.setSemester(group.getSemester());
+                            studentObj.setGroup(group.getGroupId());
+                            studentObj.setNullGrades(Mindbox.getSemester(group.getSemester()), group);
+                        }
+                    }
+                    DialogHelper.info("The students of the group have been successfully promoted.");
+                    return;
                 }
             }
+            DialogHelper.warning("The group cannot be moved because it still contains students.");
         }
+
         for (String student : failedStudents) {
             HashMap<String, Integer> failedGrades = new HashMap<>();
             for (Subject subject : selectedGroup.getSubjects()) {
@@ -308,11 +230,4 @@ public class Coordinator extends Worker {
         }
     }
 
-    public int getCoord() {
-        return coord;
-    }
-
-    public void setCoord(int coord) {
-        this.coord = coord;
-    }
 }

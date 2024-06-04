@@ -72,18 +72,13 @@ public class Subject {
     }
 
     public static Subject getSubject(String semester, String group) {
-        Scanner sc = new Scanner(System.in);
         Subject subject1 = null;
-        String name = "";
         boolean found = false;
-        Careers career = UserInSession.getInstance().getCurrentUser().getCareer();
-        Semester semester1 = Mindbox.getSemester(semester);
         ArrayList<Subject> subjects = Mindbox.getGroup(group).getSubjects();
         do {
-            System.out.println("All subjects of this group.");
+            DialogHelper.info("All subjects of this group.");
             Mindbox.getGroup(group).showSubjects();
-            System.out.println("Enter the name of the subject:");
-            name = sc.nextLine();
+            String name = DialogHelper.stringIn("Enter the name of the subject:");
             for (Subject subject : subjects) {
                 if (subject.getId().equals(name)) {
                     found = true;
@@ -96,55 +91,55 @@ public class Subject {
     }
 
     public static void showAllSubjects(Group group) {
+        ArrayList<String> aux = new ArrayList<>();
         Careers career = UserInSession.getInstance().getCurrentUser().getCareer();
         ArrayList<Subject> subjects = Mindbox.getGroup(group.getGroupId()).getSubjects();
         if (subjects.isEmpty()) {
-            System.out.println("You don't have any subjects.");
+            DialogHelper.info("You don't have any subjects.");
             return;
         }
         for (Subject subject : subjects) {
-            System.out.println("Name: " + subject.getId());
-            System.out.println("Career: " + subject.getCareer());
-            System.out.println("Group: " + subject.getGroup());
-            System.out.println();
+            aux.add("Name: "+subject.getId());
+            aux.add("\nCareer: "+subject.getCareer());
+            aux.add("\nGroup: "+subject.getGroup());
         }
+        DialogHelper.info(aux.toString().replace("[","").replace("]",""));
     }
 
     public String getStudent(String subjectId) {
-        Scanner sc = new Scanner(System.in);
-        int option = 0;
-        boolean isValid = true;
         ArrayList<String> studentList = Mindbox.getGroup(group).getStudentList();
-
+        boolean isValid = true;
+        String selectedStudent = null;
         do {
+            StringBuilder studentInfo = new StringBuilder();
             for (String student : studentList) {
                 HashMap<String, Integer> semesterGrades = Mindbox.getStudent(student).getGrades().get(Mindbox.getStudent(student).getSemester());
                 if (semesterGrades != null && semesterGrades.containsKey(subjectId)) {
                     Integer grade = semesterGrades.get(subjectId);
-                    if (grade == null) {
-                        System.out.println("[ " + studentList.indexOf(student) + " ] Name: " + Mindbox.getStudent(student).getFirstName() + " " + Mindbox.getStudent(student).getLastName() + " - Grade: Not assigned");
-                    } else {
-                        System.out.println("[ " + studentList.indexOf(student) + " ] Name: " + Mindbox.getStudent(student).getFirstName() + " " + Mindbox.getStudent(student).getLastName() + " - Grade: " + grade);
-                    }
+                    studentInfo.append("[ ")
+                            .append(studentList.indexOf(student))
+                            .append(" ] Name: ")
+                            .append(Mindbox.getStudent(student).getFirstName())
+                            .append(" ")
+                            .append(Mindbox.getStudent(student).getLastName())
+                            .append(" - Grade: ")
+                            .append(grade == null ? "Not assigned" : grade.toString())
+                            .append("\n");
                 } else {
-                    System.out.println("Does not have the subject.");
+                    studentInfo.append("Does not have the subject.\n");
                 }
             }
-
+            DialogHelper.info(studentInfo.toString());
+            int option = DialogHelper.intIn("Enter the index of the student:", 0);
             try {
-                option = sc.nextInt();
-                studentList.get(option);
+                selectedStudent = studentList.get(option);
                 isValid = false;
-            } catch (InputMismatchException e) {
-                System.out.println("The value must be an integer.");
-                sc.nextLine();
             } catch (IndexOutOfBoundsException e) {
-                System.out.println("Enter a valid index.");
-                sc.nextLine();
+                DialogHelper.warning("Enter a valid index.");
             }
         } while (isValid);
 
-        return studentList.get(option);
+        return selectedStudent;
     }
 
     public void removeTeacher() {

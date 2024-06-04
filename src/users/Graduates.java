@@ -32,20 +32,22 @@ public class Graduates {
     }
 
     private void printGraduates() {
+        StringBuilder graduatesInfo = new StringBuilder();
         for (String student : graduatedStudents) {
-            System.out.println(Mindbox.getStudent(student).toString());
+            graduatesInfo.append(Mindbox.getStudent(student).toString()).append("\n");
         }
+        DialogHelper.info(graduatesInfo.toString());
     }
 
     public static void showGraduates() {
-        System.out.println("Graduated students of Mindbox Institute");
+        StringBuilder graduatesInfo = new StringBuilder("Graduated students of Mindbox Institute\n");
         for (Graduates graduates : Mindbox.graduates) {
             if (graduates.careers == UserInSession.getInstance().getCurrentUser().getCareer()) {
-                System.out.println(graduates.toString());
-                System.out.println("Students:");
+                graduatesInfo.append(graduates.toString()).append("\nStudents:\n");
                 graduates.printGraduates();
             }
         }
+        DialogHelper.info(graduatesInfo.toString());
     }
 
     // Getters

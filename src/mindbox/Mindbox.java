@@ -1,6 +1,5 @@
 package mindbox;
 
-import java.time.LocalDate;
 import java.util.*;
 
 import academicinfo.*;
@@ -8,7 +7,6 @@ import gson.deserializers.MindboxDeserializer;
 import gson.deserializers.UserDeserializer;
 import gson.serializers.MindboxSerializer;
 import gson.serializers.UserSerializer;
-import mindbox.*;
 import users.*;
 import users.utils.*;
 import utils.*;

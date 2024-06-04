@@ -49,7 +49,7 @@ public class Worker extends User {
                 ArrayList<Subject> subjects = group.getSubjects();
                 for (Subject subject : subjects) {
                     if (subject.getTeacher() != null) {
-                        if (Objects.equals(Mindbox.getWorker(subject.getTeacher()), UserInSession.getInstance().getCurrentUser())) {
+                        if (Mindbox.getWorker(subject.getTeacher()).equals(UserInSession.getInstance().getCurrentUser())) {
                             subjectsFound = true;
                             ArrayList<String> checkPassed = subject.getApprovedStudents(semester.getId());
                             for (String student : checkPassed) {
@@ -74,9 +74,9 @@ public class Worker extends User {
                 }
             }
             if (subjectsFound) {
-                boolean exit = false;
+                boolean flag = true;
                 do {
-                    switch (DialogHelper.optionD("What type of students do you want to see?",new String[]{"Passed","Failed","All","Return"})) {
+                    switch (DialogHelper.optionD("What type of students do you want to see?",new String[]{"Passed","Failed","All","Return","XD"})) {
                         case 0 -> {
                             StringBuilder passedStudents = new StringBuilder("All passed students:\n");
                             for (String student : passed) {
@@ -103,64 +103,33 @@ public class Worker extends User {
                         }
                         case 3 -> {
                             DialogHelper.returnD();
-                            exit = true;
+                            flag = false;
                         }
                     }
-                } while (!exit);
-            } else {
-                DialogHelper.warning("There are no subjects you are teaching in that semester.");
-            }
-        } else {
-            DialogHelper.warning("Semester not found.");
-        }
+                } while (flag);
+            } else DialogHelper.warning("There are no subjects you are teaching in that semester.");
+        } else DialogHelper.warning("Semester not found.");
     }
 
-    // Una duda, estas hacerindo campaña para erradicar el amarillo?, si es haci que estas haciendo??, otra dududa como pones ñ en el teclado en ingles??
-
     public void filterByGroup() {
-        System.out.println("Filter by Group");
-        Scanner sc = new Scanner(System.in);
+        DialogHelper.info("Filter by Group");
         int semesterNumber = 0;
         String groupType = "";
-        boolean valid = false, validGroup = false;
-        do {
+        switch (DialogHelper.optionD("Which semester grades do you want to view?",new String[]{"1°","2°","3°"})) {
+            case 0 -> semesterNumber = 1;
+            case 1 -> semesterNumber = 2;
+            case 2 -> semesterNumber = 3;
+            case 3 -> semesterNumber = 4;
+        }
+        if (semesterNumber != 4) {
+            Semester semester = Semester.getSemesterByNumber(semesterNumber);
 
-            String option = DialogHelper.stringIn("Which semester do you want to get the group from?\n[1] First semester\n[2] Second semester\n[3] Third semester");
-            switch (option) {
-                case "1":
-                    semesterNumber = 1;
-                    valid = true;
-                    break;
-                case "2":
-                    semesterNumber = 2;
-                    valid = true;
-                    break;
-                case "3":
-                    semesterNumber = 3;
-                    valid = true;
-                    break;
-                default:
-                    DialogHelper.warning("Invalid option.");
+            switch (DialogHelper.optionD("Which group do you want?",new String[]{"A","B"})){
+                case 0 -> groupType = "A";
+                case 1 -> groupType = "B";
             }
-        } while (!valid);
-        Semester semester = Semester.getSemesterByNumber(semesterNumber);
-        if (semester != null) {
-            do {
-                String option = DialogHelper.stringIn("Which group do you want?\n[1] A\n[2] B");
-                switch (option) {
-                    case "1":
-                        groupType = "A";
-                        validGroup = true;
-                        break;
-                    case "2":
-                        groupType = "B";
-                        validGroup = true;
-                        break;
-                    default:
-                        DialogHelper.warning("Invalid option.");
-                }
-            } while (!validGroup);
-            Group group = Group.getGroup(groupType, semester);
+            assert semester != null;
+            Group group = Group.getGroup(groupType,semester);
             if (group != null) {
                 ArrayList<Subject> subjects = group.getSubjects();
                 ArrayList<String> passed = new ArrayList<>();
@@ -169,7 +138,7 @@ public class Worker extends User {
                 boolean subjectsFound = false;
                 for (Subject subject : subjects) {
                     if (subject.getTeacher() != null) {
-                        if (Mindbox.getWorker(subject.getTeacher()).equals(UserInSession.getInstance().getCurrentUser())) {
+                        if (Objects.equals(Mindbox.getWorker(subject.getTeacher()), UserInSession.getInstance().getCurrentUser())) {
                             subjectsFound = true;
                             ArrayList<String> checkPassed = subject.getApprovedStudents(semester.getId());
                             for (String student : checkPassed) {
@@ -195,154 +164,122 @@ public class Worker extends User {
                 if (subjectsFound) {
                     boolean exit = false;
                     do {
-                        String option = DialogHelper.stringIn("What type of students do you want to see?\n1. Passed\n2. Failed\n3. All\nE. Exit the menu");
-                        switch (option) {
-                            case "1":
-                                System.out.println("All passed students:");
+                        switch (DialogHelper.optionD("What type of students do you want to see?",new String[]{"Passed","Failed","All","Return"})) {
+                            case 0 -> {
+                                StringBuilder passedStudents = new StringBuilder("All passed students:\n");
                                 for (String student : passed) {
-                                    System.out.println(Mindbox.getStudent(student).toString());
-                                    System.out.println("Group: " + Mindbox.getStudent(student).getGroup());
-                                    System.out.println();
+                                    passedStudents.append(Mindbox.getStudent(student).toString()).append("\n");
+                                    passedStudents.append("Group: ").append(Mindbox.getStudent(student).getGroup()).append("\n\n");
                                 }
-                                break;
-                            case "2":
-                                System.out.println("All failed students:");
+                                DialogHelper.info(passedStudents.toString());
+                            }
+                            case 1 -> {
+                                StringBuilder failedStudents = new StringBuilder("All failed students:\n");
                                 for (String student : failed) {
-                                    System.out.println(Mindbox.getStudent(student).toString());
-                                    System.out.println("Group: " + Mindbox.getStudent(student).getGroup());
-                                    System.out.println();
+                                    failedStudents.append(Mindbox.getStudent(student).toString()).append("\n");
+                                    failedStudents.append("Group: ").append(Mindbox.getStudent(student).getGroup()).append("\n\n");
                                 }
-                                break;
-                            case "3":
-                                System.out.println("All students:");
+                                DialogHelper.info(failedStudents.toString());
+                            }
+                            case 2 -> {
+                                StringBuilder allStudents = new StringBuilder("All students:\n");
                                 for (String student : all) {
-                                    System.out.println(Mindbox.getStudent(student).toString());
-                                    System.out.println("Group: " + Mindbox.getStudent(student).getGroup());
-                                    System.out.println();
+                                    allStudents.append(Mindbox.getStudent(student).toString()).append("\n");
+                                    allStudents.append("Group: ").append(Mindbox.getStudent(student).getGroup()).append("\n\n");
                                 }
-                                break;
-                            case "E":
+                                DialogHelper.info(allStudents.toString());
+                            }
+                            case 3 -> {
+                                DialogHelper.returnD();
                                 exit = true;
-                                break;
-                            default:
-                                System.out.println("Invalid option.");
-                                break;
+                            }
+
                         }
                     } while (!exit);
                 }
             } else {
-                System.out.println("Group not found.");
+                DialogHelper.warning("Group not found.");
             }
         } else {
-            System.out.println("Semester not found.");
+            DialogHelper.warning("Semester not found.");
         }
     }
 
     public void filterBySubject() {
-        System.out.println("Filter by Subject");
-        Scanner sc = new Scanner(System.in);
+        DialogHelper.info("Filter by Subject");
         boolean exit = false;
-        String subjectId = null;
+        String subjectId;
         do {
             showMySubjects();
-            System.out.println("Enter the name of the subject you want to filter:");
-            String option = sc.nextLine();
-            for (String subject : subjects) {
-                if (subject.equals(option)) {
-                    subjectId = subject;
-                    exit = true;
-                    break;
-                }
-            }
+            subjectId = DialogHelper.stringIn("Enter the name of the subject you want to filter:");
+            if (subjects.contains(subjectId)) exit = true;
+            else DialogHelper.warning("Invalid subject.");
         } while (!exit);
         exit = false;
         Semester semester = Mindbox.getSemester(Mindbox.getGroup(Mindbox.getSubject(subjectId).getGroup()).getSemester());
         do {
-            System.out.println("What type of students do you want to see?");
-            System.out.println("1. Passed.");
-            System.out.println("2. Failed.");
-            System.out.println("3. All.");
-            System.out.println("E. Exit the menu.");
-            String option = sc.nextLine();
-            switch (option) {
-                case "1":
-                    System.out.println("Passed students in the subject " + Mindbox.getSubject(subjectId).getId());
+            switch (DialogHelper.optionD("What type of students do you want to see?\n1. Passed.\n2. Failed.\n3. All.\nE. Exit the menu.",new String[]{"Passed","Failed","All","Exit"})) {
+                case 0 -> {
+                    StringBuilder passedStudents = new StringBuilder("Passed students in the subject " + Mindbox.getSubject(subjectId).getId() + "\n");
                     ArrayList<String> checkPassed = Mindbox.getSubject(subjectId).getApprovedStudents(semester.getId());
                     for (String student : checkPassed) {
-                        System.out.println(Mindbox.getStudent(student).toString());
-                        System.out.println("Group: " + Mindbox.getStudent(student).getGroup());
-                        String grade = "";
-                        if (Mindbox.getStudent(student).getGrades().get(semester.getId()).get(Mindbox.getSubject(subjectId).getId()) == null) {
-                            grade = "Not assigned.";
-                        } else {
-                            grade = String.valueOf(Mindbox.getStudent(student).getGrades().get(semester.getId()).get(Mindbox.getSubject(subjectId).getId()));
-                        }
-                        System.out.println("Grade: " + grade);
-                        System.out.println();
+                        passedStudents.append(Mindbox.getStudent(student).toString()).append("\n");
+                        passedStudents.append("Group: ").append(Mindbox.getStudent(student).getGroup()).append("\n");
+                        String grade = Mindbox.getStudent(student).getGrades().get(semester.getId()).get(Mindbox.getSubject(subjectId).getId()) == null ? "Not assigned." : String.valueOf(Mindbox.getStudent(student).getGrades().get(semester.getId()).get(Mindbox.getSubject(subjectId).getId()));
+                        passedStudents.append("Grade: ").append(grade).append("\n\n");
                     }
-                    break;
-                case "2":
-                    System.out.println("Failed students in the subject " + Mindbox.getSubject(subjectId).getId());
+                    DialogHelper.info(passedStudents.toString());
+                }
+                case 1 -> {
+                    StringBuilder failedStudents = new StringBuilder("Failed students in the subject " + Mindbox.getSubject(subjectId).getId() + "\n");
                     ArrayList<String> checkFailed = Mindbox.getSubject(subjectId).getFailedStudents(semester.getId());
                     for (String student : checkFailed) {
-                        System.out.println(Mindbox.getStudent(student).toString());
-                        System.out.println("Group: " + Mindbox.getStudent(student).getGroup());
-                        String grade = "";
-                        if (Mindbox.getStudent(student).getGrades().get(semester.getId()).get(Mindbox.getSubject(subjectId).getId()) == null) {
-                            grade = "Not assigned.";
-                        } else {
-                            grade = String.valueOf(Mindbox.getStudent(student).getGrades().get(semester.getId()).get(Mindbox.getSubject(subjectId).getId()));
-                        }
-                        System.out.println("Grade: " + grade);
-                        System.out.println();
+                        failedStudents.append(Mindbox.getStudent(student).toString()).append("\n");
+                        failedStudents.append("Group: ").append(Mindbox.getStudent(student).getGroup()).append("\n");
+                        String grade = Mindbox.getStudent(student).getGrades().get(semester.getId()).get(Mindbox.getSubject(subjectId).getId()) == null ? "Not assigned." : String.valueOf(Mindbox.getStudent(student).getGrades().get(semester.getId()).get(Mindbox.getSubject(subjectId).getId()));
+                        failedStudents.append("Grade: ").append(grade).append("\n\n");
                     }
-                    break;
-                case "3":
-                    System.out.println("All students in the subject " + Mindbox.getSubject(subjectId).getId());
+                    DialogHelper.info(failedStudents.toString());
+                }
+                case 2 -> {
+                    StringBuilder allStudents = new StringBuilder("All students in the subject " + Mindbox.getSubject(subjectId).getId() + "\n");
                     ArrayList<String> checkAll = Mindbox.getSubject(subjectId).getStudentsInSubject();
                     for (String student : checkAll) {
-                        System.out.println(Mindbox.getStudent(student).toString());
-                        System.out.println("Group: " + Mindbox.getStudent(student).getGroup());
-                        String grade = "";
-                        if (Mindbox.getStudent(student).getGrades().get(semester.getId()).get(Mindbox.getSubject(subjectId).getId()) == null) {
-                            grade = "Not assigned.";
-                        } else {
-                            grade = String.valueOf(Mindbox.getStudent(student).getGrades().get(semester.getId()).get(Mindbox.getSubject(subjectId).getId()));
-                        }
-                        System.out.println("Grade: " + grade);
-                        System.out.println();
+                        allStudents.append(Mindbox.getStudent(student).toString()).append("\n");
+                        allStudents.append("Group: ").append(Mindbox.getStudent(student).getGroup()).append("\n");
+                        String grade = Mindbox.getStudent(student).getGrades().get(semester.getId()).get(Mindbox.getSubject(subjectId).getId()) == null ? "Not assigned." : String.valueOf(Mindbox.getStudent(student).getGrades().get(semester.getId()).get(Mindbox.getSubject(subjectId).getId()));
+                        allStudents.append("Grade: ").append(grade).append("\n\n");
                     }
-                    break;
-                case "E":
+                    DialogHelper.info(allStudents.toString());
+                }
+                case 3 -> {
+                    DialogHelper.returnD();
                     exit = true;
-                    break;
-                default:
-                    System.out.println("Invalid option.");
+                }
             }
         } while (!exit);
     }
 
     public void showMySubjects() {
         if (subjects.isEmpty()) {
-            System.out.println("You currently have no subjects assigned.");
-            System.out.println();
+            DialogHelper.error("You currently have no subjects assigned.");
         } else {
+            StringBuilder subjectsInfo = new StringBuilder();
             for (String subject : subjects) {
-                System.out.println(Mindbox.getSubject(subject).toString());
+                subjectsInfo.append(Mindbox.getSubject(subject).toString()).append("\n");
             }
+            DialogHelper.info(subjectsInfo.toString());
         }
     }
 
     public static Worker getWorker() {
-        Scanner sc = new Scanner(System.in);
-        String controlNumber = "";
+        String controlNumber;
         boolean found = false;
         Worker teacher = null;
         do {
             Teacher.showAllTeachers();
             showAllCoordinators();
-            System.out.println("Enter the control number of the teacher you want:");
-            controlNumber = sc.nextLine();
+            controlNumber = DialogHelper.stringIn("Enter the control number of the teacher you want:");
             for (User user : Mindbox.users.get(Role.COORDINATOR)) {
                 if (user.getControlNumber().equals(controlNumber)) {
                     found = true;
@@ -362,36 +299,29 @@ public class Worker extends User {
     }
 
     public String getSubject() {
-        Scanner sc = new Scanner(System.in);
-        int option = 0;
-        boolean valid = true;
         String id = "";
+        boolean valid = true;
         if (subjects.isEmpty()) {
-            System.out.println("You have no subjects assigned.");
+            DialogHelper.error("You have no subjects assigned.");
             return null;
         }
         do {
+            StringBuilder subjectsList = new StringBuilder();
             for (String subjectId : subjects) {
                 Subject subject = Mindbox.getSubject(subjectId);
-                System.out.println("[ " + subjects.indexOf(subject.getId()) + " ]" + " Subject: " + subject.getId() + " Career: " + subject.getCareer().getFullName() + " Semester: " + Mindbox.getSemester(Mindbox.getGroup(subject.getGroup()).getSemester()).getId() + " Group: " + Mindbox.getGroup(subject.getGroup()).getGroupType());
+                subjectsList.append("[ ").append(subjects.indexOf(subject.getId())).append(" ] Subject: ").append(subject.getId()).append(" Career: ").append(subject.getCareer().getFullName()).append(" Semester: ").append(Mindbox.getSemester(Mindbox.getGroup(subject.getGroup()).getSemester()).getId()).append(" Group: ").append(Mindbox.getGroup(subject.getGroup()).getGroupType()).append("\n");
             }
             try {
-                option = sc.nextInt();
-                id = subjects.get(option);
+                id = subjects.get(DialogHelper.intIn(subjectsList.toString(),subjects.size())-1);
                 valid = false;
-            } catch (InputMismatchException e) {
-                System.out.println("The value must be an integer.");
-                sc.nextLine();
             } catch (IndexOutOfBoundsException e) {
-                System.out.println("Enter a valid index.");
-                sc.nextLine();
+                DialogHelper.warning("Enter a valid index.");
             }
         } while (valid);
         return id;
     }
 
     public void assignGrade() {
-        Scanner sc = new Scanner(System.in);
         int grade = 0;
         boolean valid = true, continueAssigning = true;
         Subject subject = Mindbox.getSubject(getSubject());
@@ -400,11 +330,11 @@ public class Worker extends User {
         }
         Group group = Mindbox.getGroup(subject.getGroup());
         if (group.getStudentList().isEmpty()) {
-            System.out.println("There are no students in this subject for now.");
+            DialogHelper.info("There are no students in this subject for now.");
             return;
         }
         if (group.getStudentList().size() < 3) {
-            System.out.println("The group does not have at least 3 students.");
+            DialogHelper.info("The group does not have at least 3 students.");
             return;
         }
         do {
@@ -413,53 +343,34 @@ public class Worker extends User {
             if (semesterGrades.get(subject.getId()) != null) {
                 int existingGrade = semesterGrades.get(subject.getId());
                 do {
-                    System.out.println("The student already has an assigned grade: " + existingGrade);
-                    System.out.println("Do you want to modify the grade? [Y]/[N]");
-                    String response = sc.next();
+                    String response = DialogHelper.stringIn("The student already has an assigned grade: " + existingGrade + "\nDo you want to modify the grade? [Y]/[N]");
                     if (response.equalsIgnoreCase("n")) {
                         return;
                     } else if (response.equalsIgnoreCase("y")) {
                         break;
                     } else {
-                        System.out.println("Invalid option.");
+                        DialogHelper.warning("Invalid option.");
                     }
                 } while (true);
             }
             do {
-                System.out.println("Enter the grade to assign:");
                 try {
-                    grade = sc.nextInt();
+                    grade = Integer.parseInt(DialogHelper.stringIn("Enter the grade to assign:"));
                     if (grade < 0 || grade > 100) {
                         throw new Exception("");
                     }
                     valid = false;
-                } catch (InputMismatchException e) {
-                    System.out.println("The value must be an integer.");
-                    sc.nextLine();
+                } catch (NumberFormatException e) {
+                    DialogHelper.warning("The value must be an integer.");
                 } catch (Exception e) {
-                    System.out.println("The value must be between 0 and 100.");
-                    sc.nextLine();
+                    DialogHelper.warning("The value must be between 0 and 100.");
                 }
             } while (valid);
             student.getGrades().get(student.getSemester()).remove(subject.getId());
             student.getGrades().get(student.getSemester()).put(subject.getId(), grade);
-            System.out.println("Grade changed successfully.");
-            sc.nextLine();
-            System.out.println("Do you want to continue assigning grades? [Y]/[N]");
-            String response = "";
-
-            do {
-                response = sc.nextLine();
-                if (response.equalsIgnoreCase("n")) {
-                    continueAssigning = false;
-                    break;
-                } else if (!response.equalsIgnoreCase("y")) {
-                    System.out.println("Invalid option. Please enter [Y] or [N].");
-                }
-            } while (!response.equalsIgnoreCase("y") && !response.equalsIgnoreCase("n"));
-        } while (continueAssigning);
+            DialogHelper.info("Grade changed successfully.");
+        } while (DialogHelper.confirmD("Do you want to continue assigning grades?"));
     }
-
     // Getters
     public ArrayList<String> getSubjects() {
         return subjects;

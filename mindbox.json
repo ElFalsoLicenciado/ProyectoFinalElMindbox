@@ -1,5 +1,194 @@
 {
   "semesters": {
+    "Systems": [
+      {
+        "id": "S1ISC",
+        "semesterNumber": 1,
+        "career": "Systems",
+        "groups": [
+          {
+            "career": "Systems",
+            "studentList": [
+              "IL24ISC00",
+              "IA24ISC00",
+              "IR24ISC00"
+            ],
+            "subjects": [
+              {
+                "id": "Programming 1A",
+                "career": "Systems",
+                "group": "G1AISC",
+                "teacher": null
+              },
+              {
+                "id": "Probability 1A",
+                "career": "Systems",
+                "group": "G1AISC",
+                "teacher": null
+              },
+              {
+                "id": "Calculus 1A",
+                "career": "Systems",
+                "group": "G1AISC",
+                "teacher": null
+              }
+            ],
+            "semester": "S1ISC",
+            "groupType": "A",
+            "groupId": "G1AISC"
+          },
+          {
+            "career": "Systems",
+            "studentList": [],
+            "subjects": [
+              {
+                "id": "Programming 1B",
+                "career": "Systems",
+                "group": "G1BISC",
+                "teacher": null
+              },
+              {
+                "id": "Probability 1B",
+                "career": "Systems",
+                "group": "G1BISC",
+                "teacher": null
+              },
+              {
+                "id": "Calculus 1B",
+                "career": "Systems",
+                "group": "G1BISC",
+                "teacher": null
+              }
+            ],
+            "semester": "S1ISC",
+            "groupType": "B",
+            "groupId": "G1BISC"
+          }
+        ]
+      },
+      {
+        "id": "S2ISC",
+        "semesterNumber": 2,
+        "career": "Systems",
+        "groups": [
+          {
+            "career": "Systems",
+            "studentList": [],
+            "subjects": [
+              {
+                "id": "Programming 2A",
+                "career": "Systems",
+                "group": "G2AISC",
+                "teacher": null
+              },
+              {
+                "id": "Probability 2A",
+                "career": "Systems",
+                "group": "G2AISC",
+                "teacher": null
+              },
+              {
+                "id": "Calculus 2A",
+                "career": "Systems",
+                "group": "G2AISC",
+                "teacher": null
+              }
+            ],
+            "semester": "S2ISC",
+            "groupType": "A",
+            "groupId": "G2AISC"
+          },
+          {
+            "career": "Systems",
+            "studentList": [],
+            "subjects": [
+              {
+                "id": "Programming 2B",
+                "career": "Systems",
+                "group": "G2BISC",
+                "teacher": null
+              },
+              {
+                "id": "Probability 2B",
+                "career": "Systems",
+                "group": "G2BISC",
+                "teacher": null
+              },
+              {
+                "id": "Calculus 2B",
+                "career": "Systems",
+                "group": "G2BISC",
+                "teacher": null
+              }
+            ],
+            "semester": "S2ISC",
+            "groupType": "B",
+            "groupId": "G2BISC"
+          }
+        ]
+      },
+      {
+        "id": "S3ISC",
+        "semesterNumber": 3,
+        "career": "Systems",
+        "groups": [
+          {
+            "career": "Systems",
+            "studentList": [],
+            "subjects": [
+              {
+                "id": "Programming 3A",
+                "career": "Systems",
+                "group": "G3AISC",
+                "teacher": null
+              },
+              {
+                "id": "Probability 3A",
+                "career": "Systems",
+                "group": "G3AISC",
+                "teacher": null
+              },
+              {
+                "id": "Calculus 3A",
+                "career": "Systems",
+                "group": "G3AISC",
+                "teacher": null
+              }
+            ],
+            "semester": "S3ISC",
+            "groupType": "A",
+            "groupId": "G3AISC"
+          },
+          {
+            "career": "Systems",
+            "studentList": [],
+            "subjects": [
+              {
+                "id": "Programming 3B",
+                "career": "Systems",
+                "group": "G3BISC",
+                "teacher": null
+              },
+              {
+                "id": "Probability 3B",
+                "career": "Systems",
+                "group": "G3BISC",
+                "teacher": null
+              },
+              {
+                "id": "Calculus 3B",
+                "career": "Systems",
+                "group": "G3BISC",
+                "teacher": null
+              }
+            ],
+            "semester": "S3ISC",
+            "groupType": "B",
+            "groupId": "G3BISC"
+          }
+        ]
+      }
+    ],
     "Materials": [
       {
         "id": "S1IMAT",
@@ -366,196 +555,6 @@
             "semester": "S3ELC",
             "groupType": "B",
             "groupId": "G3BELC"
-          }
-        ]
-      }
-    ],
-    "Systems": [
-      {
-        "id": "S1ISC",
-        "semesterNumber": 1,
-        "career": "Systems",
-        "groups": [
-          {
-            "career": "Systems",
-            "studentList": [
-              "IR24ISC00"
-            ],
-            "subjects": [
-              {
-                "id": "Programming 1A",
-                "career": "Systems",
-                "group": "G1AISC",
-                "teacher": "MM24ISC00"
-              },
-              {
-                "id": "Probability 1A",
-                "career": "Systems",
-                "group": "G1AISC",
-                "teacher": "MM24ISC00"
-              },
-              {
-                "id": "Calculus 1A",
-                "career": "Systems",
-                "group": "G1AISC",
-                "teacher": "MM24ISC00"
-              }
-            ],
-            "semester": "S1ISC",
-            "groupType": "A",
-            "groupId": "G1AISC"
-          },
-          {
-            "career": "Systems",
-            "studentList": [],
-            "subjects": [
-              {
-                "id": "Programming 1B",
-                "career": "Systems",
-                "group": "G1BISC",
-                "teacher": null
-              },
-              {
-                "id": "Probability 1B",
-                "career": "Systems",
-                "group": "G1BISC",
-                "teacher": null
-              },
-              {
-                "id": "Calculus 1B",
-                "career": "Systems",
-                "group": "G1BISC",
-                "teacher": null
-              }
-            ],
-            "semester": "S1ISC",
-            "groupType": "B",
-            "groupId": "G1BISC"
-          }
-        ]
-      },
-      {
-        "id": "S2ISC",
-        "semesterNumber": 2,
-        "career": "Systems",
-        "groups": [
-          {
-            "career": "Systems",
-            "studentList": [
-              "IL24ISC00",
-              "IA24ISC00"
-            ],
-            "subjects": [
-              {
-                "id": "Programming 2A",
-                "career": "Systems",
-                "group": "G2AISC",
-                "teacher": null
-              },
-              {
-                "id": "Probability 2A",
-                "career": "Systems",
-                "group": "G2AISC",
-                "teacher": null
-              },
-              {
-                "id": "Calculus 2A",
-                "career": "Systems",
-                "group": "G2AISC",
-                "teacher": null
-              }
-            ],
-            "semester": "S2ISC",
-            "groupType": "A",
-            "groupId": "G2AISC"
-          },
-          {
-            "career": "Systems",
-            "studentList": [],
-            "subjects": [
-              {
-                "id": "Programming 2B",
-                "career": "Systems",
-                "group": "G2BISC",
-                "teacher": null
-              },
-              {
-                "id": "Probability 2B",
-                "career": "Systems",
-                "group": "G2BISC",
-                "teacher": null
-              },
-              {
-                "id": "Calculus 2B",
-                "career": "Systems",
-                "group": "G2BISC",
-                "teacher": null
-              }
-            ],
-            "semester": "S2ISC",
-            "groupType": "B",
-            "groupId": "G2BISC"
-          }
-        ]
-      },
-      {
-        "id": "S3ISC",
-        "semesterNumber": 3,
-        "career": "Systems",
-        "groups": [
-          {
-            "career": "Systems",
-            "studentList": [],
-            "subjects": [
-              {
-                "id": "Programming 3A",
-                "career": "Systems",
-                "group": "G3AISC",
-                "teacher": null
-              },
-              {
-                "id": "Probability 3A",
-                "career": "Systems",
-                "group": "G3AISC",
-                "teacher": null
-              },
-              {
-                "id": "Calculus 3A",
-                "career": "Systems",
-                "group": "G3AISC",
-                "teacher": null
-              }
-            ],
-            "semester": "S3ISC",
-            "groupType": "A",
-            "groupId": "G3AISC"
-          },
-          {
-            "career": "Systems",
-            "studentList": [],
-            "subjects": [
-              {
-                "id": "Programming 3B",
-                "career": "Systems",
-                "group": "G3BISC",
-                "teacher": null
-              },
-              {
-                "id": "Probability 3B",
-                "career": "Systems",
-                "group": "G3BISC",
-                "teacher": null
-              },
-              {
-                "id": "Calculus 3B",
-                "career": "Systems",
-                "group": "G3BISC",
-                "teacher": null
-              }
-            ],
-            "semester": "S3ISC",
-            "groupType": "B",
-            "groupId": "G3BISC"
           }
         ]
       }

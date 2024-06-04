@@ -34,7 +34,7 @@ public class Semester {
                 }
             }
         } else {
-            System.out.println("No registered semesters.");
+            DialogHelper.warning("No registered semesters.");
         }
         return null;
     }
@@ -50,13 +50,13 @@ public class Semester {
 
     public void addStudentToGroup(Student student, String groupType) {
         if (student == null) {
-            System.out.println("Student cannot be null.");
+            DialogHelper.warning("Student cannot be null.");
             return;
         }
 
         Group group = getGroup(groupType);
         if (group == null) {
-            System.out.println("Could not find a valid group for the specified type.");
+            DialogHelper.warning("Could not find a valid group for the specified type.");
             return;
         }
         group.getStudentList().add(student.getControlNumber());
