@@ -82,7 +82,7 @@ public class CommonData {
 
     public static ArrayList<String> getCommonData(Role role) {
         ArrayList<String> commonData = new ArrayList<>();
-        String firstName = "", middleName = "", lastName = "", password = "", address = "";
+        String firstName = "", middleName = "", parentalLastName = "", maternaLlastName = "", password = "", address = "";
         String city = "", state = "", curp = "", controlNumber = "", gender = "", career = "";
 
         String currentRole = role == Role.STUDENT ? "Student" : role == Role.COORDINATOR ? "Coordinator" : "Teacher";
@@ -121,9 +121,19 @@ public class CommonData {
         } while (true);
 
         do {
-            System.out.println("Enter your last name: ");
-            lastName = read.nextLine();
-            if (emptyOrNum(lastName)){
+            System.out.println("Enter your parental last name: ");
+            parentalLastName = read.nextLine();
+            if (emptyOrNum(parentalLastName)){
+                System.out.println("Last name with numbers/empty/characters/spaces is not valid, please enter another. ");
+            } else {
+                break;
+            }
+        } while (true);
+
+        do {
+            System.out.println("Enter your maternal last name: ");
+            maternaLlastName = read.nextLine();
+            if (emptyOrNum(maternaLlastName)){
                 System.out.println("Last name with numbers/empty/characters/spaces is not valid, please enter another. ");
             } else {
                 break;
@@ -171,7 +181,11 @@ public class CommonData {
             }
         } while (true);
 
-        curp = generateCURP(firstName, lastName, birthDate, gender, state);
+        curp = generateCURP(firstName, parentalLastName, maternaLlastName, birthDate, gender, state);
+
+        String rfc = generateRFC(firstName, parentalLastName, maternaLlastName, birthDate);
+
+        String fullLastName = parentalLastName + " " + maternaLlastName;
 
         career = UserInSession.getCurrentUser().getCareer().getFullName();
 
@@ -199,7 +213,7 @@ public class CommonData {
             }
         } while (true);
 
-        commonData.addAll(Arrays.asList(firstName, lastName, birthDate.toString(), city, state, curp, address, password, controlNumber, career));
+        commonData.addAll(Arrays.asList(firstName, fullLastName, birthDate.toString(), city, state, curp, address, password, controlNumber, career, rfc));
         return commonData;
     }
 
@@ -280,9 +294,10 @@ public class CommonData {
         return "X";
     }
 
-    public static String generateCURP(String firstName, String lastName, LocalDate birthDate, String gender, String state) {
-        String curpBase = lastName.substring(0, 1).toUpperCase() +
-                getFirstInternalVowel(lastName) +
+    public static String generateCURP(String firstName, String parentalLastName, String maternalLastName, LocalDate birthDate, String gender, String state) {
+        String curpBase = parentalLastName.substring(0, 1).toUpperCase() +
+                getFirstInternalVowel(parentalLastName) +
+                maternalLastName.substring(0, 1).toUpperCase() +
                 firstName.substring(0, 1).toUpperCase() +
                 birthDate.toString().substring(2, 4) +
                 String.format("%02d", birthDate.getMonthValue()) +
@@ -295,76 +310,81 @@ public class CommonData {
         return curpBase + randomCharacters;
     }
 
-    public static String generateControlNumber(Role role, String firstName, String career){
-        boolean exists = false;
-        String prefix = "l", firstLetter;
-        String controlNumber, yearSuffix, careerCode;
-        int suffix = 0;
+    public static String generateControlNumber(Role role, String firstName, String career) {
+        String prefix;
+        switch (role) {
+            case STUDENT:
+                prefix = "l";
+                break;
+            case TEACHER:
+                prefix = "M";
+                break;
+            case COORDINATOR:
+                prefix = "C";
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid role: " + role);
+        }
 
-        firstLetter = String.valueOf(firstName.charAt(0)).toUpperCase();
-
+        String firstLetter = String.valueOf(firstName.charAt(0)).toUpperCase();
         int year = LocalDate.now().getYear();
-        yearSuffix = String.valueOf(year).substring(2);
+        String yearSuffix = String.valueOf(year).substring(2);
+        String careerCode = career.substring(0, 3).toUpperCase();
 
-        careerCode = career.substring(0, 3).toUpperCase();
+        int suffix = 0;
+        String controlNumber;
+        boolean exists;
 
-        ArrayList<User> teachers = Mindbox.users.get(Role.TEACHER);
-        ArrayList<User> students = Mindbox.users.get(Role.STUDENT);
-        ArrayList<User> coordinators = Mindbox.users.get(Role.COORDINATOR);
-        User foundUser = null;
-        controlNumber = prefix + firstLetter + yearSuffix + careerCode + suffix;
-        for (User user : teachers) {
-            if (user.getControlNumber().equals(controlNumber)){
-                exists = true;
-                foundUser = user;
-                break;
+        do {
+            exists = false;
+            controlNumber = prefix + firstLetter + yearSuffix + careerCode + suffix;
+
+            ArrayList<User> teachers = Mindbox.users.get(Role.TEACHER);
+            ArrayList<User> students = Mindbox.users.get(Role.STUDENT);
+            ArrayList<User> coordinators = Mindbox.users.get(Role.COORDINATOR);
+
+            for (User user : teachers) {
+                if (user.getControlNumber().equals(controlNumber)) {
+                    exists = true;
+                    break;
+                }
             }
-        }
-        for (User user : students) {
-            if (user.getControlNumber().equals(controlNumber)){
-                exists = true;
-                foundUser = user;
-                break;
+            for (User user : students) {
+                if (user.getControlNumber().equals(controlNumber)) {
+                    exists = true;
+                    break;
+                }
             }
-        }
-        for (User user : coordinators) {
-            if (user.getControlNumber().equals(controlNumber)){
-                exists = true;
-                foundUser = user;
-                break;
+            for (User user : coordinators) {
+                if (user.getControlNumber().equals(controlNumber)) {
+                    exists = true;
+                    break;
+                }
             }
-        }
 
-        String finalControlNumber = "";
-        if (exists){
-            String existingControlNumber = foundUser.getControlNumber();
-            int number = Integer.parseInt(String.valueOf(existingControlNumber.charAt(existingControlNumber.length() - 1)));
-            number++;
-            finalControlNumber = prefix + firstLetter + yearSuffix + careerCode + number;
-        } else {
-            finalControlNumber = controlNumber;
-        }
+            if (exists) {
+                suffix++;
+            }
 
-        return finalControlNumber;
+        } while (exists);
+
+        return controlNumber;
     }
 
-    public static String generateRFC(String firstName, String lastName, LocalDate birthDate) {
+    public static String generateRFC(String firstName, String parentalLastName, String maternalLastName, LocalDate birthDate) {
         Random random = new Random();
+        maternalLastName = maternalLastName.toUpperCase();
+        parentalLastName = parentalLastName.toUpperCase();
         int randomDigit1 = random.nextInt(10);
         int randomDigit2 = random.nextInt(10);
-        char randomLetter = (char)(random.nextInt(26) + 'A');
+        char randomLetter = (char)(random.nextInt(27) + 65);
         int year = birthDate.getYear();
         int yearTwoDigits = year % 100;
-        String yearFormatted = String.format("%02d", yearTwoDigits);
-        String rfc = lastName.toUpperCase().charAt(0) + "" +
-                lastName.toUpperCase().charAt(1) + "" +
-                firstName.toUpperCase().charAt(0) + "" +
-                yearFormatted +
-                String.format("%02d", birthDate.getMonthValue()) +
-                String.format("%02d", birthDate.getDayOfMonth()) +
-                randomDigit1 +
-                randomLetter +
-                randomDigit2;
+        String yearFormattedTwoDigits = String.format("%02d", yearTwoDigits);
+        String rfc = String.valueOf(parentalLastName.toUpperCase().charAt(0)) + String.valueOf(parentalLastName.toUpperCase().charAt(1)) +
+                String.valueOf(maternalLastName.toUpperCase().charAt(0)) + String.valueOf(firstName.toUpperCase().charAt(0))  +
+                String.valueOf(yearFormattedTwoDigits) + String.valueOf(birthDate.getMonthValue()) + String.valueOf(birthDate.getDayOfMonth()) +
+                String.valueOf(randomDigit1) + randomLetter + String.valueOf(randomDigit2);
         return rfc;
     }
 

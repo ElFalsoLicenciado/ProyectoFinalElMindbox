@@ -17,8 +17,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 
-public class UserDeserializer{
+public class UserDeserializer {
 
     public static void deserialize() {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
@@ -26,6 +27,11 @@ public class UserDeserializer{
             // Define the correct type for UserModel
             Type userModelType = new TypeToken<UserModel>() {}.getType();
             UserModel userModel = gson.fromJson(reader, userModelType);
+
+            // Initialize Mindbox.users if not already initialized
+            if (Mindbox.users == null) {
+                Mindbox.users = new HashMap<>();
+            }
 
             // Clear existing lists in Mindbox.users
             Mindbox.users.put(Role.STUDENT, new ArrayList<>());

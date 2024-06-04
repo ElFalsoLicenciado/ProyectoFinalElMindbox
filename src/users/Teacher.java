@@ -41,7 +41,7 @@ public class Teacher extends Worker {
                 System.out.println("Value must be a number.");
                 sc.nextLine();
             } catch (Exception e) {
-                System.out.println("Value must be greater than 0.");
+                System.out.println("Value must be greater than zero.");
                 sc.nextLine();
             }
         } while (salary == 0);
@@ -53,7 +53,7 @@ public class Teacher extends Worker {
 
     public static void showAllTeachers() {
         ArrayList<User> teacherUsers = Mindbox.users.get(Role.TEACHER);
-        System.out.println("Teachers of Mindbox");
+        System.out.println("Teachers of Mindbox ITM");
         for (User user : teacherUsers) {
             if (user.getCareer().equals(UserInSession.getCurrentUser().getCareer())) {
                 Teacher teacher = (Teacher) user;

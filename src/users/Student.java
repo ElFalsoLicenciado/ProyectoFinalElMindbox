@@ -76,7 +76,7 @@ public class Student extends User {
         Scanner sc = new Scanner(System.in);
         String option;
         do {
-            System.out.println("Enter the group type to register [A/B]: ");
+            System.out.println("Enter the group type to register [A], [B]: ");
             option = sc.nextLine();
             if (option.equals("A")) {
                 return "A";
@@ -111,7 +111,7 @@ public class Student extends User {
 
     public static void showAllStudents() {
         ArrayList<User> studentUsers = Mindbox.users.get(Role.STUDENT);
-        System.out.println("Students of Mindbox Institute");
+        System.out.println("Students of Mindbox ITM");
         for (User user : studentUsers) {
             if (user.getCareer().equals(UserInSession.getCurrentUser().getCareer())) {
                 Student student = (Student) user;

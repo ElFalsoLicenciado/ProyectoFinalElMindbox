@@ -29,7 +29,6 @@ public class MindboxSerializer {
             BufferedWriter writer = new BufferedWriter(new FileWriter("mindbox.json"));
             gson.toJson(mindboxModel, writer);
             writer.close();
-            System.out.println("Static data saved to mindbox.json");
         } catch (FileNotFoundException e) {
             System.out.println(e);
         } catch (IOException e) {

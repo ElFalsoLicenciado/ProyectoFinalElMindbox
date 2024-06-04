@@ -1,15 +1,20 @@
 {
   "student": [
     {
-      "semester": "S1ISC",
-      "group": "G1AISC",
+      "semester": "S2ISC",
+      "group": "G2AISC",
       "average": 0.0,
       "groupType": "A",
       "grades": {
         "S1ISC": {
-          "Programming 1A": null,
-          "Calculus 1A": null,
-          "Probability 1A": null
+          "Programming 1A": 95,
+          "Calculus 1A": 98,
+          "Probability 1A": 90
+        },
+        "S2ISC": {
+          "Programming 2A": null,
+          "Probability 2A": null,
+          "Calculus 2A": null
         }
       },
       "firstName": "Luis",
@@ -26,15 +31,20 @@
       "role": "STUDENT"
     },
     {
-      "semester": "S1ISC",
-      "group": "G1AISC",
+      "semester": "S2ISC",
+      "group": "G2AISC",
       "average": 0.0,
       "groupType": "A",
       "grades": {
         "S1ISC": {
-          "Programming 1A": null,
-          "Calculus 1A": null,
-          "Probability 1A": null
+          "Programming 1A": 100,
+          "Calculus 1A": 100,
+          "Probability 1A": 100
+        },
+        "S2ISC": {
+          "Programming 2A": null,
+          "Probability 2A": null,
+          "Calculus 2A": null
         }
       },
       "firstName": "Alberto",
@@ -134,7 +144,11 @@
   ],
   "teacher": [
     {
-      "subjects": [],
+      "subjects": [
+        "Probability 1A",
+        "Programming 1A",
+        "Calculus 1A"
+      ],
       "RFC": "RFCGOD",
       "salary": 70000.0,
       "firstName": "Murillo",

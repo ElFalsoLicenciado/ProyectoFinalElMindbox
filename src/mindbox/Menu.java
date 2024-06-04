@@ -13,11 +13,37 @@ public class Menu {
 
     public static Scanner reader = new Scanner(System.in);
 
-    public static void showMenu(){
+    public static void showMenuFirstTime(){
 
         while (true) {
             Mindbox.loadJson();
 
+            System.out.println("WELCOME TO THE MINDBOX SYSTEM.");
+            System.out.println("1. LogIn");
+            System.out.println("E. Exit");
+            System.out.println("Elige una opción: ");
+
+            String option = reader.nextLine();
+
+            switch (option.toUpperCase()) {
+                case "1":
+                    logIn();
+                    break;
+                case "E":
+                    Mindbox.saveJson();
+                    System.exit(0);
+                    break;
+                default:
+                    System.out.println("INCORRECT OPTION");
+                    break;
+            }
+        }
+
+    }
+
+    public static void showMenu(){
+
+        while (true) {
             System.out.println("WELCOME TO THE MINDBOX SYSTEM.");
             System.out.println("1. LogIn");
             System.out.println("E. Exit");
@@ -123,6 +149,7 @@ public class Menu {
             }
         } while (!option.equalsIgnoreCase("E"));
         UserInSession.getInstance().logout();
+        showMenu();
     }
 
     private static void executeCoordinatorMenu() {
@@ -306,6 +333,7 @@ public class Menu {
         UserInSession.getInstance().logout();
         System.out.println("Logging Out...");
         System.out.print("-------------------------------------------------\n");
+        showMenu();
     }
 
     private static void executeTeacherMenu() {
@@ -379,6 +407,7 @@ public class Menu {
                     System.out.println("Logging out...");
                     UserInSession.getInstance().logout();
                     System.out.print("-------------------------------------------------\n");
+                    showMenu();
                     break;
                 default:
                     if (!option.equalsIgnoreCase("E")) {

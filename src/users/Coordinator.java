@@ -24,28 +24,24 @@ public class Coordinator extends Worker {
         boolean validSemester = false, validGroup = false;
         Careers career = UserInSession.getCurrentUser().getCareer();
         do {
-            System.out.println("Which semester do you want to assign a teacher to?");
-            System.out.println("[1]");
-            System.out.println("[2]");
-            System.out.println("[3]");
-            String option = sc.nextLine();
-            switch (option) {
-                case "1":
-                    semesterNumber = 1;
-                    validSemester = true;
-                    break;
-                case "2":
-                    semesterNumber = 2;
-                    validSemester = true;
-                    break;
-                case "3":
-                    semesterNumber = 3;
-                    validSemester = true;
-                    break;
-                default:
-                    System.out.println("INVALID OPTION.");
-            }
-        } while (!validSemester);
+            System.out.println("Which semester do you want to assign a teacher to [1], [2], [3] ?");
+            String option = sc.nextLine().trim();
+            semesterNumber = Integer.getInteger(option);
+//            switch (option) {
+//                case "1":
+//                    semesterNumber = 1;
+//                    break;
+//                case "2":
+//                    semesterNumber = 2;
+//                    break;
+//                case "3":
+//                    semesterNumber = 3;
+//                    break;
+//                default:
+//                    System.out.println("INVALID OPTION.");
+//            }
+            validSemester = semesterNumber > 0;
+        } while (validSemester);
         Semester semester = Semester.getSemesterByNumber(semesterNumber);
         if (semester != null) {
             do {
@@ -97,10 +93,7 @@ public class Coordinator extends Worker {
         boolean validSemester = false, validGroup = false;
         Careers career = UserInSession.getCurrentUser().getCareer();
         do {
-            System.out.println("From which semester do you want to remove a teacher?");
-            System.out.println("[1]");
-            System.out.println("[2]");
-            System.out.println("[3]");
+            System.out.println("From which semester do you want to remove a teacher [1], [2], [3] ?");
             String option = sc.nextLine();
             switch (option) {
                 case "1":
@@ -207,7 +200,7 @@ public class Coordinator extends Worker {
 
         do {
             try {
-                System.out.println("From which semester do you want to promote the group:");
+                System.out.println("From which semester do you want to promote the group: [1], [2], [3] ?");
                 semesterNumber = sc.nextInt();
                 sc.nextLine();
             } catch (InputMismatchException e) {
@@ -223,7 +216,7 @@ public class Coordinator extends Worker {
         } while (true);
 
         do {
-            System.out.println("Enter the group you want to promote [A/B]:");
+            System.out.println("Enter the group you want to promote [A], [B]:");
             String input = sc.next();
 
             if (input.length() == 1) {
