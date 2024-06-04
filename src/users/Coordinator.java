@@ -26,22 +26,23 @@ public class Coordinator extends Worker {
         do {
             System.out.println("Which semester do you want to assign a teacher to [1], [2], [3] ?");
             String option = sc.nextLine().trim();
-            semesterNumber = Integer.getInteger(option);
-//            switch (option) {
-//                case "1":
-//                    semesterNumber = 1;
-//                    break;
-//                case "2":
-//                    semesterNumber = 2;
-//                    break;
-//                case "3":
-//                    semesterNumber = 3;
-//                    break;
-//                default:
-//                    System.out.println("INVALID OPTION.");
-//            }
-            validSemester = semesterNumber > 0;
-        } while (validSemester);
+            switch (option) {
+                case "1":
+                    semesterNumber = 1;
+                    validSemester = true;
+                    break;
+                case "2":
+                    semesterNumber = 2;
+                    validSemester = true;
+                    break;
+                case "3":
+                    semesterNumber = 3;
+                    validSemester = true;
+                    break;
+                default:
+                    System.out.println("INVALID OPTION.");
+            }
+        } while (!validSemester);
         Semester semester = Semester.getSemesterByNumber(semesterNumber);
         if (semester != null) {
             do {
