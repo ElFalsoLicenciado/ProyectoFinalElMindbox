@@ -74,6 +74,31 @@
       "controlNumber": "IR24ISC00",
       "password": "123",
       "role": "STUDENT"
+    },
+    {
+      "semester": "S1ISC",
+      "group": "G1AISC",
+      "average": 0.0,
+      "groupType": "A",
+      "grades": {
+        "S1ISC": {
+          "Programming 1A": null,
+          "Calculus 1A": null,
+          "Probability 1A": null
+        }
+      },
+      "firstName": "Juan",
+      "lastName": "Medina Perez",
+      "birthDate": "2000-02-03",
+      "city": "Mored",
+      "state": "MICHOACAN",
+      "curp": "MEPJ000203MMNAKSP",
+      "address": "dwe",
+      "registrationDate": "2024-06-04",
+      "career": "Electronics",
+      "controlNumber": "lJ24COM0",
+      "password": "pass",
+      "role": "STUDENT"
     }
   ],
   "coordinator": [

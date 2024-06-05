@@ -3,6 +3,7 @@ package users.utils;
 import java.time.LocalDate;
 import java.util.*;
 
+import academicinfo.Careers;
 import mindbox.*;
 import users.*;
 import utils.*;
@@ -78,8 +79,10 @@ public class CommonData {
     }
 
     public static ArrayList<String> getCommonData(Role role) {
+        ArrayList<String> commonData = new ArrayList<>();
         String firstName, middleName, parentalLastName, maternalLastName, password, address;
-        String city, state, curp, controlNumber, gender, career;
+        String city, state, curp, controlNumber, gender;
+        Careers career;
 
         String currentRole = role == Role.STUDENT ? "Student" : role == Role.COORDINATOR ? "Coordinator" : "Teacher";
         DialogHelper.info("ROLE: " + currentRole);
@@ -160,32 +163,46 @@ public class CommonData {
 
         String fullLastName = parentalLastName + " " + maternalLastName;
 
-        career = UserInSession.getInstance().getCurrentUser().getCareer().getFullName();
+        career = UserInSession.getInstance().getCurrentUser().getCareer();
+
+        do {
+            address = DialogHelper.stringIn("Enter your address:");
+            if (CommonData.emptyOrNum(address)) {
+                DialogHelper.warning("Address with numbers or empty is not valid, please enter another.");
+            } else {
+                break;
+            }
+        } while (true);
+
+        do {
+            password = DialogHelper.stringIn("Enter your password:");
+            if (password.isEmpty()) {
+                DialogHelper.warning("Empty password is not valid.");
+            } else {
+                break;
+            }
+        } while (true);
 
         DialogHelper.info("You will be assigned to the career: " + career);
         controlNumber = generateControlNumber(role, firstName, career);
         DialogHelper.info("Your Control Number is: " + controlNumber);
 
-        password = DialogHelper.stringIn("Enter your password:");
-        address = DialogHelper.stringIn( "Enter your address: ");
-
-        // Yooo ya termine de arrglar student y teacher, le sigo con coordinador?, SI por eso, ya puse la interfaz con swingx y dialogue helper, vavavavavava
-
-        return new ArrayList<>(Arrays.asList(firstName, fullLastName, birthDate.toString(), city, state, curp, address, password, controlNumber, career, rfc));
+        commonData.addAll(Arrays.asList(firstName, fullLastName, birthDate.toString(), city, state, curp, address, password, controlNumber, career.name(), rfc));
+        return commonData;
     }
 
     public static LocalDate getBirthDate() {
-        int year = DialogHelper.int3In("Type a year",1900,2024);
-        int month = DialogHelper.int3In("Type a month by its number",1,12);
+        int year = DialogHelper.int3In("Enter your birth year: ",1900,2024);
+        int month = DialogHelper.int3In("Enter your birth month: ",1,12);
         int day = 0;
         switch (month) {
-            case 1, 3, 5, 7, 8, 10, 12 -> day = DialogHelper.int3In("Type a day",1,31);
+            case 1, 3, 5, 7, 8, 10, 12 -> day = DialogHelper.int3In("Enter your birth day:",1,31);
             case 2 -> {
-                if ((year%4)==0){ day = DialogHelper.int3In("Type a day",1,29);
+                if ((year%4)==0){ day = DialogHelper.int3In("Enter your birth day:",1,29);
                 }
-                else { day = DialogHelper.int3In("Type a day", 1, 28);}
+                else { day = DialogHelper.int3In("Enter your birth day:", 1, 28);}
             }
-            case 4,6,9,11 -> day = DialogHelper.int3In("Type a day",1,30);
+            case 4,6,9,11 -> day = DialogHelper.int3In("Enter your birth day:",1,30);
         }
         return LocalDate.of(year ,month,day);
     }
@@ -229,17 +246,26 @@ public class CommonData {
         return curpBase + randomCharacters;
     }
 
-    public static String generateControlNumber(Role role, String firstName, String career) {
-        String prefix = switch (role) {
-            case STUDENT -> "l";
-            case TEACHER -> "M";
-            case COORDINATOR -> "C";
-        };
+    public static String generateControlNumber(Role role, String firstName, Careers career) {
+        String prefix;
+        switch (role) {
+            case STUDENT:
+                prefix = "l";
+                break;
+            case TEACHER:
+                prefix = "M";
+                break;
+            case COORDINATOR:
+                prefix = "C";
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid role: " + role);
+        }
 
         String firstLetter = String.valueOf(firstName.charAt(0)).toUpperCase();
         int year = LocalDate.now().getYear();
         String yearSuffix = String.valueOf(year).substring(2);
-        String careerCode = career.substring(0, 3).toUpperCase();
+        String careerCode = career.getCode().toUpperCase();
 
         int suffix = 0;
         String controlNumber;

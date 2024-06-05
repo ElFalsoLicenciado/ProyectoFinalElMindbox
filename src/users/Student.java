@@ -72,15 +72,8 @@ public class Student extends User {
     }
 
     private static String getGroupType() {
-        String groupType;
-        do {
-            groupType = String.valueOf(DialogHelper.optionD("Enter the group type to register:", new String[]{"A", "B"}));
-            if (groupType.equals("A") || groupType.equals("B")) {
-                return groupType;
-            } else {
-                DialogHelper.error("Invalid group option");
-            }
-        } while (true);
+        int choice = DialogHelper.optionD("Enter the group type to register:", new String[]{"A", "B"});
+        return choice == 0 ? "A" : "B";
     }
 
 

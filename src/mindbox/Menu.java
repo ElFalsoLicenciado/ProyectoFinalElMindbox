@@ -16,17 +16,14 @@ public class Menu {
             int choice = DialogHelper.optionD("Select an option:", new String[]{"Log In", "Exit"});
 
             switch (choice) {
-                case 0:
-                    logIn();
-                    break;
-                case 1:
+                case 0 -> logIn();
+                case 1 -> {
                     Mindbox.saveJson();
                     System.exit(0);
-                    break;
+                }
             }
         }
     }
-
 
     public static void showMenu() {
 
@@ -34,17 +31,14 @@ public class Menu {
             int choice = DialogHelper.optionD("Select an option:", new String[]{"Log In", "Exit"});
 
             switch (choice) {
-                case 0:
-                    logIn();
-                    break;
-                case 1:
+                case 0 -> logIn();
+                case 1 -> {
                     Mindbox.saveJson();
                     System.exit(0);
-                    break;
+                }
             }
         }
     }
-
 
     public static void logIn() {
         int attempts = 5;
@@ -52,10 +46,10 @@ public class Menu {
         UserInSession.getInstance().logout();
 
         do {
-            DialogHelper.info(String.format("Log in to continue, you have %s attempts",attempts));
+            DialogHelper.info(String.format("Log in to continue, you have %s attempts", attempts));
 
             String controlNumber = DialogHelper.stringIn("Enter your control number:\n 0 To cancel");
-            if(controlNumber.equals("0")) break;
+            if (controlNumber.equals("0")) break;
             String password = DialogHelper.stringIn("Enter your password: ");
 
             User currentUser = Mindbox.verifyLogin(controlNumber, password);
@@ -75,7 +69,6 @@ public class Menu {
         } while (true);
     }
 
-
     private static void selectMenu() {
         switch (UserInSession.getInstance().getCurrentUser().getRole()) {
             case STUDENT -> executeStudentMenu();
@@ -84,28 +77,23 @@ public class Menu {
         }
     }
 
-
     private static void executeStudentMenu() {
         Student student = (Student) UserInSession.getInstance().getCurrentUser();
         DialogHelper.info("Welcome Student " + student.getFirstName() + " " + student.getLastName());
         boolean flag = false;
 
         do {
-            switch (DialogHelper.optionD("What do you wanna do?", "1. View grades\n2. Show current subjects\n3.View history\n4. Show my info", new String[]{"1", "2", "3", "4", "Exit"})) {
-                case 0:
-                    student.showGrades();
-                case 1:
-                    student.showCurrentSubjects();
-                case 2:
-                    student.showHistory();
-                case 3:
-                    DialogHelper.info(student.toString());
-                    break;
-                case 4:
+            switch (DialogHelper.optionD("What do you wanna do?", new String[]{"View grades", "Show current subjects", "View history", "Show my info", "Exit"})) {
+                case 0 -> student.showGrades();
+                case 1 -> student.showCurrentSubjects();
+                case 2 -> student.showHistory();
+                case 3 -> DialogHelper.info(student.toString());
+                case 4 -> {
                     DialogHelper.info("Logging out...");
                     flag = true;
+                }
             }
-        }while (!flag) ;
+        } while (!flag);
         UserInSession.getInstance().logout();
         showMenu();
     }
@@ -131,24 +119,16 @@ public class Menu {
                     if (coordinator.getSubjects().isEmpty()) {
                         DialogHelper.info("You have no subjects assigned.");
                     } else {
-                        boolean exit = true;
+                        boolean exit = false;
                         do {
                             switch (DialogHelper.optionD("Observe grades by filter",
                                     new String[]{"By semester", "By group", "By subject", "Exit"})) {
-                                case 0:
-                                    coordinator.filterBySemester();
-                                    break;
-                                case 1:
-                                    coordinator.filterByGroup();
-                                    break;
-                                case 2:
-                                    coordinator.filterBySubject();
-                                    break;
-                                case 3:
-                                    exit = false;
-                                    break;
+                                case 0 -> coordinator.filterBySemester();
+                                case 1 -> coordinator.filterByGroup();
+                                case 2 -> coordinator.filterBySubject();
+                                case 3 -> exit = true;
                             }
-                        } while (exit);
+                        } while (!exit);
                     }
                 }
                 case 3 -> {
@@ -160,52 +140,34 @@ public class Menu {
                     do {
                         switch (DialogHelper.optionD("Student Options",
                                 new String[]{"Register Student", "Modify Student", "Delete Student", "Show Students", "Exit"})) {
-                            case 0:
-                                Mindbox.registerStudent();
-                                break;
-                            case 1:
-                                Mindbox.updateStudent();
-                                break;
-                            case 2:
-                                Mindbox.expelStudent();
-                                break;
-                            case 3:
-                                Mindbox.showAllStudents();
-                                break;
-                            case 4:
+                            case 0 -> Mindbox.registerStudent();
+                            case 1 -> Mindbox.updateStudent();
+                            case 2 -> Mindbox.expelStudent();
+                            case 3 -> Mindbox.showAllStudents();
+                            case 4 -> {
                                 DialogHelper.returnD();
                                 aux = false;
+                            }
                         }
                     } while (aux);
                 }
                 case 5 -> {
-                boolean aux = true;
-                do {
-                    switch (DialogHelper.optionD("Teacher Options", new String[]{"Register Teacher", "Modify Teacher", "Delete Teacher", "Show Teachers", "Add teacher to subject", "Remove teacher from subject", "Exit"})) {
-                        case 0:
-                            Mindbox.registerTeacher();
-                            break;
-                        case 1:
-                            Mindbox.updateTeacher();
-                            break;
-                        case 2:
-                            Mindbox.deleteTeacher();
-                            break;
-                        case 3:
-                            Mindbox.showAllTeachers();
-                            break;
-                        case 4:
-                            Mindbox.assignTeacherToSubject();
-                            break;
-                        case 5:
-                            Mindbox.removeTeacherFromSubject();
-                            break;
-                        case 6:
-                            aux = false;
-                            DialogHelper.returnD();
-                    }
-                } while (aux);
-            }
+                    boolean aux = true;
+                    do {
+                        switch (DialogHelper.optionD("Teacher Options", new String[]{"Register Teacher", "Modify Teacher", "Delete Teacher", "Show Teachers", "Add teacher to subject", "Remove teacher from subject", "Exit"})) {
+                            case 0 -> Mindbox.registerTeacher();
+                            case 1 -> Mindbox.updateTeacher();
+                            case 2 -> Mindbox.deleteTeacher();
+                            case 3 -> Mindbox.showAllTeachers();
+                            case 4 -> Mindbox.assignTeacherToSubject();
+                            case 5 -> Mindbox.removeTeacherFromSubject();
+                            case 6 -> {
+                                aux = false;
+                                DialogHelper.returnD();
+                            }
+                        }
+                    } while (aux);
+                }
                 case 6 -> Group.showAllGroups();
                 case 7 -> Graduates.showGraduates();
                 case 8 -> DialogHelper.info(coordinator.toString());
@@ -219,7 +181,6 @@ public class Menu {
         DialogHelper.info("Logging Out...");
         showMenu();
     }
-
 
     private static void executeTeacherMenu() {
         Worker teacher = (Worker) UserInSession.getInstance().getCurrentUser();
@@ -256,18 +217,14 @@ public class Menu {
                     DialogHelper.info("Selected: Assign grades");
                     teacher.assignGrade();
                 }
-                case 3 ->{
-                    DialogHelper.info(teacher.toString());
-                }
+                case 3 -> DialogHelper.info(teacher.toString());
                 case 4 -> {
                     DialogHelper.info("Logging out...");
                     UserInSession.getInstance().logout();
                     showMenu();
                     flag = false;
                 }
-
             }
-        }while (flag);
+        } while (flag);
     }
-
 }
